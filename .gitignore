@@ -1,0 +1,14 @@
+
+/bin/release/start.bat
+/bin/debug/app.config
+/bin/release/app.config
+/bin/debug/Jad_Bot.exe.config
+/bin/release/Jad_Bot.exe.config
+/bin/debug/Jad_Bot.vshost.exe.config
+/bin/release/Jad_Bot.vshost.exe.config
+*.cache
+*.exe
+*.log
+obj
+bin
+*.suo
