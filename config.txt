@@ -1,0 +1,9 @@
+﻿ToolsFolder:
+UnparsedFolder:
+ParsedFolder:
+WebLinkToParsedFolder:
+WebLinkToUnparsedFolder:
+WebLinkToGeneralFolder:
+WebLinkToLogsFolder:
+LocalPathToGeneralFolder:
+UploadSite:
