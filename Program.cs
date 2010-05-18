@@ -479,25 +479,43 @@ namespace Jad_Bot
 
         #region Custom Commands
 
-        #region Nested type: StealCookieCommand
+        #region Nested type: StealObjectCommand
 
-        public class StealCookieCommand : Command
+        public class StealObjectCommand : Command
         {
-            public StealCookieCommand() : base("Steal","StealCookie")
+            public StealObjectCommand()
+                : base("Steal", "StealObject")
             {
-                Usage = "steal name of person to steal cookie from";
-                Description = "Steals the provided person's cookie and munches it.";
+                Usage = "steal name of person to steal object from";
+                Description = "Steals the provided person's cookie and munches it, unless you specify a different object";
             }
             public override void Process(CmdTrigger trigger)
             {
                 try
                 {
-                    var cookieowner = trigger.Args.Remainder;
-                    if (string.IsNullOrEmpty(cookieowner))
+                    var objectowner = trigger.Args.Remainder;
+                    var Object = "cookie";
+                    if (trigger.Args.NextModifiers() == "object")
+                    {
+                        Object = trigger.Args.NextWord();
+                    }
+                    var target = trigger.Target.ToString();
+                    if (trigger.Args.NextModifiers() == "target")
+                    {
+                        target = trigger.Args.NextWord();
+                    }
+                    if (string.IsNullOrEmpty(objectowner))
                     {
                         trigger.Reply("You didn't tell me who to steal from!");
                     }
-                    Irc.CommandHandler.Describe(trigger.Target,string.Format("steals {0}'s cookie, om nom nom nom!", cookieowner),trigger.Args);
+                    if (Object.ToLower() == "cookie")
+                    {
+                        Irc.CommandHandler.Describe(target, string.Format("steals {0}'s cookie, om nom nom nom!", objectowner), trigger.Args);
+                    }
+                    else
+                    {
+                        Irc.CommandHandler.Describe(target, string.Format("steals {0}'s {1}, ha! Pwned",trigger.Args.Remainder,Object),trigger.Args);
+                    }
                 }
                 catch (Exception e)
                 {
