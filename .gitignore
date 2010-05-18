@@ -12,3 +12,6 @@
 obj
 bin
 *.suo
+*.user
+TestResults
+TestPastebinSystem

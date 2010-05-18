@@ -28,7 +28,8 @@ namespace Jad_Bot
         private static List<string> FileLines = new List<string>();
         private static List<string> NorrisLines = new List<string>();
         #endregion
-
+        public static bool Grabinput = true;
+        public static string ToolsOutput = "";
         public static DumpReader SDR = new DumpReader();
         #region IRC Connection info
 
@@ -58,15 +59,15 @@ namespace Jad_Bot
 
         #region Folder strings
 
-        private static string UnparsedFolder;
-        private static string ParsedFolder;
-        private static string GeneralFolder;
-        private static string ToolsFolder;
-        private static string UploadSite;
-        private static string WebLinkToParsedFolder;
-        private static string WebLinkToUnparsedFolder;
-        private static string WebLinkToGeneralFolder;
-        private static string WebLinkToLogsFolder;
+        public static string UnparsedFolder;
+        public static string ParsedFolder;
+        public static string GeneralFolder;
+        public static string ToolsFolder;
+        public static string UploadSite;
+        public static string WebLinkToParsedFolder;
+        public static string WebLinkToUnparsedFolder;
+        public static string WebLinkToGeneralFolder;
+        public static string WebLinkToLogsFolder;
 
         #endregion
 
@@ -198,8 +199,7 @@ namespace Jad_Bot
 
                 while (true) // Prevent WCell.Tools from crashing - due to console methods inside the program.
                 {
-                    var meh = new StringStream(Console.ReadLine());
-                    OnConsoleText(meh);
+                    Thread.Sleep(1000);
                 }
             }
                 #region Main Exception Handling
@@ -207,11 +207,11 @@ namespace Jad_Bot
             catch (Exception e)
             {
                 Print(string.Format("Exception {0} \n {1}",e.Message,e.StackTrace), true);
-                string pastebinuri = Pastebin.UploadText(e.Message, "JaddieLogParser");
-                Print(pastebinuri,true);
+                WriteErrorSystem.WriteError(new List<string> { "Exception:", e.Message, e.StackTrace });
+                Print(WebLinkToGeneralFolder + "ErrorLog.txt",true);
                 foreach (var chan in ChannelList)
                 {
-                    Irc.CommandHandler.Msg(chan, "The error is at the pastebin url" + pastebinuri);
+                    Irc.CommandHandler.Msg(chan, "The error is at the following address: {0}",WebLinkToGeneralFolder + "ErrorLog.txt");
                 }
                 Console.WriteLine("Closing in 5 seconds");
                 Thread.Sleep(5000);
@@ -407,7 +407,10 @@ namespace Jad_Bot
                                            excep.Message);
                 }
             }
-
+            StreamWriter writer = new StreamWriter(GeneralFolder + "toolsoutput.txt",true);
+            writer.AutoFlush = true;
+            writer.WriteLine(e.Data);
+            writer.Close();
             #endregion
 
             #region Exception
@@ -431,9 +434,9 @@ namespace Jad_Bot
         private static void errorTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             errorTimer.Stop();
-            var pastelink = Pastebin.UploadText(error, "WCellUtil");
-            Irc.CommandHandler.Msg(ReplyChan, pastelink);
-            Print(pastelink);
+            WriteErrorSystem.WriteError(new List<string> { "Exception:", error });
+            Irc.CommandHandler.Msg(ReplyChan, WebLinkToGeneralFolder + "ErrorLog.txt");
+            Print(WebLinkToGeneralFolder + "ErrorLog.txt");
         }
 
         #endregion
@@ -490,6 +493,10 @@ namespace Jad_Bot
                 try
                 {
                     var cookieowner = trigger.Args.Remainder;
+                    if (string.IsNullOrEmpty(cookieowner))
+                    {
+                        trigger.Reply("You didn't tell me who to steal from!");
+                    }
                     Irc.CommandHandler.Describe(trigger.Target,string.Format("steals {0}'s cookie, om nom nom nom!", cookieowner),trigger.Args);
                 }
                 catch (Exception e)
@@ -569,9 +576,9 @@ namespace Jad_Bot
         {
             List<FileInfo> Files = new List<FileInfo>();
             public ReadSourceFile()
-                : base("ReadSource", "RS")
+                : base("find", "RS","grep")
             {
-                Usage = "rs -l lowerlinenumber -u upperlinenumber -i iftherearemorethan1filesbeforefileidhere commasperated,search,terms,notcase,sensitive";
+                Usage = "rs -i iftherearemorethan1filesbeforefileidhere -l lowerline-upperline spaceseperated search terms notcase sensitive";
                 Description = "Allows you to search through the source code of WCell and show the specified lines from found files.";
             }
             public override void Process(CmdTrigger trigger)
@@ -581,26 +588,29 @@ namespace Jad_Bot
                     var sourceDir = new DirectoryInfo(@"c:\wcellsource");
                     int linenumber = 0;
                     int upperlinenumber = 0;
-                    if (trigger.Args.NextModifiers() == "l")
-                    {
-                        linenumber = trigger.Args.NextInt();
-                        upperlinenumber = linenumber;
-                    }
-                    if (trigger.Args.NextModifiers() == "u")
-                    {
-                        upperlinenumber = trigger.Args.NextInt();
-                    }
                     int fileid = 0;
                     bool fileidgiven = false;
-                    if (trigger.Args.NextModifiers() == "i")
+                    if (trigger.Args.String.Contains("-i"))
                     {
-                        fileidgiven = true;
-                        fileid = trigger.Args.NextInt(0);
+                        if (trigger.Args.NextModifiers() == "i")
+                        {
+                            fileidgiven = true;
+                            fileid = trigger.Args.NextInt(0);
+                        }
                     }
+                    if (trigger.Args.String.Contains("-l"))
+                    {
+                        if (trigger.Args.NextModifiers() == "l")
+                        {
+                            linenumber = trigger.Args.NextInt(0, "-");
+                            upperlinenumber = trigger.Args.NextInt(0);
+                        }
+                    }
+
                     var searchterms = new List<string>();
                     while (trigger.Args.HasNext)
                     {
-                        var searchterm = trigger.Args.NextWord(",").Trim();
+                        var searchterm = trigger.Args.NextWord().Trim();
                         searchterms.Add(searchterm);
                     }
                     GetFilesNormalName(sourceDir, Files);
@@ -643,6 +653,7 @@ namespace Jad_Bot
                             selectionWriter.AutoFlush = true;
                             string lines = ReadFileLines(matches[0], linenumber, upperlinenumber);
                             selectionWriter.WriteLine("<html>\n<body>\n<pre>");
+                            selectionWriter.WriteLine("Filename: {0}", matches[fileid]);
                             selectionWriter.Write(lines);
                             selectionWriter.WriteLine("</pre>\n</body>\n</html>");
                             trigger.Reply(WebLinkToGeneralFolder + "Selection{0}.html",randfilename);
@@ -667,6 +678,7 @@ namespace Jad_Bot
                         selectionWriter.AutoFlush = true;
                         string lines = ReadFileLines(matches[fileid], linenumber, upperlinenumber);
                         selectionWriter.WriteLine("<html>\n<body>\n<pre>");
+                        selectionWriter.WriteLine("Filename: {0}", matches[fileid]);
                         selectionWriter.Write(lines);
                         selectionWriter.WriteLine("</pre>\n</body>\n</html>");
                         trigger.Reply(WebLinkToGeneralFolder + "Selection{0}.html", randfilename);
@@ -686,12 +698,14 @@ namespace Jad_Bot
                 foreach (var dir in sourceDir.GetDirectories())
                 {
                     Console.WriteLine("Proccessing Dir: {0}", dir);
-                    if (dir.Name.Contains(".svn"))
+                    if (dir.Name.Contains(".svn") | dir.Name.Contains(".git") | dir.Name.Contains("obj"))
                     {
                         continue;
                     }
                     foreach (var file in dir.GetFiles())
                     {
+                        if (file.Extension == ".dll")
+                            continue;
                         Console.WriteLine("Processing File: {0}",file);
                         files.Add(file);
                     }
@@ -701,6 +715,8 @@ namespace Jad_Bot
 
             public static string ReadFileLines(string readFile, int readLineLower, int readLineUpper)
             {
+                SyntaxHighlighter syn = new SyntaxHighlighter();
+                syn.AddStyleDefinition = true;
                 var file = new StreamReader(readFile);
                 var currentlinenumber = 1;
                 if(readLineUpper == 0 && readLineUpper < readLineLower)
@@ -712,6 +728,9 @@ namespace Jad_Bot
                 while (!file.EndOfStream && readLineLower == 0 && readLineUpper == 0)
                 {
                     line = file.ReadLine();
+                    var fileinfo = new FileInfo(readFile);
+                    if(fileinfo.Extension == ".cs")
+                    line = syn.Highlight(line);
                     returnlines = returnlines + string.Format("\n <a name=\"{0}\"> {0}: ", currentlinenumber) + line + "</a>";
                     currentlinenumber = currentlinenumber + 1;
                     if (file.EndOfStream)
@@ -729,7 +748,7 @@ namespace Jad_Bot
                     }
                     while (currentlinenumber >= readLineLower && currentlinenumber <= readLineUpper)
                     {
-                        line = file.ReadLine();
+                        line = syn.Highlight(file.ReadLine());
                         if (currentlinenumber == readLineLower)
                         {
                             returnlines = returnlines + string.Format("\n <a name=\"{0}\"> {0}: ", currentlinenumber) + line + "</a>";
@@ -808,9 +827,9 @@ namespace Jad_Bot
                 }
                 catch (Exception e)
                 {
-                    Pastebin.UploadText(e.Message + e.StackTrace + e.InnerException + e.Source, "WCellAutoUtility");
-                    Console.WriteLine("Error Occured in download file command: {0} {1}",
-                                      e.Message + e.StackTrace + e.InnerException + e.Source);
+                    WriteErrorSystem.WriteError(new List<string> { e.Message + e.StackTrace + e.InnerException + e.Source });
+                    trigger.Reply("Error occured:{0}", WebLinkToGeneralFolder + "ErrorLog.txt");
+                    Console.WriteLine("Error Occured in download file command: {0} {1}",e.Message + e.StackTrace + e.InnerException + e.Source);
                 }
             }
         }
@@ -1238,7 +1257,7 @@ namespace Jad_Bot
                 : base("rc", "chuck","norris")
             {
                 Usage = "rc";
-                Description = "Get a random fact";
+                Description = "Get a random fact about Chuck Norris";
             }
 
             public override void Process(CmdTrigger trigger)
@@ -1280,6 +1299,27 @@ namespace Jad_Bot
         }
 
         #endregion
+
+        #region Nested type: SendToolsCommand
+
+        public class SendToolsCommand : Command
+        {
+            public SendToolsCommand()
+                : base("st", "sendtools", "tools")
+            {
+                Usage = "tools command to send here";
+                Description = "Sends a command directly through the tools project";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                ParserConsoleInput.WriteLine(trigger.Args.Remainder);
+                trigger.Reply("To see streaming output: {0}", WebLinkToGeneralFolder + "toolsoutput.txt");
+            }
+        }
+
+        #endregion
+
 
         #endregion
     }
