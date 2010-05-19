@@ -1367,7 +1367,7 @@ namespace Jad_Bot
             //~find World.ReSync
             public override void Process(CmdTrigger trigger)
             {
-                
+                trigger.Reply("Hai, I don't work yet! :O");
             }
         }
         #region oldidea
