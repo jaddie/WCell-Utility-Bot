@@ -10,7 +10,7 @@ using Squishy.Irc;
 using Squishy.Irc.Commands;
 using Squishy.Network;
 using Timer = System.Timers.Timer;
-
+using System.Reflection;
 namespace Jad_Bot
 {
     public class JadBot : IrcClient
@@ -175,7 +175,7 @@ namespace Jad_Bot
                 ParserConsoleInput = new StreamWriter(Parser.StandardInput.BaseStream) {AutoFlush = true}; // Input into the console
                 Irc.Disconnected += Irc_Disconnected;
                 System.Diagnostics.Process utility = System.Diagnostics.Process.GetCurrentProcess();
-                utility.Exited += new EventHandler(utility_Exited);
+                utility.Exited += new EventHandler(UtilityExited);
                 #endregion
 
                 #region FoldersOutput
@@ -221,7 +221,7 @@ namespace Jad_Bot
             #endregion
         }
 
-        static void utility_Exited(object sender, EventArgs e)
+        static void UtilityExited(object sender, EventArgs e)
         {
             Parser.Kill();
         }
@@ -596,7 +596,7 @@ namespace Jad_Bot
             public ReadSourceFile()
                 : base("find", "RS","grep")
             {
-                Usage = "rs -i iftherearemorethan1filesbeforefileidhere -l lowerline-upperline spaceseperated search terms notcase sensitive";
+                Usage = "rs -i iftherearemorethan1filesbeforefileidhere -l lowerline-upperline -includepath spaceseperated search terms notcase sensitive";
                 Description = "Allows you to search through the source code of WCell and show the specified lines from found files.";
             }
             public override void Process(CmdTrigger trigger)
@@ -607,6 +607,7 @@ namespace Jad_Bot
                     int linenumber = 0;
                     int upperlinenumber = 0;
                     int fileid = 0;
+                    bool includefullpath = false;
                     bool fileidgiven = false;
                     if (trigger.Args.String.Contains("-i"))
                     {
@@ -624,7 +625,13 @@ namespace Jad_Bot
                             upperlinenumber = trigger.Args.NextInt(0);
                         }
                     }
-
+                    if(trigger.Args.String.Contains("-includepath"))
+                    {
+                        if(trigger.Args.NextModifiers() == "includepath")
+                        {
+                            includefullpath = true;
+                        }
+                    }
                     var searchterms = new List<string>();
                     while (trigger.Args.HasNext)
                     {
@@ -637,7 +644,12 @@ namespace Jad_Bot
                         var runs = 0;
                         foreach (string searchterm in searchterms)
                         {
-                            if (file.Name.ToLower().Contains(searchterm.ToLower()))
+                            var nameTerm = file.Name;
+                            if (includefullpath)
+                            {
+                                nameTerm = file.FullName;
+                            }
+                            if (nameTerm.ToLower().Contains(searchterm.ToLower()))
                             {
                                 runs = runs + 1;
                                 if (runs == searchterms.Count)
@@ -659,7 +671,11 @@ namespace Jad_Bot
                             i = i + 1;
                         }
                         trigger.Reply("There were more than 1 found files, please choose!");
-                        trigger.Reply(WebLinkToGeneralFolder + "SourceOptions.txt");
+                        if (matches.Count > 5)
+                        {
+                            trigger.Reply("0:" + matches[0] + "\n 1: " + matches[1] + "\n 2: " + matches[2] + "\n 3: " + matches[3] + "\n 4: " + matches[4] + "\n There are even more results, check the link or be more specific use same command again but with -i file id at the start.");
+                            trigger.Reply(WebLinkToGeneralFolder + "SourceOptions.txt");
+                        }
                         readWriter.Close();
                     }
                     else
@@ -1338,6 +1354,59 @@ namespace Jad_Bot
 
         #endregion
 
+        #region Nested type: FindMethod
+
+        public class FindMethod : Command
+        {
+            public FindMethod()
+                : base("method", "findmethod", "print")
+            {
+                Usage = "method World.Resync";
+                Description = "Find and display a method from the code";
+            }
+            //~find World.ReSync
+            public override void Process(CmdTrigger trigger)
+            {
+                
+            }
+        }
+        #region oldidea
+        /*var filename = trigger.Args.NextWord(".");
+                var method = trigger.Args.NextWord();
+                DirectoryInfo wcellsource = new DirectoryInfo(@"c:\wcellsource");
+                FileInfo[] wcellsourcefiles = wcellsource.GetFiles(string.Format("{0}.cs",filename), SearchOption.AllDirectories);
+                int leftbracecount = 0;
+                int rightbracecount = 0;
+                foreach(FileInfo fileinfo in wcellsourcefiles)
+                {
+                    StreamReader file = new StreamReader(fileinfo.FullName);
+                    while(!file.EndOfStream)
+                    {
+                        string line = file.ReadLine();
+                        if(line.ToLower().Contains(method))
+                        {
+                            while (rightbracecount <= leftbracecount)
+                            {
+                                line = file.ReadLine();
+
+                            }
+                        }
+                    }
+                }
+                readresults.Clear();
+                dumptype = dump;
+                var dumpreader = new StreamReader(dumptype);
+                while (!dumpreader.EndOfStream)
+                {
+                    var currentline = dumpreader.ReadLine().ToLower();
+                    if (currentline.Contains(query.ToLower()))
+                    {
+                        readresults.Add(currentline);
+                    }
+                }
+                return readresults;*/
+        #endregion
+        #endregion
 
         #endregion
     }
