@@ -693,7 +693,7 @@ namespace Jad_Bot
                         {
                             var path = matches[fileid];
                             path = path.Replace("c:\\wcellsource", "Master");
-                            path.Replace("\\", "-");
+                            path = path.Replace("\\", "-");
                             var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path));
                             selectionWriter.AutoFlush = true;
                             string lines = ReadFileLines(matches[0], linenumber, upperlinenumber);
@@ -720,8 +720,8 @@ namespace Jad_Bot
                         }
                         var path = matches[fileid];
                         path = path.Replace("c:\\wcellsource", "Master");
-                        path.Replace("\\", "-");
-                        var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html",path));
+                        path = path.Replace("\\", "-");
+                        var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path));
                         selectionWriter.AutoFlush = true;
                         string lines = ReadFileLines(matches[fileid], linenumber, upperlinenumber);
                         selectionWriter.WriteLine("<html>\n<body>\n<pre>");
