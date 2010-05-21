@@ -780,11 +780,11 @@ namespace Jad_Bot
                     line = syn.Highlight(line);
                     if(currentlinenumber >= readLineLower | currentlinenumber <= readLineUpper && readLineUpper != 0)
                     {
-                        returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> <td> {0}: </td> <td>", currentlinenumber) + HighlightText(line) + "</td> </a>";
+                        returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> <td> {0}: </td> <td>", currentlinenumber) + HighlightText(line) + "</td></tr></a>";
                     }
                     else
                     {
-                        returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> {0}: </td> <td>", currentlinenumber) + line + "</td> </a>";
+                        returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> {0}: </td> <td>", currentlinenumber) + line + "</td></tr></a>";
                     }
                     currentlinenumber = currentlinenumber + 1;
                 }
