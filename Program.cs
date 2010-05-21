@@ -671,10 +671,11 @@ namespace Jad_Bot
                             i = i + 1;
                         }
                         trigger.Reply("There were more than 1 found files, please choose!");
+                        trigger.Reply("0:" + matches[0] + "\n 1: " + matches[1] + "\n 2: " + matches[2] + "\n 3: " + matches[3] + "\n 4: " + matches[4]);
                         if (matches.Count > 5)
                         {
-                            trigger.Reply("0:" + matches[0] + "\n 1: " + matches[1] + "\n 2: " + matches[2] + "\n 3: " + matches[3] + "\n 4: " + matches[4] + "\n There are even more results, check the link or be more specific use same command again but with -i file id at the start.");
-                            trigger.Reply(WebLinkToGeneralFolder + "SourceOptions.txt");
+                             trigger.Reply("\n There are even more results, check the link or be more specific use same command again but with -i file id at the start.");
+                             trigger.Reply(WebLinkToGeneralFolder + "SourceOptions.txt");
                         }
                         readWriter.Close();
                     }
