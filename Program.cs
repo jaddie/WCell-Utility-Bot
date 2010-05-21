@@ -698,7 +698,7 @@ namespace Jad_Bot
                             selectionWriter.AutoFlush = true;
                             string lines = ReadFileLines(matches[0], linenumber, upperlinenumber);
                             selectionWriter.WriteLine("<html>\n<body>\n<pre>");
-                            selectionWriter.WriteLine("Filename: {0}", matches[fileid]);
+                            selectionWriter.WriteLine("Filename: {0}", path);
                             selectionWriter.Write(lines);
                             selectionWriter.WriteLine("</pre>\n</body>\n</html>");
                             trigger.Reply(WebLinkToGeneralFolder + "{0}.html", path);
@@ -725,7 +725,7 @@ namespace Jad_Bot
                         selectionWriter.AutoFlush = true;
                         string lines = ReadFileLines(matches[fileid], linenumber, upperlinenumber);
                         selectionWriter.WriteLine("<html>\n<body>\n<pre>");
-                        selectionWriter.WriteLine("Filename: {0}", matches[fileid]);
+                        selectionWriter.WriteLine("Filename: {0}", path);
                         selectionWriter.Write(lines);
                         selectionWriter.WriteLine("</pre>\n</body>\n</html>");
                         trigger.Reply(WebLinkToGeneralFolder + "{0}.html",path);
