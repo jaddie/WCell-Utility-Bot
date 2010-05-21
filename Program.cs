@@ -592,7 +592,7 @@ namespace Jad_Bot
 
         public class ReadSourceFile : Command
         {
-            List<FileInfo> Files = new List<FileInfo>();
+            readonly List<FileInfo> _files = new List<FileInfo>();
             public ReadSourceFile()
                 : base("find", "RS","grep")
             {
@@ -604,11 +604,11 @@ namespace Jad_Bot
                 try
                 {
                     var sourceDir = new DirectoryInfo(@"c:\wcellsource");
-                    int linenumber = 0;
-                    int upperlinenumber = 0;
-                    int fileid = 0;
-                    bool includefullpath = false;
-                    bool fileidgiven = false;
+                    var linenumber = 0;
+                    var upperlinenumber = 0;
+                    var fileid = 0;
+                    var includefullpath = false;
+                    var fileidgiven = false;
                     if (trigger.Args.String.Contains("-i"))
                     {
                         if (trigger.Args.NextModifiers() == "i")
@@ -638,8 +638,8 @@ namespace Jad_Bot
                         var searchterm = trigger.Args.NextWord().Trim();
                         searchterms.Add(searchterm);
                     }
-                    GetFilesNormalName(sourceDir, Files);
-                    foreach (var file in Files)
+                    GetFilesNormalName(sourceDir, _files);
+                    foreach (var file in _files)
                     {
                         var runs = 0;
                         foreach (string searchterm in searchterms)
@@ -661,8 +661,8 @@ namespace Jad_Bot
                     }
                     if (matches.Count > 1 && !fileidgiven)
                     {
-                        var readWriter = new StreamWriter(GeneralFolder + @"\SourceOptions.txt", false);
-                        readWriter.AutoFlush = true;
+                        var readWriter = new StreamWriter(GeneralFolder + @"\SourceOptions.txt", false)
+                                             {AutoFlush = true};
                         int i = 0;
                         foreach (var match in matches)
                         {
@@ -694,8 +694,8 @@ namespace Jad_Bot
                             var path = matches[fileid];
                             path = path.Replace("c:\\wcellsource", "Master");
                             path = path.Replace('\\', '-');
-                            var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path));
-                            selectionWriter.AutoFlush = true;
+                            var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path))
+                                                      {AutoFlush = true};
                             string lines = ReadFileLines(matches[0], linenumber, upperlinenumber);
                             selectionWriter.WriteLine("<html>\n<body>\n<pre>");
                             selectionWriter.WriteLine("Filename: {0}", path);
@@ -721,9 +721,9 @@ namespace Jad_Bot
                         var path = matches[fileid];
                         path = path.Replace("c:\\wcellsource", "Master");
                         path = path.Replace('\\', '-');
-                        var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path));
-                        selectionWriter.AutoFlush = true;
-                        string lines = ReadFileLines(matches[fileid], linenumber, upperlinenumber);
+                        var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path))
+                                                  {AutoFlush = true};
+                        var lines = ReadFileLines(matches[fileid], linenumber, upperlinenumber);
                         selectionWriter.WriteLine("<html>\n<body>\n<pre>");
                         selectionWriter.WriteLine("Filename: {0}", path);
                         selectionWriter.Write(lines);
@@ -732,7 +732,7 @@ namespace Jad_Bot
                         selectionWriter.Close();
                     }
                     matches.Clear();
-                    Files.Clear();
+                    _files.Clear();
                     FileLines.Clear();
                 }
                 catch(Exception e)
@@ -757,60 +757,39 @@ namespace Jad_Bot
                     GetFilesNormalName(dir,files);
                 }
             }
-
+            static string HighlightText(string text)
+            {
+                text = "<font style=\"BACKGROUND-COLOR: yellow\">" + text + "</font>";
+                return text;
+            }
             public static string ReadFileLines(string readFile, int readLineLower, int readLineUpper)
             {
-                SyntaxHighlighter syn = new SyntaxHighlighter();
-                syn.AddStyleDefinition = true;
+                var syn = new SyntaxHighlighter {AddStyleDefinition = true};
                 var file = new StreamReader(readFile);
                 var currentlinenumber = 1;
                 if(readLineUpper == 0 && readLineUpper < readLineLower)
                 {
                     readLineUpper = readLineLower;
                 }
-                string returnlines = "";
-                string line = "";
-                while (!file.EndOfStream && readLineLower == 0 && readLineUpper == 0)
+                var returnlines = "";
+                while (!file.EndOfStream)
                 {
-                    line = file.ReadLine();
+                    var line = file.ReadLine();
                     var fileinfo = new FileInfo(readFile);
                     if(fileinfo.Extension == ".cs")
                     line = syn.Highlight(line);
-                    returnlines = returnlines + string.Format("\n <a name=\"{0}\"> {0}: ", currentlinenumber) + line + "</a>";
+                    if(currentlinenumber >= readLineLower | currentlinenumber <= readLineUpper)
+                    {
+                        returnlines = returnlines + string.Format("\n <a name=\"{0}\"> {0}: ", currentlinenumber) + HighlightText(line) + "</a>";
+                    }
+                    else
+                    {
+                        returnlines = returnlines + string.Format("\n <a name=\"{0}\"> {0}: ", currentlinenumber) + line + "</a>";
+                    }
                     currentlinenumber = currentlinenumber + 1;
-                    if (file.EndOfStream)
-                    {
-                        file.Close();
-                        return returnlines;
-                    }
-                }
-                while (!file.EndOfStream)
-                {
-                    while (currentlinenumber < readLineLower)
-                    {
-                        file.ReadLine();
-                        currentlinenumber = currentlinenumber + 1;
-                    }
-                    while (currentlinenumber >= readLineLower && currentlinenumber <= readLineUpper)
-                    {
-                        line = syn.Highlight(file.ReadLine());
-                        if (currentlinenumber == readLineLower)
-                        {
-                            returnlines = returnlines + string.Format("\n <a name=\"{0}\"> {0}: ", currentlinenumber) + line + "</a>";
-                            currentlinenumber++;
-                            continue;
-                        }
-                        if (currentlinenumber <= readLineUpper)
-                        {
-                            returnlines = returnlines + string.Format("\n <a name=\"{0}\"> {0}: ", currentlinenumber) + line + "</a>";
-                        }
-                        currentlinenumber = currentlinenumber + 1;
-                    }
-                    file.Close();
-                    return returnlines;
                 }
                 file.Close();
-                return string.Format("End of file reached! File only has {0} lines! Please check your command", currentlinenumber);
+                return returnlines;
             }
         }
         #endregion
