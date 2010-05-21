@@ -784,7 +784,7 @@ namespace Jad_Bot
                     }
                     else
                     {
-                        returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> {0}: </td> <td>", currentlinenumber) + line + "</td></tr></a>";
+                        returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> <td> {0}: </td> <td>", currentlinenumber) + line + "</td></tr></a>";
                     }
                     currentlinenumber = currentlinenumber + 1;
                 }
