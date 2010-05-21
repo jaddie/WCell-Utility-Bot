@@ -759,7 +759,7 @@ namespace Jad_Bot
             }
             static string HighlightText(string text)
             {
-                text = "<font style=\"BACKGROUND-COLOR: yellow\">" + text + "</font>";
+                text = "<font style=\"BACKGROUND-COLOR: #F4FA58\">" + text + "</font>";
                 return text;
             }
             public static string ReadFileLines(string readFile, int readLineLower, int readLineUpper)
