@@ -771,24 +771,25 @@ namespace Jad_Bot
                 {
                     readLineUpper = readLineLower;
                 }
-                var returnlines = "";
+                var returnlines = "<table border=\"0\">";
                 while (!file.EndOfStream)
                 {
                     var line = file.ReadLine();
                     var fileinfo = new FileInfo(readFile);
                     if(fileinfo.Extension == ".cs")
                     line = syn.Highlight(line);
-                    if(currentlinenumber >= readLineLower | currentlinenumber <= readLineUpper)
+                    if(currentlinenumber >= readLineLower | currentlinenumber <= readLineUpper && readLineUpper != 0)
                     {
-                        returnlines = returnlines + string.Format("\n <a name=\"{0}\"> {0}: ", currentlinenumber) + HighlightText(line) + "</a>";
+                        returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> <td> {0}: </td> <td>", currentlinenumber) + HighlightText(line) + "</td> </a>";
                     }
                     else
                     {
-                        returnlines = returnlines + string.Format("\n <a name=\"{0}\"> {0}: ", currentlinenumber) + line + "</a>";
+                        returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> {0}: </td> <td>", currentlinenumber) + line + "</td> </a>";
                     }
                     currentlinenumber = currentlinenumber + 1;
                 }
                 file.Close();
+                returnlines = returnlines + "</table>";
                 return returnlines;
             }
         }
