@@ -654,7 +654,6 @@ namespace Jad_Bot
                                 runs = runs + 1;
                                 if (runs == searchterms.Count)
                                 {
-                                    Console.WriteLine("Match: {0}",file.FullName);
                                     matches.Add(file.FullName);
                                 }
                             }
@@ -671,7 +670,16 @@ namespace Jad_Bot
                             i = i + 1;
                         }
                         trigger.Reply("There were more than 1 found files, please choose!");
-                        trigger.Reply("0:" + matches[0] + "\n 1: " + matches[1] + "\n 2: " + matches[2] + "\n 3: " + matches[3] + "\n 4: " + matches[4]);
+                        string line = "";
+                        int id = 0;
+                        foreach (var match in matches)
+                        {
+                            if (id > 5)
+                                continue;
+                            line = line + "\n" + id + ": " + match;
+                            id = id + 1;
+                        }
+                        trigger.Reply(line);
                         if (matches.Count > 5)
                         {
                              trigger.Reply("\n There are even more results, check the link or be more specific use same command again but with -i file id at the start.");
@@ -736,7 +744,6 @@ namespace Jad_Bot
             {
                 foreach (var dir in sourceDir.GetDirectories())
                 {
-                    Console.WriteLine("Proccessing Dir: {0}", dir);
                     if (dir.Name.Contains(".svn") | dir.Name.Contains(".git") | dir.Name.Contains("obj"))
                     {
                         continue;
@@ -745,7 +752,6 @@ namespace Jad_Bot
                     {
                         if (file.Extension == ".dll")
                             continue;
-                        Console.WriteLine("Processing File: {0}",file);
                         files.Add(file);
                     }
                     GetFilesNormalName(dir,files);
