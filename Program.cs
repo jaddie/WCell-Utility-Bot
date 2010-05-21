@@ -682,15 +682,17 @@ namespace Jad_Bot
                     {
                         if (matches.Count == 1)
                         {
-                            string randfilename = GetLink();
-                            var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\Selection{0}.html", randfilename));
+                            var path = matches[fileid];
+                            path = path.Replace("c:\\wcellsource", "Master");
+                            path.Replace("\\", "-");
+                            var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path));
                             selectionWriter.AutoFlush = true;
                             string lines = ReadFileLines(matches[0], linenumber, upperlinenumber);
                             selectionWriter.WriteLine("<html>\n<body>\n<pre>");
                             selectionWriter.WriteLine("Filename: {0}", matches[fileid]);
                             selectionWriter.Write(lines);
                             selectionWriter.WriteLine("</pre>\n</body>\n</html>");
-                            trigger.Reply(WebLinkToGeneralFolder + "Selection{0}.html",randfilename);
+                            trigger.Reply(WebLinkToGeneralFolder + "{0}.html", path);
                             selectionWriter.Close();
                         }
                         else
@@ -707,15 +709,17 @@ namespace Jad_Bot
                             trigger.Reply("Invalid Fileid Selection, are you sure there are more than 1 files found? run the query without -i number to check results first.");
                             return;
                         }
-                        string randfilename = GetLink();
-                        var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\Selection{0}.html", randfilename));
+                        var path = matches[fileid];
+                        path = path.Replace("c:\\wcellsource", "Master");
+                        path.Replace("\\", "-");
+                        var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html",path));
                         selectionWriter.AutoFlush = true;
                         string lines = ReadFileLines(matches[fileid], linenumber, upperlinenumber);
                         selectionWriter.WriteLine("<html>\n<body>\n<pre>");
                         selectionWriter.WriteLine("Filename: {0}", matches[fileid]);
                         selectionWriter.Write(lines);
                         selectionWriter.WriteLine("</pre>\n</body>\n</html>");
-                        trigger.Reply(WebLinkToGeneralFolder + "Selection{0}.html", randfilename);
+                        trigger.Reply(WebLinkToGeneralFolder + "{0}.html",path);
                         selectionWriter.Close();
                     }
                     matches.Clear();
@@ -777,7 +781,7 @@ namespace Jad_Bot
                 {
                     while (currentlinenumber < readLineLower)
                     {
-                        line = file.ReadLine();
+                        file.ReadLine();
                         currentlinenumber = currentlinenumber + 1;
                     }
                     while (currentlinenumber >= readLineLower && currentlinenumber <= readLineUpper)
