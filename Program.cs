@@ -771,7 +771,7 @@ namespace Jad_Bot
                 {
                     readLineUpper = readLineLower;
                 }
-                var returnlines = "<table border=\"1\">";
+                var returnlines = "<table border=\"0\">";
                 while (!file.EndOfStream)
                 {
                     var line = file.ReadLine();
