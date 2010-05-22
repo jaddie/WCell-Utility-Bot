@@ -760,7 +760,7 @@ namespace Jad_Bot
             }
             static string HighlightText(string text)
             {
-                text = "<font style=\"BACKGROUND-COLOR:#F4FA58>" + text + "</font>";
+                text = "<span class=\"highlighttext\">" + text + "</span>";
                 return text;
             }
             public static string ReadFileLines(string readFile, int readLineLower, int readLineUpper)
@@ -772,7 +772,7 @@ namespace Jad_Bot
                 {
                     readLineUpper = readLineLower;
                 }
-                var returnlines = "<table border=\"0\">";
+                var returnlines = "<table border=\"0\"> <style> .highlighttext { BACKGROUND-COLOR:#F4FA58 } </style>";
                 List<string> filelinesids = new List<string>();
                 List<string> filelines = new List<string>();
                 while (!file.EndOfStream)
