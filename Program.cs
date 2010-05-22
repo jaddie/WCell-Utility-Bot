@@ -725,10 +725,10 @@ namespace Jad_Bot
                         var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path))
                                                   {AutoFlush = true};
                         var lines = ReadFileLines(matches[fileid], linenumber, upperlinenumber);
-                        selectionWriter.WriteLine("<html>\n<body>\n<pre>");
+                        selectionWriter.WriteLine("<html>\n<body>\n");
                         selectionWriter.WriteLine("Filename: {0}", path);
                         selectionWriter.Write(lines);
-                        selectionWriter.WriteLine("</pre>\n</body>\n</html>");
+                        selectionWriter.WriteLine("\n</body>\n</html>");
                         trigger.Reply(WebLinkToGeneralFolder + "{0}.html",path);
                         selectionWriter.Close();
                     }
@@ -760,7 +760,7 @@ namespace Jad_Bot
             }
             static string HighlightText(string text)
             {
-                text = "<font style=\"BACKGROUND-COLOR: #F4FA58\">" + text + "</font>";
+                text = "<font style=\"BACKGROUND-COLOR:\"#F4FA58\"\">" + text + "</font>";
                 return text;
             }
             public static string ReadFileLines(string readFile, int readLineLower, int readLineUpper)
@@ -772,7 +772,7 @@ namespace Jad_Bot
                 {
                     readLineUpper = readLineLower;
                 }
-                var returnlines = "<table border=\"0\">";
+                var returnlines = "<table border=\"0\"><pre>";
                 List<string> filelinesids = new List<string>();
                 List<string> filelines = new List<string>();
                 while (!file.EndOfStream)
@@ -781,14 +781,14 @@ namespace Jad_Bot
                     var fileinfo = new FileInfo(readFile);
                     if(fileinfo.Extension == ".cs")
                     line = syn.Highlight(line);
-                    if(currentlinenumber >= readLineLower | currentlinenumber <= readLineUpper && readLineUpper != 0)
+                    if(currentlinenumber >= readLineLower && currentlinenumber <= readLineUpper && readLineUpper != 0)
                     {
-                        filelinesids.Add(string.Format("<a name=\"{0}\">",currentlinenumber) + currentlinenumber + "</a> : \n");
+                        filelinesids.Add(string.Format("<a name=\"{0}\">",currentlinenumber) + currentlinenumber + "</a>: \n");
                         filelines.Add(HighlightText(line) + "\n");
                     }
                     else
                     {
-                        filelinesids.Add(string.Format("<a name=\"{0}\">", currentlinenumber) + currentlinenumber + "</a> : \n");
+                        filelinesids.Add(string.Format("<a name=\"{0}\">", currentlinenumber) + currentlinenumber + "</a>: \n");
                         filelines.Add(line + "\n");
                     }
                     currentlinenumber = currentlinenumber + 1;
@@ -805,7 +805,7 @@ namespace Jad_Bot
                 }
                 returnlines = returnlines + "\n <tr> <td>" + fileids + "</td> <td>" + fileLines + "</td> </tr>";
                 file.Close();
-                returnlines = returnlines + "</table>";
+                returnlines = returnlines + "</pre></table>";
                 return returnlines;
             }
         }
