@@ -772,6 +772,8 @@ namespace Jad_Bot
                     readLineUpper = readLineLower;
                 }
                 var returnlines = "<table border=\"0\">";
+                List<string> filelinesids = new List<string>();
+                List<string> filelines = new List<string>();
                 while (!file.EndOfStream)
                 {
                     var line = file.ReadLine();
@@ -780,14 +782,29 @@ namespace Jad_Bot
                     line = syn.Highlight(line);
                     if(currentlinenumber >= readLineLower | currentlinenumber <= readLineUpper && readLineUpper != 0)
                     {
+                        filelinesids.Add(string.Format("<a name=\"{0}\">",currentlinenumber) + currentlinenumber + "</a> : ");
+                        filelines.Add(HighlightText(line));
                         returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> <td> {0}: </td> <td>", currentlinenumber) + HighlightText(line) + "</td></tr></a>";
                     }
                     else
                     {
+                        filelinesids.Add(string.Format("<a name=\"{0}\">", currentlinenumber) + currentlinenumber + "</a> : ");
+                        filelines.Add(line);
                         returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> <td> {0}: </td> <td>", currentlinenumber) + line + "</td></tr></a>";
                     }
                     currentlinenumber = currentlinenumber + 1;
                 }
+                var fileids = "";
+                var fileLines = "";
+                foreach (var fileLineid in filelinesids)
+                {
+                    fileids = fileids + "\n" + fileLineid;
+                }
+                foreach (var fileline in filelines)
+                {
+                    fileLines = fileLines + "\n" + fileline;
+                }
+                returnlines = "\n <tr> <td>" + fileids + "</td> <td>" + filelines + "</td> </tr>";
                 file.Close();
                 returnlines = returnlines + "</table>";
                 return returnlines;
