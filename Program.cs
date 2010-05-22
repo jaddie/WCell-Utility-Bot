@@ -772,7 +772,7 @@ namespace Jad_Bot
                 {
                     readLineUpper = readLineLower;
                 }
-                var returnlines = "<table border=\"0\"><pre>";
+                var returnlines = "<table border=\"0\">";
                 List<string> filelinesids = new List<string>();
                 List<string> filelines = new List<string>();
                 while (!file.EndOfStream)
@@ -803,9 +803,9 @@ namespace Jad_Bot
                 {
                     fileLines = fileLines + "\n" + fileline;
                 }
-                returnlines = returnlines + "\n <tr> <td>" + fileids + "</td> <td>" + fileLines + "</td> </tr>";
+                returnlines = returnlines + "\n <tr> <td><pre>" + fileids + "</pre></td> <td><pre>" + fileLines + "</pre></td> </tr>";
                 file.Close();
-                returnlines = returnlines + "</pre></table>";
+                returnlines = returnlines + "</table>";
                 return returnlines;
             }
         }
