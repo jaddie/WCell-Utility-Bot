@@ -697,7 +697,7 @@ namespace Jad_Bot
                             path = path.Replace('\\', '-');
                             var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path))
                                                       {AutoFlush = true};
-                            string lines = ReadFileLines(matches[0], linenumber, upperlinenumber);
+                            string lines = ReadFileLines(matches[0], linenumber, upperlinenumber, fileid);
                             selectionWriter.WriteLine("<html>\n<body>\n<pre>");
                             selectionWriter.WriteLine("Filename: {0}", path);
                             selectionWriter.Write(lines);
@@ -724,7 +724,7 @@ namespace Jad_Bot
                         path = path.Replace('\\', '-');
                         var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path))
                                                   {AutoFlush = true};
-                        var lines = ReadFileLines(matches[fileid], linenumber, upperlinenumber);
+                        var lines = ReadFileLines(matches[fileid], linenumber, upperlinenumber, fileid);
                         selectionWriter.WriteLine("<html>\n<body>\n");
                         selectionWriter.WriteLine("Filename: {0}", path);
                         selectionWriter.Write(lines);
@@ -763,7 +763,7 @@ namespace Jad_Bot
                 text = "<span class=\"highlighttext\">" + text + "</span>";
                 return text;
             }
-            public static string ReadFileLines(string readFile, int readLineLower, int readLineUpper)
+            public static string ReadFileLines(string readFile, int readLineLower, int readLineUpper, int fileId)
             {
                 var syn = new SyntaxHighlighter {AddStyleDefinition = true};
                 var file = new StreamReader(readFile);
@@ -775,6 +775,9 @@ namespace Jad_Bot
                 var returnlines = "<table border=\"0\"> <style> .highlighttext { BACKGROUND-COLOR:#F4FA58 } </style>";
                 List<string> filelinesids = new List<string>();
                 List<string> filelines = new List<string>();
+                var path = matches[fileId];
+                path = path.Replace("c:\\wcellsource", "Master");
+                path = path.Replace('\\', '-');
                 while (!file.EndOfStream)
                 {
                     var line = file.ReadLine();
@@ -783,12 +786,12 @@ namespace Jad_Bot
                     line = syn.Highlight(line);
                     if(currentlinenumber >= readLineLower && currentlinenumber <= readLineUpper && readLineUpper != 0)
                     {
-                        filelinesids.Add(string.Format("<a name=\"{0}\">",currentlinenumber) + currentlinenumber + "</a>:");
+                        filelinesids.Add(string.Format("<a name=\"{0}\" href=\"{1}/{2}#{0}\">",currentlinenumber,WebLinkToGeneralFolder,path) + currentlinenumber + "</a>:");
                         filelines.Add(HighlightText(line));
                     }
                     else
                     {
-                        filelinesids.Add(string.Format("<a name=\"{0}\">", currentlinenumber) + currentlinenumber + "</a>:");
+                        filelinesids.Add(string.Format("<a name=\"{0}\" href=\"{1}/{2}#{0}\">", currentlinenumber, WebLinkToGeneralFolder, path) + currentlinenumber + "</a>:");
                         filelines.Add(line);
                     }
                     currentlinenumber = currentlinenumber + 1;
