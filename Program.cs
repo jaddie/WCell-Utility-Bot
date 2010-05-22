@@ -603,6 +603,7 @@ namespace Jad_Bot
             {
                 try
                 {
+                    trigger.Reply("Scanning source for matches, please allow some time...");
                     var sourceDir = new DirectoryInfo(@"c:\wcellsource");
                     var linenumber = 0;
                     var upperlinenumber = 0;
@@ -804,7 +805,7 @@ namespace Jad_Bot
                 {
                     fileLines = fileLines + "\n" + fileline;
                 }
-                returnlines = "\n <tr> <td>" + fileids + "</td> <td>" + filelines + "</td> </tr>";
+                returnlines = "\n <tr> <td>" + fileids + "</td> <td>" + fileLines + "</td> </tr>";
                 file.Close();
                 returnlines = returnlines + "</table>";
                 return returnlines;
