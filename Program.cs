@@ -784,9 +784,10 @@ namespace Jad_Bot
                     var fileinfo = new FileInfo(readFile);
                     if(fileinfo.Extension == ".cs")
                     line = syn.Highlight(line);
+                    syn.AddStyleDefinition = false;
                     if(currentlinenumber >= readLineLower && currentlinenumber <= readLineUpper && readLineUpper != 0)
                     {
-                        filelinesids.Add(string.Format("<a name=\"{0}\" href=\"{1}/{2}#{0}\">",currentlinenumber,WebLinkToGeneralFolder,path) + currentlinenumber + "</a>:");
+                        filelinesids.Add(string.Format("<a name=\"{0}\" href=\"{1}/{2}.html#{0}\">",currentlinenumber,WebLinkToGeneralFolder,path) + currentlinenumber + "</a>:");
                         filelines.Add(HighlightText(line));
                     }
                     else
