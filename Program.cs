@@ -783,13 +783,13 @@ namespace Jad_Bot
                     line = syn.Highlight(line);
                     if(currentlinenumber >= readLineLower | currentlinenumber <= readLineUpper && readLineUpper != 0)
                     {
-                        filelinesids.Add(string.Format("<a name=\"{0}\">",currentlinenumber) + currentlinenumber + "</a> : ");
-                        filelines.Add(HighlightText(line));
+                        filelinesids.Add(string.Format("<a name=\"{0}\">",currentlinenumber) + currentlinenumber + "</a> : \n");
+                        filelines.Add(HighlightText(line) + "\n");
                     }
                     else
                     {
-                        filelinesids.Add(string.Format("<a name=\"{0}\">", currentlinenumber) + currentlinenumber + "</a> : ");
-                        filelines.Add(line);
+                        filelinesids.Add(string.Format("<a name=\"{0}\">", currentlinenumber) + currentlinenumber + "</a> : \n");
+                        filelines.Add(line + "\n");
                     }
                     currentlinenumber = currentlinenumber + 1;
                 }
