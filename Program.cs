@@ -785,13 +785,11 @@ namespace Jad_Bot
                     {
                         filelinesids.Add(string.Format("<a name=\"{0}\">",currentlinenumber) + currentlinenumber + "</a> : ");
                         filelines.Add(HighlightText(line));
-                        returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> <td> {0}: </td> <td>", currentlinenumber) + HighlightText(line) + "</td></tr></a>";
                     }
                     else
                     {
                         filelinesids.Add(string.Format("<a name=\"{0}\">", currentlinenumber) + currentlinenumber + "</a> : ");
                         filelines.Add(line);
-                        returnlines = returnlines + string.Format("\n <tr> <a name=\"{0}\"> <td> {0}: </td> <td>", currentlinenumber) + line + "</td></tr></a>";
                     }
                     currentlinenumber = currentlinenumber + 1;
                 }
@@ -805,7 +803,7 @@ namespace Jad_Bot
                 {
                     fileLines = fileLines + "\n" + fileline;
                 }
-                returnlines = "\n <tr> <td>" + fileids + "</td> <td>" + fileLines + "</td> </tr>";
+                returnlines = returnlines + "\n <tr> <td>" + fileids + "</td> <td>" + fileLines + "</td> </tr>";
                 file.Close();
                 returnlines = returnlines + "</table>";
                 return returnlines;
