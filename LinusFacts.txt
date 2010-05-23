@@ -1,0 +1,111 @@
+﻿Linus Torvalds wasn't born. he was developed. by himself. since 1969, the year Linus Torvalds was developed (by himself),software quality has increased 19.000 percent.
+Linus Torvalds's first words were syscalls.
+Linus Torvalds's DNA is in binary.
+Linus Torvalds didn't learn from the University of Helsinki.the University of Helsinki learned from Linus Torvalds.
+Linus Torvalds wasn't like the other students of University of Helsinki. he took notes in binary...
+Linus Torvalds's first written program had artificial intelligence.
+Linus Torvalds learned to program, and the computer printed HELLO, WORLD by itself.
+Linus Torvalds knows the question to 42.
+Linus Torvalds finished the Linux kernel the day before he started on it.
+Linus Torvalds's kernel never panics.
+Linus Torvalds is registered Linux user #1.
+Linus Torvalds didn't design Linux to run on the 386. Intel designed the 386 to run Linux.
+Linus Torvalds already has Linux 3.0. he is just keeping it to himself to build suspense.
+Linus Torvalds is not out to destroy Micro$oft. that will just be a completely unintentional side effect.
+Linus Torvalds is taking over the world. Micro$oft is just a diversion so that no one would suspect a mild mannered Finnish programmer.
+Linus Torvalds only has to enter a room, and every Windows computer in it segfaults instantly.
+Linus Torvalds created recursion so that GNU would have something to occupy themselves while they wait for the HURD.
+Linus Torvalds can cure carpal tunnel syndrome by touching infected people.he does not cure RMS because he thinks it's funny to listen to RMS dictating code for the HURD.
+Linus Torvalds's favorite joke is HURD
+Linus Torvalds rmmodded Richard Stallman's razors.
+Linus Torvalds haunts Theo De Raadt in his dreams.
+Linus Torvalds can touch MC Hammer.
+Linus Torvalds doesn't worry about Micro$oft patent crap, he simply does "sudo mv /tmp/ms /dev/null".
+Linus Torvalds won the Tanenbaum-Torvalds debate by reprogramming it.
+Linus Torvalds does not sleep. he hacks.
+Linus Torvalds doesn't wget. he wdemands.
+Linus Torvalds can program effectively for long periods of time... without caffeine.
+Linus Torvalds rarely gets angry. because when he does, kernels everywhere begin to panic.
+Linus Torvalds was considered as being old and stable at 24,but new and bleeding edge at 26.
+Linus Torvalds once found a segmentation fault in the universe.
+Linus Torvalds can delete the universe by typing rm -rf /.
+Linus Torvalds can run emerge --update world, and the whole world will actually update!
+Linus Torvalds is always right. sometimes even more than usual.
+Linus Torvalds simply know better than you do.
+Linus Torvalds has as much authority as the Pope. he just doesn't have as many people who believe it.
+Linus Torvalds is real, unless declared Integer.
+Linus Torvalds's ideas are always the best ideas and people who disagree with him are by definition crazy and probably butt-ugly. (until he changes his mind. then they can suddenly become upstanding citizens. he is flexible, not black-and-white.)
+Linus Torvalds's software contain all the design innovations possible to make. in addition to this, they even managed to make up a few of their own.
+Linus Torvalds is the commonest definition of the word programmer
+Linus Torvalds can execute x86 in his head.
+Linus Torvalds can program using a scroll-wheel.
+Linus Torvalds does not need a keyboard, the computer just knows what his needs are.
+Linus Torvalds has a multi-core brain.
+Linus Torvalds created apt by typing apt-get install apt.
+Linus Torvalds sorts in O(1). 
+Linus Torvalds doesn't need to boot.
+Linus Torvalds doesn't receive error messages.
+Linus Torvalds doesn't use "sudo".
+Linus Torvalds is more powerful than root.
+Linus Torvalds doesn't need to mount his drives.
+Linus Torvalds doesn't need backups. he just uploads his files and lets the world mirror them.
+Linus Torvalds doesn't debug. his programs are always perfect.
+Linus Torvalds's source codes compile themselves.
+Linus Torvalds only has 2 buttons on his keyboard, '1' and '0'.
+Linus Torvalds doesn't use the GCC. he writes binaries.
+Linus Torvalds can program without a keyboard.
+Linus Torvalds can write to NTFS.
+Linus Torvalds can defragment an NTFS partition by hand.
+Linus Torvalds can write to HFS+ with Journaling and case-sensitivity.
+Linus Torvalds can manipulate bits on the harddrive with his mind (at 3200 YB/s).
+Linus Torvalds doesn't need STDERR.
+Linus Torvalds can install Gentoo in under a week.
+Linus Torvalds is faster than Yoper.
+Linus Torvalds can stop a BSOD... on Vista 64-bit.
+Linus Torvalds surfs the web using nothing but netcat.
+Linus Torvalds once developed a programming language so good that it makes Python look like punch cards.
+Linus Torvalds writes new software, then he just makes punch cards with his teeth and feeds them into a reader.
+Linus Torvalds has no sense of user interface design. Linus Torvalds doesn't use a monitor.he can read the video signals from a VGA cable with his finger.
+Linus Torvalds can instantly ROT-13 all text that he sees. twice.
+Linus Torvalds has developed warp drive, sun destroying bombs and a ray that can teleport him a new sausage each day before he drinks his morning beer.
+Linus Torvalds hacked physics so his car can go 50 000 kmph.
+Linus Torvalds runs Linux on his wristwatch and toaster.
+Linus Torvalds can install Linux on a dead badger.
+Linus Torvalds doesn't need anti-virus software. Virii need anti-Linus software.
+Linus Torvalds has a list of events that he allows to occur. it is commonly reffered to as "the theory of probability".
+Linus Torvalds left and right hand are also known as "(" and ")".
+Linus Torvalds doesn't push the flush toilet button, brush his teeth, shower or clean his house. he simply says "make clean".
+Linus Torvalds has no dependencies.
+Linus Torvalds doesn't wear glasses anymore. not because he had laser eye surgery, but because he finally got his xorg.conf properly configured in his head.
+Linus Torvalds has never used a backspace key before.
+Linus Torvalds can determine whether an arbitrary program will terminate.
+Linus Torvalds's alphabet cereal forms source code.
+Linus Torvalds eats bug reports for lunch.
+Linus Torvalds can still leave neutral or negative feedback to buyers on eBay. 
+Linus Torvalds can do an infinite loop in five seconds... in his head.
+Linus Torvalds has counted to infinity. twice. both positive and negative infinity.
+Linus Torvalds made the red pill.
+Linus Torvalds is the one, and Linux is the Matrix.
+Linus Torvalds is the kernel.
+Linus Torvalds can enrich himself simply by chowning your bank account. he doesn't do this because there is no challenge in it.
+Linus Torvalds can use a nice level lower than -20.
+Linus Torvalds can run kill -9 and kill Chuck Norris.
+Linus Torvalds programmed God in his own image.
+Linus Torvalds doesn't pray to God. God prays to Linus.
+Linus Torvalds doesn't read the man pages. he reads the God pages.
+Linus Torvalds doesn't die, he simply returns zero.
+Linus Torvalds can divide by zero.
+Linus Torvalds once wrote a program that divides by zero.
+Linus Torvalds's stream of conciousness is entirely in binary.
+Linus Torvalds can play 3D games in his head by interpreting the source code in real-time.
+Linus Torvalds played through Duke Nukem Forever. in 1998.
+Linus Torvalds takes one look at your desktop and knows which porn sites you visited. In the last ten years.
+Linus Torvalds scared A and B away. consequently we program in C today.
+Linus Torvalds wrote the whole kernel in binary and reverse engineered it to C code for others benefit.
+Linus Torvalds doesn't develop the kernel by programming. He shares bits of his mind.
+Linus Torvalds wrote a progam that computed the last digit of pi. 
+Linus Torvalds solved Russell's paradox.
+Linus Torvalds can solve The Halting Problem... in polynomial time. 
+Linus Torvalds can solve NP-hard problems in logarithmic time.
+Linus Torvalds's computer's clock isn't synchronized with the world. the world synchronizes with Linus Torvalds's clock
+Bill Gates left his university to start Micro$oft. Steve Jobs sold his Wolkswagen bus to start Apple. Linus Torvalds made a new thread in a forum and put a file on a ftp server.

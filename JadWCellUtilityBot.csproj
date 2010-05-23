@@ -119,6 +119,7 @@
   <ItemGroup>
     <Content Include="ChuckNorrisFacts.txt" />
     <Content Include="config.txt" />
+    <Content Include="LinusFacts.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

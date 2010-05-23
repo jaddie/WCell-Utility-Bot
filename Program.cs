@@ -26,7 +26,6 @@ namespace Jad_Bot
         private static List<string> FileLineOptions = new List<string>();
         private static List<string> matches = new List<string>();
         private static List<string> FileLines = new List<string>();
-        private static List<string> NorrisLines = new List<string>();
         #endregion
         public static bool Grabinput = true;
         public static string ToolsOutput = "";
@@ -792,7 +791,7 @@ namespace Jad_Bot
                     }
                     else
                     {
-                        filelinesids.Add(string.Format("<a name=\"{0}\" href=\"{1}/{2}#{0}\">", currentlinenumber, WebLinkToGeneralFolder, path) + currentlinenumber + "</a>:");
+                        filelinesids.Add(string.Format("<a name=\"{0}\" href=\"{1}/{2}.html#{0}\">", currentlinenumber, WebLinkToGeneralFolder, path) + currentlinenumber + "</a>:");
                         filelines.Add(line);
                     }
                     currentlinenumber = currentlinenumber + 1;
@@ -1307,15 +1306,15 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                NorrisLines.Clear();
+                var norrisLines = new List<string>();
                 var norris = new StreamReader("ChuckNorrisFacts.txt");
                 while (!norris.EndOfStream)
                 {
-                    NorrisLines.Add(norris.ReadLine());
+                    norrisLines.Add(norris.ReadLine());
                 }
-                Random rand = new Random();
-                int randnum = rand.Next(0, NorrisLines.Count - 1);
-                trigger.Reply(NorrisLines[randnum]);
+                var rand = new Random();
+                var randnum = rand.Next(0, norrisLines.Count - 1);
+                trigger.Reply(norrisLines[randnum]);
                 norris.Close();
             }
         }
@@ -1335,8 +1334,7 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                var norris = new StreamWriter("ChuckNorrisFacts.txt",true);
-                norris.AutoFlush = true;
+                var norris = new StreamWriter("ChuckNorrisFacts.txt",true) {AutoFlush = true};
                 norris.WriteLine(trigger.Args.Remainder);
                 trigger.Reply("Added the new Chuck Norris fact: {0} to storage", trigger.Args.Remainder);
                 norris.Close();
@@ -1344,6 +1342,58 @@ namespace Jad_Bot
         }
 
         #endregion
+
+        #region Nested type: RandomLinusTorvaldsFactCommand
+
+        public class RandomLinusTorvaldsFactCommand : Command
+        {
+            public RandomLinusTorvaldsFactCommand()
+                : base("rl", "linus", "torvalds")
+            {
+                Usage = "rl";
+                Description = "Get a random fact about Linus Torvalds";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                var linusLines = new List<string>();
+                var linus = new StreamReader("LinusFacts.txt");
+                while (!linus.EndOfStream)
+                {
+                    linusLines.Add(linus.ReadLine());
+                }
+                var rand = new Random();
+                var randnum = rand.Next(0, linusLines.Count - 1);
+                trigger.Reply(linusLines[randnum]);
+                linus.Close();
+            }
+        }
+
+        #endregion
+
+        #region Nested type: AddLinusTorvaldsFactCommand
+
+        public class AddLinusTorvaldsFactCommand : Command
+        {
+            public AddLinusTorvaldsFactCommand()
+                : base("al", "addlinus", "addtorvalds")
+            {
+                Usage = "ac Linus fact here.";
+                Description = "Add a Linus Torvalds fact to storage";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                var norris = new StreamWriter("LinusFacts.txt", true);
+                norris.AutoFlush = true;
+                norris.WriteLine(trigger.Args.Remainder);
+                trigger.Reply("Added the new Linus Torvalds fact: {0} to storage", trigger.Args.Remainder);
+                norris.Close();
+            }
+        }
+
+        #endregion
+
 
         #region Nested type: SendToolsCommand
 
