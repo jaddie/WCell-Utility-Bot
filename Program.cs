@@ -365,6 +365,8 @@ namespace Jad_Bot
         {
             try
             {
+                CommandHandler.RemoteCommandPrefix = text.String.StartsWith("~") ? "~" : "@";
+
                 #region MessagesSent
 
                 Print(string.Format("User {0} on channel {1} Sent {2}", user, chan, text),true);
@@ -1384,8 +1386,7 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                var norris = new StreamWriter("LinusFacts.txt", true);
-                norris.AutoFlush = true;
+                var norris = new StreamWriter("LinusFacts.txt", true) {AutoFlush = true};
                 norris.WriteLine(trigger.Args.Remainder);
                 trigger.Reply("Added the new Linus Torvalds fact: {0} to storage", trigger.Args.Remainder);
                 norris.Close();
