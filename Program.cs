@@ -1395,6 +1395,50 @@ namespace Jad_Bot
 
         #endregion
 
+        #region Nested type: EightBallCommand
+
+        public class EightBallCommand : Command
+        {
+            public EightBallCommand()
+                : base("eightball", "eight", "eb")
+            {
+                Usage = "eightball DecisionQuestion";
+                Description = "Provide an answer to decision";
+            }
+            public override void Process(CmdTrigger trigger)
+            {
+                string[] eightballanswers = {
+                                                	"As I see it, yes",
+	                                                "Ask again later",
+	                                                "Better not tell you now",
+	                                                "Cannot predict now",
+	                                                "Concentrate and ask again",
+	                                                "Don't count on it",
+	                                                "It is certain",
+	                                                "It is decidedly so",
+	                                                "Most likely",
+	                                                "My reply is no",
+	                                                "My sources say no",
+	                                                "Outlook good",
+	                                                "Outlook not so good",
+	                                                "Reply hazy, try again",
+	                                                "Signs point to yes",
+	                                                "Very doubtful",
+	                                                "Without a doubt",
+	                                                "Yes",
+	                                                "Yes - definitely",
+	                                                "You may rely on it"
+                                            };
+                if(!string.IsNullOrEmpty(trigger.Args.Remainder))
+                {
+                    var rand = new Random();
+                    var randomchoice = rand.Next(0, 19);
+                    trigger.Reply(eightballanswers[randomchoice]);
+                }
+            }
+        }
+        #endregion
+
 
         #region Nested type: SendToolsCommand
 
