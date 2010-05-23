@@ -361,12 +361,30 @@ namespace Jad_Bot
             Print(user + text.String,true);
         }
 
+        private static string ReactToAction()
+        {
+            string[] actions = {
+                                   "dodges",
+                                   "ducks",
+                                   "evades",
+                                   "parries",
+                                   "blocks",
+                                   "does the monkey dance"
+                               };
+            var rand = new Random();
+            var randomchoice = rand.Next(0, 5);
+            return actions[randomchoice];
+        }
+
         protected override void OnText(IrcUser user, IrcChannel chan, StringStream text)
         {
             try
             {
                 CommandHandler.RemoteCommandPrefix = text.String.StartsWith("~") ? "~" : "@";
-
+                if(text.String.StartsWith("@ACTION") && text.String.EndsWith("@") && text.String.ToLower().Contains("utilitybot"))
+                {
+                    Irc.CommandHandler.Describe(chan, ReactToAction(), chan.Args);
+                }
                 #region MessagesSent
 
                 Print(string.Format("User {0} on channel {1} Sent {2}", user, chan, text),true);
@@ -1442,7 +1460,6 @@ namespace Jad_Bot
             }
         }
         #endregion
-
 
         #region Nested type: SendToolsCommand
 
