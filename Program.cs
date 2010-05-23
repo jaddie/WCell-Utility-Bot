@@ -1435,6 +1435,10 @@ namespace Jad_Bot
                     var randomchoice = rand.Next(0, 19);
                     trigger.Reply(eightballanswers[randomchoice]);
                 }
+                else
+                {
+                    trigger.Reply("You didnt give me a decision question!");
+                }
             }
         }
         #endregion
