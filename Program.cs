@@ -381,9 +381,12 @@ namespace Jad_Bot
             try
             {
                 CommandHandler.RemoteCommandPrefix = text.String.StartsWith("~") ? "~" : "@";
-                if(text.String.StartsWith("@ACTION") && text.String.EndsWith("@") && text.String.ToLower().Contains("utilitybot"))
+                if (text.String.Contains("ACTION") && text.String.ToLower().Contains("utilitybot"))
                 {
+                    if(chan != null)
                     Irc.CommandHandler.Describe(chan, ReactToAction(), chan.Args);
+                    else
+                    Irc.CommandHandler.Describe(user, ReactToAction(), user.Args);
                 }
                 #region MessagesSent
 
