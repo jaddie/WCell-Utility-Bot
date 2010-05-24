@@ -1,9 +1,18 @@
-﻿ToolsFolder:
+﻿#This should contain the full path to the run\debug folder inside WCell (make sure to build it)
+ToolsFolder:
+#This sets the folder for unparsed logs (with the wcell parser)
 UnparsedFolder:
+#Parsed logs go here, e.g. for the internet (browsable folder)
 ParsedFolder:
+#This is the link used for logs e.g. http://yoursite.com/logs/parsedfiles/file.txt
 WebLinkToParsedFolder:
+#This is as above but for unparsed
 WebLinkToUnparsedFolder:
+#This is the path for any general file that isnt a log, this is used by the read source command
 WebLinkToGeneralFolder:
+#This is for the wcell server logs command
 WebLinkToLogsFolder:
+#So we know where to store files
 LocalPathToGeneralFolder:
+#for the upload command so we can say a page to open in order to upload files to the above folders for users.
 UploadSite:
