@@ -75,13 +75,13 @@ namespace Jad_Bot
         private static readonly Process Parser = new Process();
         private static string LogFile;
         private static string ReplyChan = "#woc";
-
+        private static Stopwatch Runtimer = new Stopwatch();
         #endregion
 
         #region ErrorHandling
 
-        private static readonly Timer errorTimer = new Timer();
-        private static string error = "Error: ";
+        private static readonly Timer ErrorTimer = new Timer();
+        private static string _error = "Error: ";
 
         #endregion
 
@@ -195,7 +195,7 @@ namespace Jad_Bot
                 Irc.BeginConnect(Irc.Network[0].ToString(), Port);
 
                 #endregion
-
+                Runtimer.Start();
                 while (true) // Prevent WCell.Tools from crashing - due to console methods inside the program.
                 {
                     Thread.Sleep(1000);
@@ -439,12 +439,12 @@ namespace Jad_Bot
 
             if (e.Data.Contains("Exception"))
             {
-                errorTimer.Interval = 5000;
-                errorTimer.Start();
-                errorTimer.Elapsed += errorTimer_Elapsed;
-                while (errorTimer.Enabled)
+                ErrorTimer.Interval = 5000;
+                ErrorTimer.Start();
+                ErrorTimer.Elapsed += errorTimer_Elapsed;
+                while (ErrorTimer.Enabled)
                 {
-                    error = error + e.Data + "\n";
+                    _error = _error + e.Data + "\n";
                 }
             }
 
@@ -455,8 +455,8 @@ namespace Jad_Bot
 
         private static void errorTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            errorTimer.Stop();
-            WriteErrorSystem.WriteError(new List<string> { "Exception:", error });
+            ErrorTimer.Stop();
+            WriteErrorSystem.WriteError(new List<string> { "Exception:", _error });
             Irc.CommandHandler.Msg(ReplyChan, WebLinkToGeneralFolder + "ErrorLog.txt");
             Print(WebLinkToGeneralFolder + "ErrorLog.txt");
         }
@@ -1577,6 +1577,24 @@ namespace Jad_Bot
                 return readresults;*/
         #endregion
         #endregion
+
+        #region Nested type: RuntimeCommand
+
+        public class RuntimeCommand : Command
+        {
+            public RuntimeCommand()
+                : base("Runtime")
+            {
+                Usage = "runtime";
+                Description = "Show how long the program has been running.";
+            }
+            public override void Process(CmdTrigger trigger)
+            {
+                trigger.Reply("This UtilityBot has been running for: " + Runtimer.Elapsed.TotalMinutes);
+            }
+        }
+        #endregion
+
 
         #endregion
     }
