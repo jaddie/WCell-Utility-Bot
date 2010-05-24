@@ -10,7 +10,7 @@ using Squishy.Irc;
 using Squishy.Irc.Commands;
 using Squishy.Network;
 using Timer = System.Timers.Timer;
-using System.Reflection;
+
 namespace Jad_Bot
 {
     public class JadBot : IrcClient
@@ -1590,7 +1590,7 @@ namespace Jad_Bot
             }
             public override void Process(CmdTrigger trigger)
             {
-                trigger.Reply("This UtilityBot has been running for: " + Runtimer.Elapsed.TotalMinutes);
+                trigger.Reply("This UtilityBot has been running for: " + (int)Runtimer.Elapsed.TotalMinutes + "minutes, oh yeah I'm a good bot!");
             }
         }
         #endregion
