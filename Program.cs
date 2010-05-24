@@ -1590,7 +1590,7 @@ namespace Jad_Bot
             }
             public override void Process(CmdTrigger trigger)
             {
-                trigger.Reply("This UtilityBot has been running for: " + (int)Runtimer.Elapsed.TotalMinutes + "minutes, oh yeah I'm a good bot!");
+                trigger.Reply("This UtilityBot has been running for: " + (int)Runtimer.Elapsed.TotalMinutes + " minutes, oh yeah I'm a good bot!");
             }
         }
         #endregion
