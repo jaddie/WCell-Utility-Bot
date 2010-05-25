@@ -1595,6 +1595,27 @@ namespace Jad_Bot
         }
         #endregion
 
+        #region Nested type: PizzaCommand
+
+        public class PizzaCommand : Command
+        {
+            public PizzaCommand()
+                : base("pizza")
+            {
+                Usage = "pizza nickname";
+                Description = "Steal the person's pizza.";
+            }
+            public override void Process(CmdTrigger trigger)
+            {
+                if (trigger.Channel != null && !trigger.Channel.HasUser(trigger.Args.Remainder))
+                {
+                    trigger.Reply("I can't find that person to attack them!");
+                    return;
+                }
+                trigger.Irc.CommandHandler.Describe(trigger.Target,string.Format("steals {0}'s pizza and eats it nomnomnom!",trigger.Args.Remainder),trigger.Args);
+            }
+        }
+        #endregion
 
         #endregion
     }
