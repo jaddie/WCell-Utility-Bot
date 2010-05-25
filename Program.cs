@@ -1609,7 +1609,7 @@ namespace Jad_Bot
             {
                 if (trigger.Channel != null && !trigger.Channel.HasUser(trigger.Args.Remainder))
                 {
-                    trigger.Reply("I can't find that person to attack them!");
+                    trigger.Reply("I can't find that person to eat their pizza!");
                     return;
                 }
                 trigger.Irc.CommandHandler.Describe(trigger.Target,string.Format("steals {0}'s pizza and eats it nomnomnom!",trigger.Args.Remainder),trigger.Args);
@@ -1617,6 +1617,27 @@ namespace Jad_Bot
         }
         #endregion
 
+        #region Nested type: BeerCommand
+
+        public class BeerCommand : Command
+        {
+            public BeerCommand()
+                : base("beer")
+            {
+                Usage = "beer nickname";
+                Description = "Steal the person's beer.";
+            }
+            public override void Process(CmdTrigger trigger)
+            {
+                if (trigger.Channel != null && !trigger.Channel.HasUser(trigger.Args.Remainder))
+                {
+                    trigger.Reply("I can't find that person to drink their beer!");
+                    return;
+                }
+                trigger.Irc.CommandHandler.Describe(trigger.Target, string.Format("steals {0}'s beer and gulps it all down *slurp*!", trigger.Args.Remainder), trigger.Args);
+            }
+        }
+        #endregion
         #endregion
     }
 }
