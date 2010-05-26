@@ -1087,7 +1087,7 @@ namespace Jad_Bot
                             }
                             break;
                     }
-                    List<string> readOutput = Sdr.Read(dumptype, trigger.Args.Remainder);
+                    List<string> readOutput = DumpReader.Read(dumptype, trigger.Args.Remainder);
                     int id = -1;
                     foreach (var line in readOutput)
                     {
@@ -1544,7 +1544,7 @@ namespace Jad_Bot
                     string randfilename = GetLink();
                     _selectionWriter = new StreamWriter(GeneralFolder + string.Format("Selection{0}.txt", randfilename));
                     _selectionWriter.AutoFlush = false;
-                    List<string> selectOutput = Sdr.Select(trigger.Args.NextInt());
+                    List<string> selectOutput = DumpReader.Select(trigger.Args.NextInt());
                     if (selectOutput.Count > 0 && selectOutput != null)
                     {
                         foreach (var line in selectOutput)
