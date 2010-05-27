@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -95,10 +96,11 @@ namespace Jad_Bot
 
         public static void Main()
         {
-            Parser.OutputDataReceived += Parser_OutputDataReceived;
-            IrcLog.AutoFlush = false;
             try
             {
+                Parser.OutputDataReceived += Parser_OutputDataReceived;
+                IrcLog.AutoFlush = false;
+
                 Console.ForegroundColor = ConsoleColor.Yellow;
 
                 #region Config File Setup
@@ -213,7 +215,8 @@ namespace Jad_Bot
                 Runtimer.Start();
                 while (true) // Prevent WCell.Tools from crashing - due to console methods inside the program.
                 {
-                    Console.ReadLine();
+                    var line = new StringStream(Console.ReadLine());
+                    OnConsoleText(line);
                 }
             }
                 #region Main Exception Handling
@@ -243,9 +246,17 @@ namespace Jad_Bot
 
         private static void Print(string text, bool irclog = false)
         {
-            Console.WriteLine(DateTime.Now + text);
-            if (irclog)
-                IrcLog.WriteLine(DateTime.Now + text);
+            try
+            {
+                Console.WriteLine(DateTime.Now + text);
+                if (irclog)
+                    IrcLog.WriteLine(DateTime.Now + text);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Write Failure" + e.Data + e.StackTrace);
+            }
+
         }
 
         private static void Client_Connected(Connection con)
@@ -255,51 +266,66 @@ namespace Jad_Bot
 
         private static void Irc_Disconnected(IrcClient arg1, bool arg2)
         {
-            Print("Disconnected from IRC server, Attempting reconnect in 5 seconds", true);
-            Thread.Sleep(5000);
-            Irc.BeginConnect(Irc._network[0].ToString(), Port);
+            try
+            {
+                Print("Disconnected from IRC server, Attempting reconnect in 5 seconds", true);
+                Thread.Sleep(5000);
+                Irc.BeginConnect(Irc._network[0].ToString(), Port);
+            }
+            catch (Exception e)
+            {
+                Print(e.Data + e.StackTrace,true);
+            }
+
         }
 
         private static void OnConsoleText(StringStream cText)
         {
-            switch (cText.NextWord().ToLower())
+            try
             {
-                case "join":
-                    {
-                        if (cText.Remainder.Contains(","))
+                switch (cText.NextWord().ToLower())
+                {
+                    case "join":
                         {
-                            string[] chaninfo = cText.Remainder.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
-                            if (chaninfo.Length > 1)
-                                Irc.CommandHandler.Join(chaninfo[0], chaninfo[1]);
+                            if (cText.Remainder.Contains(","))
+                            {
+                                var chaninfo = cText.Remainder.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                                if (chaninfo.Length > 1)
+                                    Irc.CommandHandler.Join(chaninfo[0], chaninfo[1]);
+                                else
+                                    Irc.CommandHandler.Join(chaninfo[0]);
+                            }
                             else
-                                Irc.CommandHandler.Join(chaninfo[0]);
+                            {
+                                Irc.CommandHandler.Join(cText.Remainder);
+                            }
                         }
-                        else
+                        break;
+                    case "say":
                         {
-                            Irc.CommandHandler.Join(cText.Remainder);
+                            var chan = cText.NextWord();
+                            var msg = cText.Remainder;
+                            Irc.CommandHandler.Msg(chan, msg);
                         }
-                    }
-                    break;
-                case "say":
-                    {
-                        string chan = cText.NextWord();
-                        string msg = cText.Remainder;
-                        Irc.CommandHandler.Msg(chan, msg);
-                    }
-                    break;
-                case "quit":
-                    {
-                        Parser.Kill();
-                        Print("Shutting down due to console quit command..", true);
-                        foreach (var chan in ChannelList)
+                        break;
+                    case "quit":
                         {
-                            Irc.CommandHandler.Msg(chan, "Shutting down in 5 seconds due to console quit command..");
+                            Parser.Kill();
+                            Print("Shutting down due to console quit command..", true);
+                            foreach (var chan in ChannelList)
+                            {
+                                Irc.CommandHandler.Msg(chan, "Shutting down in 5 seconds due to console quit command..");
+                            }
+                            Thread.Sleep(5000);
+                            Irc.Client.DisconnectNow();
+                            Environment.Exit(0);
                         }
-                        Thread.Sleep(5000);
-                        Irc.Client.DisconnectNow();
-                        Environment.Exit(0);
-                    }
-                    break;
+                        break;
+                }
+            }
+            catch(Exception e)
+            {
+                Print(e.Data + e.StackTrace, true);
             }
         }
 
@@ -307,22 +333,29 @@ namespace Jad_Bot
 
         protected override void Perform()
         {
-            IrcCommandHandler.Initialize();
-            CommandHandler.RemoteCommandPrefix = "~";
-            foreach (var chan in ChannelList)
+            try
             {
-                if (chan.Contains(","))
+                IrcCommandHandler.Initialize();
+                CommandHandler.RemoteCommandPrefix = "~";
+                foreach (var chan in ChannelList)
                 {
-                    string[] chaninfo = chan.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
-                    if (chaninfo.Length > 1)
-                        CommandHandler.Join(chaninfo[0], chaninfo[1]);
+                    if (chan.Contains(","))
+                    {
+                        var chaninfo = chan.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (chaninfo.Length > 1)
+                            CommandHandler.Join(chaninfo[0], chaninfo[1]);
+                        else
+                            CommandHandler.Join(chaninfo[0]);
+                    }
                     else
-                        CommandHandler.Join(chaninfo[0]);
+                    {
+                        CommandHandler.Join(chan);
+                    }
                 }
-                else
-                {
-                    CommandHandler.Join(chan);
-                }
+            }
+            catch (Exception e)
+            {
+                Print(e.Data + e.StackTrace, true);
             }
         }
 
@@ -333,29 +366,31 @@ namespace Jad_Bot
 
         public override bool MayTriggerCommand(CmdTrigger trigger, Command cmd)
         {
-            if (File.Exists("auth.txt") && cmd.Name.ToLower() != "restartwcellcommand" &&
-                cmd.Name.ToLower() != "addauth")
+            try
             {
-                using (var reader = new StreamReader("auth.txt"))
+                if (File.Exists("auth.txt") && cmd.Name.ToLower() != "restartwcellcommand" &&
+                    cmd.Name.ToLower() != "addauth")
                 {
-                    var usernames = new List<string>();
-                    while (!reader.EndOfStream)
+                    using (var reader = new StreamReader("auth.txt"))
                     {
-                        usernames.Add(reader.ReadLine());
-                    }
-                    foreach (var username in usernames)
-                    {
-                        if (username == trigger.User.AuthName)
+                        var usernames = new List<string>();
+                        while (!reader.EndOfStream)
+                        {
+                            usernames.Add(reader.ReadLine());
+                        }
+                        if (usernames.Any(username => username == trigger.User.AuthName))
                         {
                             return true;
                         }
                     }
                 }
+                return trigger.User.IsOn("#wcell.dev") || trigger.User.IsOn("#woc") || trigger.User.IsOn("#wcell");
             }
-            if (trigger.User.IsOn("#wcell.dev") || trigger.User.IsOn("#woc") || trigger.User.IsOn("#wcell"))
-                return true;
-            else
+            catch(Exception e)
+            {
+                Print(e.Data + e.StackTrace,true);
                 return false;
+            }
         }
 
         private static void OnConnecting(Connection con)
@@ -371,17 +406,25 @@ namespace Jad_Bot
 
         private static string ReactToAction()
         {
-            string[] actions = {
-                                   "dodges",
-                                   "ducks",
-                                   "evades",
-                                   "parries",
-                                   "blocks",
-                                   "does the monkey dance"
-                               };
-            var rand = new Random();
-            int randomchoice = rand.Next(0, 5);
-            return actions[randomchoice];
+            try
+            {
+                string[] actions = {
+                                       "dodges",
+                                       "ducks",
+                                       "evades",
+                                       "parries",
+                                       "blocks",
+                                       "does the monkey dance"
+                                   };
+                var rand = new Random();
+                var randomchoice = rand.Next(0, 5);
+                return actions[randomchoice];
+            }
+            catch(Exception e)
+            {
+                Print(e.Data + e.StackTrace,true);
+                return "";
+            }
         }
 
         protected override void OnText(IrcUser user, IrcChannel chan, StringStream text)
@@ -419,57 +462,69 @@ namespace Jad_Bot
         private static void Parser_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             #region Done
-
-            if (e.Data.Contains("Done."))
+            try
             {
-                try
+                if (e.Data.Contains("Done."))
                 {
-                    using (var ParsedFile = new StreamReader(ParsedFolder + _logFile))
+                    try
                     {
-                        if (ParsedFile.BaseStream.Length < 1)
-                            throw new Exception("Parsed file is empty");
+                        using (var parsedFile = new StreamReader(ParsedFolder + _logFile))
+                        {
+                            if (parsedFile.BaseStream.Length < 1)
+                                throw new Exception("Parsed file is empty");
 
-                        Irc.CommandHandler.Msg(_replyChan, "Completed Parsing your file is at {0}{1}",
-                                               WebLinkToParsedFolder, _logFile);
+                            Irc.CommandHandler.Msg(_replyChan, "Completed Parsing your file is at {0}{1}",
+                                                   WebLinkToParsedFolder, _logFile);
+                        }
+                    }
+                    catch (Exception excep)
+                    {
+                        Irc.CommandHandler.Msg(_replyChan, "The Following Exception Occured {0}, check input file",
+                                               excep.Message);
                     }
                 }
-                catch (Exception excep)
+                var writer = new StreamWriter(GeneralFolder + "toolsoutput.txt", true) {AutoFlush = false};
+                writer.WriteLine(e.Data);
+                writer.Close();
+
+                #endregion
+
+                #region Exception
+
+                if (e.Data.Contains("Exception"))
                 {
-                    Irc.CommandHandler.Msg(_replyChan, "The Following Exception Occured {0}, check input file",
-                                           excep.Message);
+                    ErrorTimer.Interval = 5000;
+                    ErrorTimer.Start();
+                    ErrorTimer.Elapsed += ErrorTimerElapsed;
+                    while (ErrorTimer.Enabled)
+                    {
+                        _error = _error + e.Data + "\n";
+                    }
                 }
+
+                #endregion
             }
-            var writer = new StreamWriter(GeneralFolder + "toolsoutput.txt", true);
-            writer.AutoFlush = false;
-            writer.WriteLine(e.Data);
-            writer.Close();
-
-            #endregion
-
-            #region Exception
-
-            if (e.Data.Contains("Exception"))
+            catch(Exception ex)
             {
-                ErrorTimer.Interval = 5000;
-                ErrorTimer.Start();
-                ErrorTimer.Elapsed += errorTimer_Elapsed;
-                while (ErrorTimer.Enabled)
-                {
-                    _error = _error + e.Data + "\n";
-                }
+                Print(ex.Data + ex.StackTrace,true);
             }
-
-            #endregion
         }
 
         #region Parser Error Handling
 
-        private static void errorTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private static void ErrorTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            ErrorTimer.Stop();
-            WriteErrorSystem.WriteError(new List<string> {"Exception:", _error});
-            Irc.CommandHandler.Msg(_replyChan, WebLinkToGeneralFolder + "ErrorLog.txt");
-            Print(WebLinkToGeneralFolder + "ErrorLog.txt");
+            try
+            {
+                ErrorTimer.Stop();
+                WriteErrorSystem.WriteError(new List<string> {"Exception:", _error});
+                Irc.CommandHandler.Msg(_replyChan, WebLinkToGeneralFolder + "ErrorLog.txt");
+                Print(WebLinkToGeneralFolder + "ErrorLog.txt");
+            }
+            catch(Exception ex)
+            {
+                Print(ex.Data + ex.StackTrace);
+            }
         }
 
         #endregion
@@ -480,32 +535,52 @@ namespace Jad_Bot
 
         public static string GetLink()
         {
-            var builder = new StringBuilder();
-            builder.Append(RandomString(4, true));
-            builder.Append(RandomNumber(1000, 999999));
-            builder.Append(RandomString(2, true));
-            return builder.ToString();
+            try
+            {
+                var builder = new StringBuilder();
+                builder.Append(RandomString(4, true));
+                builder.Append(RandomNumber(1000, 999999));
+                builder.Append(RandomString(2, true));
+                return builder.ToString();
+            }
+            catch(Exception e)
+            {
+                Print(e.Data + e.StackTrace,true);
+            }
         }
 
         private static string RandomString(int size, bool lowerCase)
         {
-            var builder = new StringBuilder();
-            var random = new Random();
-            char ch;
-            for (int i = 0; i < size; i++)
+            try
             {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26*random.NextDouble() + 65)));
-                builder.Append(ch);
+                var builder = new StringBuilder();
+                var random = new Random();
+                char ch;
+                for (int i = 0; i < size; i++)
+                {
+                    ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26*random.NextDouble() + 65)));
+                    builder.Append(ch);
+                }
+                return lowerCase ? builder.ToString().ToLower() : builder.ToString();
             }
-            if (lowerCase)
-                return builder.ToString().ToLower();
-            return builder.ToString();
+            catch(Exception e)
+            {
+                Print(e.Data + e.StackTrace, true);
+                return "";
+            }
         }
 
         private static int RandomNumber(int min, int max)
         {
-            var random = new Random();
-            return random.Next(min, max);
+            try
+            {
+                var random = new Random();
+                return random.Next(min, max);
+            }
+            catch(Exception e)
+            {
+                Print(e.Data + e.StackTrace,true);
+            }
         }
 
         #endregion
@@ -538,6 +613,7 @@ namespace Jad_Bot
                 {
                     trigger.Reply("I cant write that action, perhaps invalid target?");
                     trigger.Reply(e.Message);
+                    Print(e.Data + e.StackTrace,true);
                 }
             }
         }
@@ -569,6 +645,7 @@ namespace Jad_Bot
                 {
                     trigger.Reply("I cant write to the auth file!");
                     trigger.Reply(e.Message);
+                    Print(e.Data + e.StackTrace,true);
                 }
             }
         }
@@ -588,10 +665,17 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                var norris = new StreamWriter("ChuckNorrisFacts.txt", true) {AutoFlush = false};
-                norris.WriteLine(trigger.Args.Remainder);
-                trigger.Reply("Added the new Chuck Norris fact: {0} to storage", trigger.Args.Remainder);
-                norris.Close();
+                try
+                {
+                    var norris = new StreamWriter("ChuckNorrisFacts.txt", true) {AutoFlush = false};
+                    norris.WriteLine(trigger.Args.Remainder);
+                    trigger.Reply("Added the new Chuck Norris fact: {0} to storage", trigger.Args.Remainder);
+                    norris.Close();
+                }
+                catch(Exception e)
+                {
+                    Print(e.Data + e.StackTrace,true);
+                }
             }
         }
 
@@ -610,10 +694,17 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                var norris = new StreamWriter("LinusFacts.txt", true) {AutoFlush = false};
-                norris.WriteLine(trigger.Args.Remainder);
-                trigger.Reply("Added the new Linus Torvalds fact: {0} to storage", trigger.Args.Remainder);
-                norris.Close();
+                try
+                {
+                    var norris = new StreamWriter("LinusFacts.txt", true) {AutoFlush = false};
+                    norris.WriteLine(trigger.Args.Remainder);
+                    trigger.Reply("Added the new Linus Torvalds fact: {0} to storage", trigger.Args.Remainder);
+                    norris.Close();
+                }
+                catch(Exception e)
+                {
+                    Print(e.Data + e.StackTrace,true);
+                }
             }
         }
 
@@ -632,28 +723,35 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                string[] attacks = {
-                                       "slaps %s",
-                                       "kicks %s",
-                                       "punches %s in the face",
-                                       "stings %s with a needle",
-                                       "shoots %s with a phaser"
-                                   };
-                if (!string.IsNullOrEmpty(trigger.Args.Remainder))
+                try
                 {
-                    var rand = new Random();
-                    int randomchoice = rand.Next(0, 4);
-                    if (trigger.Channel != null && !trigger.Channel.HasUser(trigger.Args.Remainder))
+                    string[] attacks = {
+                                           "slaps %s",
+                                           "kicks %s",
+                                           "punches %s in the face",
+                                           "stings %s with a needle",
+                                           "shoots %s with a phaser"
+                                       };
+                    if (!string.IsNullOrEmpty(trigger.Args.Remainder))
                     {
-                        trigger.Reply("I can't find that person to attack them!");
-                        return;
+                        var rand = new Random();
+                        int randomchoice = rand.Next(0, 4);
+                        if (trigger.Channel != null && !trigger.Channel.HasUser(trigger.Args.Remainder))
+                        {
+                            trigger.Reply("I can't find that person to attack them!");
+                            return;
+                        }
+                        string attack = attacks[randomchoice].Replace("%s", trigger.Args.Remainder);
+                        Irc.CommandHandler.Describe(trigger.Target, attack, trigger.Args);
                     }
-                    string attack = attacks[randomchoice].Replace("%s", trigger.Args.Remainder);
-                    Irc.CommandHandler.Describe(trigger.Target, attack, trigger.Args);
+                    else
+                    {
+                        trigger.Reply("You didnt give me a nick to attack!");
+                    }
                 }
-                else
+                catch(Exception e)
                 {
-                    trigger.Reply("You didnt give me a nick to attack!");
+                    Print(e.Data + e.StackTrace,true);
                 }
             }
         }
@@ -673,14 +771,21 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                if (trigger.Channel != null && !trigger.Channel.HasUser(trigger.Args.Remainder))
+                try
                 {
-                    trigger.Reply("I can't find that person to drink their beer!");
-                    return;
+                    if (trigger.Channel != null && !trigger.Channel.HasUser(trigger.Args.Remainder))
+                    {
+                        trigger.Reply("I can't find that person to drink their beer!");
+                        return;
+                    }
+                    trigger.Irc.CommandHandler.Describe(trigger.Target,
+                                                        string.Format("steals {0}'s beer and gulps it all down *slurp*!",
+                                                                      trigger.Args.Remainder), trigger.Args);
                 }
-                trigger.Irc.CommandHandler.Describe(trigger.Target,
-                                                    string.Format("steals {0}'s beer and gulps it all down *slurp*!",
-                                                                  trigger.Args.Remainder), trigger.Args);
+                catch (Exception e)
+                {
+                    Print(e.Data + e.StackTrace,true);
+                }
             }
         }
 
@@ -698,9 +803,16 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                int lines = trigger.Irc.Client.SendQueue.Length;
-                trigger.Irc.Client.SendQueue.Clear();
-                trigger.Reply("Cleared SendQueue of {0} lines", lines);
+                try
+                {
+                    var lines = trigger.Irc.Client.SendQueue.Length;
+                    trigger.Irc.Client.SendQueue.Clear();
+                    trigger.Reply("Cleared SendQueue of {0} lines", lines);
+                }
+                catch(Exception e)
+                {
+                    Print(e.Data + e.StackTrace,true);
+                }
             }
         }
 
@@ -746,8 +858,7 @@ namespace Jad_Bot
                     WriteErrorSystem.WriteError(new List<string>
                                                     {e.Message + e.StackTrace + e.InnerException + e.Source});
                     trigger.Reply("Error occured:{0}", WebLinkToGeneralFolder + "ErrorLog.txt");
-                    Console.WriteLine("Error Occured in download file command: {0} {1}",
-                                      e.Message + e.StackTrace + e.InnerException + e.Source);
+                    Print(string.Format("Error Occured in download file command: {0} {1}",e.Message + e.StackTrace + e.InnerException + e.Source),true);
                 }
             }
         }
@@ -772,8 +883,9 @@ namespace Jad_Bot
                     trigger.Reply(
                         "AreaTriggers \n GOs \n Items \n NPCs \n Quests \n SpellsAndEffects \n Vehicles \n use these for the dumptype on the query command!");
                 }
-                catch
+                catch (Exception e)
                 {
+                    Print(e.Data + e.StackTrace,true);
                 }
             }
         }
@@ -793,37 +905,44 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                string[] eightballanswers = {
-                                                "As I see it, yes",
-                                                "Ask again later",
-                                                "Better not tell you now",
-                                                "Cannot predict now",
-                                                "Concentrate and ask again",
-                                                "Don't count on it",
-                                                "It is certain",
-                                                "It is decidedly so",
-                                                "Most likely",
-                                                "My reply is no",
-                                                "My sources say no",
-                                                "Outlook good",
-                                                "Outlook not so good",
-                                                "Reply hazy, try again",
-                                                "Signs point to yes",
-                                                "Very doubtful",
-                                                "Without a doubt",
-                                                "Yes",
-                                                "Yes - definitely",
-                                                "You may rely on it"
-                                            };
-                if (!string.IsNullOrEmpty(trigger.Args.Remainder))
+                try
                 {
-                    var rand = new Random();
-                    int randomchoice = rand.Next(0, 19);
-                    trigger.Reply(eightballanswers[randomchoice]);
+                    string[] eightballanswers = {
+                                                    "As I see it, yes",
+                                                    "Ask again later",
+                                                    "Better not tell you now",
+                                                    "Cannot predict now",
+                                                    "Concentrate and ask again",
+                                                    "Don't count on it",
+                                                    "It is certain",
+                                                    "It is decidedly so",
+                                                    "Most likely",
+                                                    "My reply is no",
+                                                    "My sources say no",
+                                                    "Outlook good",
+                                                    "Outlook not so good",
+                                                    "Reply hazy, try again",
+                                                    "Signs point to yes",
+                                                    "Very doubtful",
+                                                    "Without a doubt",
+                                                    "Yes",
+                                                    "Yes - definitely",
+                                                    "You may rely on it"
+                                                };
+                    if (!string.IsNullOrEmpty(trigger.Args.Remainder))
+                    {
+                        var rand = new Random();
+                        var randomchoice = rand.Next(0, 19);
+                        trigger.Reply(eightballanswers[randomchoice]);
+                    }
+                    else
+                    {
+                        trigger.Reply("You didnt give me a decision question!");
+                    }
                 }
-                else
+                catch(Exception e)
                 {
-                    trigger.Reply("You didnt give me a decision question!");
+                    Print(e.Data + e.StackTrace,true);
                 }
             }
         }
@@ -840,12 +959,19 @@ namespace Jad_Bot
                 Usage = "method World.Resync";
                 Description = "Find and display a method from the code";
             }
-
+            
             //~find World.ReSync
             public override void Process(CmdTrigger trigger)
             {
-                trigger.Reply("Hai, I don't work yet! :O");
-            }
+                try
+                {
+                    trigger.Reply("Hai, I don't work yet! :O");
+
+                }
+                catch (Exception e)
+                {
+                    Print(e.Data + e.StackTrace,true);
+                }            }
         }
 
         #endregion
@@ -941,44 +1067,51 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                string logFile = trigger.Args.NextWord();
-                string parser = trigger.Args.Remainder;
-                int parserChoice = 1;
-                bool temp = int.TryParse(parser, out parserChoice);
-                if (!temp)
+                try
                 {
-                    parserChoice = 1;
-                }
-                if (parser != null)
-                {
-                    switch (parser.ToLower())
+                    string logFile = trigger.Args.NextWord();
+                    string parser = trigger.Args.Remainder;
+                    int parserChoice = 1;
+                    bool temp = int.TryParse(parser, out parserChoice);
+                    if (!temp)
                     {
-                        case "ksniffer":
-                            {
-                                parserChoice = 0;
-                            }
-                            break;
-                        case "ksniffersingleline":
-                            {
-                                parserChoice = 1;
-                            }
-                            break;
-                        case "sniffitzt":
-                            {
-                                parserChoice = 2;
-                            }
-                            break;
+                        parserChoice = 1;
                     }
+                    if (parser != null)
+                    {
+                        switch (parser.ToLower())
+                        {
+                            case "ksniffer":
+                                {
+                                    parserChoice = 0;
+                                }
+                                break;
+                            case "ksniffersingleline":
+                                {
+                                    parserChoice = 1;
+                                }
+                                break;
+                            case "sniffitzt":
+                                {
+                                    parserChoice = 2;
+                                }
+                                break;
+                        }
+                    }
+                    trigger.Reply("Command recieved attempting to parse file: {0} with parser {1}", logFile, parser);
+                    _logFile = logFile;
+                    _parserConsoleInput.WriteLine("pa uf -a");
+                    _parserConsoleInput.WriteLine("pa sp {0}", parserChoice);
+                    _parserConsoleInput.WriteLine(string.Format("pa sf {0}{1}", UnparsedFolder, logFile));
+                    _parserConsoleInput.WriteLine(string.Format("pa so {0}{1}", ParsedFolder, logFile));
+                    _parserConsoleInput.WriteLine("pa af eo _MOVE,_WARDEN");
+                    _parserConsoleInput.WriteLine("pa parse");
+                    _replyChan = trigger.Channel.ToString();
                 }
-                trigger.Reply("Command recieved attempting to parse file: {0} with parser {1}", logFile, parser);
-                _logFile = logFile;
-                _parserConsoleInput.WriteLine("pa uf -a");
-                _parserConsoleInput.WriteLine("pa sp {0}", parserChoice);
-                _parserConsoleInput.WriteLine(string.Format("pa sf {0}{1}", UnparsedFolder, logFile));
-                _parserConsoleInput.WriteLine(string.Format("pa so {0}{1}", ParsedFolder, logFile));
-                _parserConsoleInput.WriteLine("pa af eo _MOVE,_WARDEN");
-                _parserConsoleInput.WriteLine("pa parse");
-                _replyChan = trigger.Channel.ToString();
+                catch(Exception e)
+                {
+                    Print(e.Data + e.StackTrace,true);
+                }
             }
         }
 
@@ -1043,63 +1176,69 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                if (trigger.Args.Remainder.Length > 0)
+                try
                 {
-                    _readWriter = new StreamWriter(GeneralFolder + "Options.txt");
-                    _readWriter.AutoFlush = false;
-                    string dumptype;
-                    switch (trigger.Args.NextWord().ToLower())
+                    if (trigger.Args.Remainder.Length > 0)
                     {
-                        case "areatriggers":
-                            {
-                                dumptype = "areatriggers.txt";
-                            }
-                            break;
-                        case "gos":
-                            {
-                                dumptype = "gos.txt";
-                            }
-                            break;
-                        case "items":
-                            {
-                                dumptype = "items.txt";
-                            }
-                            break;
-                        case "npcs":
-                            {
-                                dumptype = "npcs.txt";
-                            }
-                            break;
-                        case "quests":
-                            {
-                                dumptype = "quests.txt";
-                            }
-                            break;
-                        default:
-                        case "spellsandeffects":
-                            {
-                                dumptype = "spellsandeffects.txt";
-                            }
-                            break;
-                        case "vehicles":
-                            {
-                                dumptype = "vehicles.txt";
-                            }
-                            break;
+                        _readWriter = new StreamWriter(GeneralFolder + "Options.txt") {AutoFlush = false};
+                        string dumptype;
+                        switch (trigger.Args.NextWord().ToLower())
+                        {
+                            case "areatriggers":
+                                {
+                                    dumptype = "areatriggers.txt";
+                                }
+                                break;
+                            case "gos":
+                                {
+                                    dumptype = "gos.txt";
+                                }
+                                break;
+                            case "items":
+                                {
+                                    dumptype = "items.txt";
+                                }
+                                break;
+                            case "npcs":
+                                {
+                                    dumptype = "npcs.txt";
+                                }
+                                break;
+                            case "quests":
+                                {
+                                    dumptype = "quests.txt";
+                                }
+                                break;
+                            default:
+                            case "spellsandeffects":
+                                {
+                                    dumptype = "spellsandeffects.txt";
+                                }
+                                break;
+                            case "vehicles":
+                                {
+                                    dumptype = "vehicles.txt";
+                                }
+                                break;
+                        }
+                        List<string> readOutput = DumpReader.Read(dumptype, trigger.Args.Remainder);
+                        int id = -1;
+                        foreach (var line in readOutput)
+                        {
+                            id++;
+                            _readWriter.WriteLine(id + ": " + line);
+                        }
+                        _readWriter.Close();
+                        trigger.Reply(WebLinkToGeneralFolder + "Options.txt");
                     }
-                    List<string> readOutput = DumpReader.Read(dumptype, trigger.Args.Remainder);
-                    int id = -1;
-                    foreach (var line in readOutput)
+                    else
                     {
-                        id++;
-                        _readWriter.WriteLine(id + ": " + line);
+                        trigger.Reply("It looks to me like you didnt put a query! :O");
                     }
-                    _readWriter.Close();
-                    trigger.Reply(WebLinkToGeneralFolder + "Options.txt");
                 }
-                else
+                catch(Exception e)
                 {
-                    trigger.Reply("It looks to me like you didnt put a query! :O");
+                    Print(e.Data + e.StackTrace,true);
                 }
             }
         }
@@ -1119,16 +1258,23 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                var norrisLines = new List<string>();
-                var norris = new StreamReader("ChuckNorrisFacts.txt");
-                while (!norris.EndOfStream)
+                try
                 {
-                    norrisLines.Add(norris.ReadLine());
+                    var norrisLines = new List<string>();
+                    var norris = new StreamReader("ChuckNorrisFacts.txt");
+                    while (!norris.EndOfStream)
+                    {
+                        norrisLines.Add(norris.ReadLine());
+                    }
+                    var rand = new Random();
+                    int randnum = rand.Next(0, norrisLines.Count - 1);
+                    trigger.Reply(norrisLines[randnum]);
+                    norris.Close();
                 }
-                var rand = new Random();
-                int randnum = rand.Next(0, norrisLines.Count - 1);
-                trigger.Reply(norrisLines[randnum]);
-                norris.Close();
+                catch(Exception e)
+                {
+                    Print(e.Data + e.StackTrace,true);
+                }
             }
         }
 
@@ -1147,16 +1293,23 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                var linusLines = new List<string>();
-                var linus = new StreamReader("LinusFacts.txt");
-                while (!linus.EndOfStream)
+                try
                 {
-                    linusLines.Add(linus.ReadLine());
+                    var linusLines = new List<string>();
+                    var linus = new StreamReader("LinusFacts.txt");
+                    while (!linus.EndOfStream)
+                    {
+                        linusLines.Add(linus.ReadLine());
+                    }
+                    var rand = new Random();
+                    int randnum = rand.Next(0, linusLines.Count - 1);
+                    trigger.Reply(linusLines[randnum]);
+                    linus.Close();
                 }
-                var rand = new Random();
-                int randnum = rand.Next(0, linusLines.Count - 1);
-                trigger.Reply(linusLines[randnum]);
-                linus.Close();
+                catch(Exception e)
+                {
+                    Print(e.Data + e.StackTrace,true);
+                }
             }
         }
 
@@ -1322,24 +1475,32 @@ namespace Jad_Bot
                 catch (Exception e)
                 {
                     trigger.Reply("Please check your input, error occured: {0}", e.Message);
+                    Print(e.Data + e.StackTrace,true);
                 }
             }
 
             private static void GetFilesNormalName(DirectoryInfo sourceDir, List<FileInfo> files)
             {
-                foreach (var dir in sourceDir.GetDirectories())
+                try
                 {
-                    if (dir.Name.Contains(".svn") | dir.Name.Contains(".git") | dir.Name.Contains("obj"))
+                    foreach (var dir in sourceDir.GetDirectories())
                     {
-                        continue;
-                    }
-                    foreach (var file in dir.GetFiles())
-                    {
-                        if (file.Extension == ".dll")
+                        if (dir.Name.Contains(".svn") | dir.Name.Contains(".git") | dir.Name.Contains("obj"))
+                        {
                             continue;
-                        files.Add(file);
+                        }
+                        foreach (var file in dir.GetFiles())
+                        {
+                            if (file.Extension == ".dll")
+                                continue;
+                            files.Add(file);
+                        }
+                        GetFilesNormalName(dir, files);
                     }
-                    GetFilesNormalName(dir, files);
+                }
+                catch(Exception e)
+                {
+                    Print(e.Data + e.StackTrace,true);
                 }
             }
 
@@ -1351,57 +1512,66 @@ namespace Jad_Bot
 
             public static string ReadFileLines(string readFile, int readLineLower, int readLineUpper, int fileId)
             {
-                var syn = new SyntaxHighlighter {AddStyleDefinition = true};
-                var file = new StreamReader(readFile);
-                int currentlinenumber = 1;
-                if (readLineUpper == 0 && readLineUpper < readLineLower)
+                try
                 {
-                    readLineUpper = readLineLower;
-                }
-                string returnlines = "<table border=\"0\"> <style> .highlighttext { BACKGROUND-COLOR:#F4FA58 } </style>";
-                var filelinesids = new List<string>();
-                var filelines = new List<string>();
-                string path = Matches[fileId];
-                path = path.Replace("c:\\wcellsource", "Master");
-                path = path.Replace('\\', '-');
-                while (!file.EndOfStream)
-                {
-                    string line = file.ReadLine();
-                    var fileinfo = new FileInfo(readFile);
-                    if (fileinfo.Extension == ".cs")
-                        line = syn.Highlight(line);
-                    syn.AddStyleDefinition = false;
-                    if (currentlinenumber >= readLineLower && currentlinenumber <= readLineUpper && readLineUpper != 0)
+                    var syn = new SyntaxHighlighter {AddStyleDefinition = true};
+                    var file = new StreamReader(readFile);
+                    int currentlinenumber = 1;
+                    if (readLineUpper == 0 && readLineUpper < readLineLower)
                     {
-                        filelinesids.Add(
-                            string.Format("<a name=\"{0}\" href=\"{1}/{2}.html#{0}\">", currentlinenumber,
-                                          WebLinkToGeneralFolder, path) + currentlinenumber + "</a>:");
-                        filelines.Add(HighlightText(line));
+                        readLineUpper = readLineLower;
                     }
-                    else
+                    string returnlines =
+                        "<table border=\"0\"> <style> .highlighttext { BACKGROUND-COLOR:#F4FA58 } </style>";
+                    var filelinesids = new List<string>();
+                    var filelines = new List<string>();
+                    string path = Matches[fileId];
+                    path = path.Replace("c:\\wcellsource", "Master");
+                    path = path.Replace('\\', '-');
+                    while (!file.EndOfStream)
                     {
-                        filelinesids.Add(
-                            string.Format("<a name=\"{0}\" href=\"{1}/{2}.html#{0}\">", currentlinenumber,
-                                          WebLinkToGeneralFolder, path) + currentlinenumber + "</a>:");
-                        filelines.Add(line);
+                        string line = file.ReadLine();
+                        var fileinfo = new FileInfo(readFile);
+                        if (fileinfo.Extension == ".cs")
+                            line = syn.Highlight(line);
+                        syn.AddStyleDefinition = false;
+                        if (currentlinenumber >= readLineLower && currentlinenumber <= readLineUpper &&
+                            readLineUpper != 0)
+                        {
+                            filelinesids.Add(
+                                string.Format("<a name=\"{0}\" href=\"{1}/{2}.html#{0}\">", currentlinenumber,
+                                              WebLinkToGeneralFolder, path) + currentlinenumber + "</a>:");
+                            filelines.Add(HighlightText(line));
+                        }
+                        else
+                        {
+                            filelinesids.Add(
+                                string.Format("<a name=\"{0}\" href=\"{1}/{2}.html#{0}\">", currentlinenumber,
+                                              WebLinkToGeneralFolder, path) + currentlinenumber + "</a>:");
+                            filelines.Add(line);
+                        }
+                        currentlinenumber = currentlinenumber + 1;
                     }
-                    currentlinenumber = currentlinenumber + 1;
+                    string fileids = "";
+                    string fileLines = "";
+                    foreach (var fileLineid in filelinesids)
+                    {
+                        fileids = fileids + "\n" + fileLineid;
+                    }
+                    foreach (var fileline in filelines)
+                    {
+                        fileLines = fileLines + "\n" + fileline;
+                    }
+                    returnlines = returnlines + "\n <tr><td><pre>" + fileids + "</pre></td> <td><pre>" + fileLines +
+                                  "</pre></td></tr>";
+                    file.Close();
+                    returnlines = returnlines + "</table>";
+                    return returnlines;
                 }
-                string fileids = "";
-                string fileLines = "";
-                foreach (var fileLineid in filelinesids)
+                catch(Exception e)
                 {
-                    fileids = fileids + "\n" + fileLineid;
+                    Print(e.Data + e.StackTrace,true);
                 }
-                foreach (var fileline in filelines)
-                {
-                    fileLines = fileLines + "\n" + fileline;
-                }
-                returnlines = returnlines + "\n <tr><td><pre>" + fileids + "</pre></td> <td><pre>" + fileLines +
-                              "</pre></td></tr>";
-                file.Close();
-                returnlines = returnlines + "</table>";
-                return returnlines;
             }
         }
 
@@ -1421,85 +1591,93 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                string nextWord = trigger.Args.NextWord().ToLower();
-                if (nextWord == "kill")
+                try
                 {
-                    trigger.Reply("Killing WCell and restarting it");
-                    Process[] killWCell = System.Diagnostics.Process.GetProcessesByName("wcell.realmserverconsole");
-                    foreach (var p in killWCell)
+                    string nextWord = trigger.Args.NextWord().ToLower();
+                    if (nextWord == "kill")
                     {
-                        p.Kill();
+                        trigger.Reply("Killing WCell and restarting it");
+                        Process[] killWCell = System.Diagnostics.Process.GetProcessesByName("wcell.realmserverconsole");
+                        foreach (var p in killWCell)
+                        {
+                            p.Kill();
+                        }
+                        var wcellRealmserver = new Process();
+                        wcellRealmserver.StartInfo.FileName = @"c:\run\debug\wcell.realmserverconsole.exe";
+                        wcellRealmserver.StartInfo.WorkingDirectory = @"c:\realmserver\";
+                        wcellRealmserver.Start();
+                        Process[] killauth = System.Diagnostics.Process.GetProcessesByName("wcell.authserverconsole");
+                        foreach (var p in killauth)
+                        {
+                            p.Kill();
+                        }
+                        var wCellAuthserver = new Process();
+                        wCellAuthserver.StartInfo.FileName = @"c:\run\authserver\wcell.authserverconsole.exe";
+                        wCellAuthserver.StartInfo.WorkingDirectory = @"c:\authserver";
+                        wCellAuthserver.StartInfo.UseShellExecute = true;
+                        wcellRealmserver.StartInfo.UseShellExecute = true;
+                        wCellAuthserver.Start();
+                        wcellRealmserver.Start();
                     }
-                    var wcellRealmserver = new Process();
-                    wcellRealmserver.StartInfo.FileName = @"c:\run\debug\wcell.realmserverconsole.exe";
-                    wcellRealmserver.StartInfo.WorkingDirectory = @"c:\realmserver\";
-                    wcellRealmserver.Start();
-                    Process[] killauth = System.Diagnostics.Process.GetProcessesByName("wcell.authserverconsole");
-                    foreach (var p in killauth)
+                    if (nextWord == "safe")
                     {
-                        p.Kill();
+                        trigger.Reply("Safely shutting down WCell saving data and Starting it up again");
+                        var prog = new Process
+                                       {
+                                           StartInfo =
+                                               {FileName = @"c:\program_launcher.exe", Arguments = @"c:\config.txt"}
+                                       };
+                        prog.Start();
                     }
-                    var wCellAuthserver = new Process();
-                    wCellAuthserver.StartInfo.FileName = @"c:\run\authserver\wcell.authserverconsole.exe";
-                    wCellAuthserver.StartInfo.WorkingDirectory = @"c:\authserver";
-                    wCellAuthserver.StartInfo.UseShellExecute = true;
-                    wcellRealmserver.StartInfo.UseShellExecute = true;
-                    wCellAuthserver.Start();
-                    wcellRealmserver.Start();
-                }
-                if (nextWord == "safe")
-                {
-                    trigger.Reply("Safely shutting down WCell saving data and Starting it up again");
-                    var prog = new Process
-                                   {
-                                       StartInfo = {FileName = @"c:\program_launcher.exe", Arguments = @"c:\config.txt"}
-                                   };
-                    prog.Start();
-                }
-                if (nextWord == "utility")
-                {
-                    trigger.Reply("Restarting Utility - If there is no auto restarter the utility will not return");
-                    Parser.Kill();
-                    Environment.Exit(0);
-                }
-                if (nextWord == "authserver")
-                {
-                    Process[] authServer = System.Diagnostics.Process.GetProcessesByName("WCell.AuthServerConsole");
-                    foreach (var process in authServer)
+                    if (nextWord == "utility")
                     {
-                        trigger.Reply("Attempting to restart AuthServer");
+                        trigger.Reply("Restarting Utility - If there is no auto restarter the utility will not return");
+                        Parser.Kill();
+                        Environment.Exit(0);
+                    }
+                    if (nextWord == "authserver")
+                    {
+                        Process[] authServer = System.Diagnostics.Process.GetProcessesByName("WCell.AuthServerConsole");
+                        foreach (var process in authServer)
+                        {
+                            trigger.Reply("Attempting to restart AuthServer");
+                            process.Kill();
+                            var wCellStarter = new Process
+                                                   {
+                                                       StartInfo =
+                                                           {
+                                                               FileName = @"c:\run\debug\wcell.authserverconsole.exe",
+                                                               UseShellExecute = true
+                                                           }
+                                                   };
+                            wCellStarter.Start();
+                        }
+                        Thread.Sleep(3000);
+                        authServer = System.Diagnostics.Process.GetProcessesByName("WCell.AuthServerConsole");
+                        if (authServer.Length > 0)
+                            trigger.Reply("AuthServer Seems to be Online again!");
+                    }
+                    if (nextWord != "realmserver") return;
+                    Process[] realmServer = System.Diagnostics.Process.GetProcessesByName("WCell.RealmServerConsole");
+                    foreach (var process in realmServer)
+                    {
+                        trigger.Reply("Attempting to restart RealmServer");
                         process.Kill();
-                        var wCellStarter = new Process
-                                               {
-                                                   StartInfo =
-                                                       {
-                                                           FileName = @"c:\run\debug\wcell.authserverconsole.exe",
-                                                           UseShellExecute = true
-                                                       }
-                                               };
-                        wCellStarter.Start();
+                        var wcellRealmserver = new Process();
+                        wcellRealmserver.StartInfo.FileName = @"c:\run\debug\wcell.realmserverconsole.exe";
+                        wcellRealmserver.StartInfo.WorkingDirectory = @"c:\run\debug\";
+                        wcellRealmserver.StartInfo.UseShellExecute = true;
+                        wcellRealmserver.Start();
                     }
                     Thread.Sleep(3000);
-                    authServer = System.Diagnostics.Process.GetProcessesByName("WCell.AuthServerConsole");
-                    if (authServer.Length > 0)
-                        trigger.Reply("AuthServer Seems to be Online again!");
+                    realmServer = System.Diagnostics.Process.GetProcessesByName("WCell.RealmServerConsole");
+                    if (realmServer.Length > 0)
+                        trigger.Reply("RealmServer Seems to be Online again!");
                 }
-                if (nextWord != "realmserver") return;
-                Process[] realmServer = System.Diagnostics.Process.GetProcessesByName("WCell.RealmServerConsole");
-                foreach (var process in realmServer)
+                catch(Exception e)
                 {
-                    trigger.Reply("Attempting to restart RealmServer");
-                    process.Kill();
-                    var wcellRealmserver = new Process();
-                    wcellRealmserver.StartInfo.FileName = @"c:\run\debug\wcell.realmserverconsole.exe";
-                    wcellRealmserver.StartInfo.WorkingDirectory = @"c:\run\debug\";
-                    wcellRealmserver.StartInfo.UseShellExecute = true;
-                    wcellRealmserver.Start();
+                    Print(e.Data + e.StackTrace,true);
                 }
-                Thread.Sleep(3000);
-                realmServer = System.Diagnostics.Process.GetProcessesByName("WCell.RealmServerConsole");
-                if (realmServer.Length > 0)
-                    trigger.Reply("RealmServer Seems to be Online again!");
             }
         }
 
@@ -1562,6 +1740,7 @@ namespace Jad_Bot
                 catch (Exception excep)
                 {
                     trigger.Reply("The Following Exception Occured {0}, check input", excep.Message);
+                    Print(excep.Data + excep.StackTrace,true);
                 }
             }
         }
@@ -1636,6 +1815,7 @@ namespace Jad_Bot
                 {
                     trigger.Reply("I cant steal their cookie :'(");
                     trigger.Reply(e.Message);
+                    Print(e.Data + e.StackTrace,true);
                 }
             }
         }
