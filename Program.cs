@@ -1463,7 +1463,6 @@ namespace Jad_Bot
                         selectionWriter.Write(lines);
                         selectionWriter.WriteLine("\n</body>\n</html>");
                         trigger.Reply(WebLinkToGeneralFolder + "{0}.html", path);
-                        _readWriter.Flush();
                         selectionWriter.Close();
                     }
                     Matches.Clear();
