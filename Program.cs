@@ -32,9 +32,7 @@ namespace Jad_Bot
 
         #endregion
 
-        public static bool Grabinput = true;
-        public static string ToolsOutput = "";
-        public static DumpReader DumpReader = new DumpReader();
+        private static readonly DumpReader DumpReader = new DumpReader();
 
         #region IRC Connection info
 
@@ -547,6 +545,7 @@ namespace Jad_Bot
             {
                 Print(e.Data + e.StackTrace,true);
             }
+            return null;
         }
 
         private static string RandomString(int size, bool lowerCase)
@@ -555,10 +554,9 @@ namespace Jad_Bot
             {
                 var builder = new StringBuilder();
                 var random = new Random();
-                char ch;
-                for (int i = 0; i < size; i++)
+                for (var i = 0; i < size; i++)
                 {
-                    ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26*random.NextDouble() + 65)));
+                    var ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26*random.NextDouble() + 65)));
                     builder.Append(ch);
                 }
                 return lowerCase ? builder.ToString().ToLower() : builder.ToString();
@@ -581,6 +579,7 @@ namespace Jad_Bot
             {
                 Print(e.Data + e.StackTrace,true);
             }
+            return 0;
         }
 
         #endregion
@@ -858,7 +857,7 @@ namespace Jad_Bot
                     WriteErrorSystem.WriteError(new List<string>
                                                     {e.Message + e.StackTrace + e.InnerException + e.Source});
                     trigger.Reply("Error occured:{0}", WebLinkToGeneralFolder + "ErrorLog.txt");
-                    Print(string.Format("Error Occured in download file command: {0} {1}",e.Message + e.StackTrace + e.InnerException + e.Source),true);
+                    Print(string.Format("Error Occured in download file command: {0}",e.Message + e.StackTrace + e.InnerException + e.Source),true);
                 }
             }
         }
@@ -1071,7 +1070,7 @@ namespace Jad_Bot
                 {
                     string logFile = trigger.Args.NextWord();
                     string parser = trigger.Args.Remainder;
-                    int parserChoice = 1;
+                    int parserChoice;
                     bool temp = int.TryParse(parser, out parserChoice);
                     if (!temp)
                     {
@@ -1210,7 +1209,6 @@ namespace Jad_Bot
                                 }
                                 break;
                             default:
-                            case "spellsandeffects":
                                 {
                                     dumptype = "spellsandeffects.txt";
                                 }
@@ -1221,7 +1219,7 @@ namespace Jad_Bot
                                 }
                                 break;
                         }
-                        List<string> readOutput = DumpReader.Read(dumptype, trigger.Args.Remainder);
+                        IEnumerable<string> readOutput = DumpReader.Read(dumptype, trigger.Args.Remainder);
                         int id = -1;
                         foreach (var line in readOutput)
                         {
@@ -1489,12 +1487,7 @@ namespace Jad_Bot
                         {
                             continue;
                         }
-                        foreach (var file in dir.GetFiles())
-                        {
-                            if (file.Extension == ".dll")
-                                continue;
-                            files.Add(file);
-                        }
+                        files.AddRange(dir.GetFiles().Where(file => file.Extension != ".dll"));
                         GetFilesNormalName(dir, files);
                     }
                 }
@@ -1552,17 +1545,19 @@ namespace Jad_Bot
                         }
                         currentlinenumber = currentlinenumber + 1;
                     }
-                    string fileids = "";
-                    string fileLines = "";
-                    foreach (var fileLineid in filelinesids)
+                    string[] fileids = {""};
+                    string[] fileLines = {""};
+                    filelinesids.ForEach(filelineid => fileids[0] = fileids[0] + "\n" + filelineid);
+                    /*foreach (var fileLineid in filelinesids)
                     {
-                        fileids = fileids + "\n" + fileLineid;
-                    }
-                    foreach (var fileline in filelines)
+                        fileids[0] = fileids[0] + "\n" + fileLineid;
+                    }*/
+                    filelines.ForEach(fileline => fileLines[0] = fileLines[0] + "\n" + fileline);
+                    /*foreach (var fileline in filelines)
                     {
-                        fileLines = fileLines + "\n" + fileline;
-                    }
-                    returnlines = returnlines + "\n <tr><td><pre>" + fileids + "</pre></td> <td><pre>" + fileLines +
+                        fileLines[0] = fileLines[0] + "\n" + fileline;
+                    }*/
+                    returnlines = returnlines + "\n <tr><td><pre>" + fileids[0] + "</pre></td> <td><pre>" + fileLines[0] +
                                   "</pre></td></tr>";
                     file.Close();
                     returnlines = returnlines + "</table>";
@@ -1572,6 +1567,7 @@ namespace Jad_Bot
                 {
                     Print(e.Data + e.StackTrace,true);
                 }
+                return null;
             }
         }
 
@@ -1602,19 +1598,30 @@ namespace Jad_Bot
                         {
                             p.Kill();
                         }
-                        var wcellRealmserver = new Process();
-                        wcellRealmserver.StartInfo.FileName = @"c:\run\debug\wcell.realmserverconsole.exe";
-                        wcellRealmserver.StartInfo.WorkingDirectory = @"c:\realmserver\";
+                        var wcellRealmserver = new Process
+                                                   {
+                                                       StartInfo =
+                                                           {
+                                                               FileName = @"c:\run\debug\wcell.realmserverconsole.exe",
+                                                               WorkingDirectory = @"c:\realmserver\"
+                                                           }
+                                                   };
                         wcellRealmserver.Start();
                         Process[] killauth = System.Diagnostics.Process.GetProcessesByName("wcell.authserverconsole");
                         foreach (var p in killauth)
                         {
                             p.Kill();
                         }
-                        var wCellAuthserver = new Process();
-                        wCellAuthserver.StartInfo.FileName = @"c:\run\authserver\wcell.authserverconsole.exe";
-                        wCellAuthserver.StartInfo.WorkingDirectory = @"c:\authserver";
-                        wCellAuthserver.StartInfo.UseShellExecute = true;
+                        var wCellAuthserver = new Process
+                                                  {
+                                                      StartInfo =
+                                                          {
+                                                              FileName =
+                                                                  @"c:\run\authserver\wcell.authserverconsole.exe",
+                                                              WorkingDirectory = @"c:\authserver",
+                                                              UseShellExecute = true
+                                                          }
+                                                  };
                         wcellRealmserver.StartInfo.UseShellExecute = true;
                         wCellAuthserver.Start();
                         wcellRealmserver.Start();
@@ -1663,10 +1670,15 @@ namespace Jad_Bot
                     {
                         trigger.Reply("Attempting to restart RealmServer");
                         process.Kill();
-                        var wcellRealmserver = new Process();
-                        wcellRealmserver.StartInfo.FileName = @"c:\run\debug\wcell.realmserverconsole.exe";
-                        wcellRealmserver.StartInfo.WorkingDirectory = @"c:\run\debug\";
-                        wcellRealmserver.StartInfo.UseShellExecute = true;
+                        var wcellRealmserver = new Process
+                                                   {
+                                                       StartInfo =
+                                                           {
+                                                               FileName = @"c:\run\debug\wcell.realmserverconsole.exe",
+                                                               WorkingDirectory = @"c:\run\debug\",
+                                                               UseShellExecute = true
+                                                           }
+                                                   };
                         wcellRealmserver.Start();
                     }
                     Thread.Sleep(3000);
@@ -1720,10 +1732,10 @@ namespace Jad_Bot
                 try
                 {
                     string randfilename = GetLink();
-                    _selectionWriter = new StreamWriter(GeneralFolder + string.Format("Selection{0}.txt", randfilename));
-                    _selectionWriter.AutoFlush = false;
+                    _selectionWriter = new StreamWriter(GeneralFolder + string.Format("Selection{0}.txt", randfilename))
+                                           {AutoFlush = false};
                     List<string> selectOutput = DumpReader.Select(trigger.Args.NextInt());
-                    if (selectOutput.Count > 0 && selectOutput != null)
+                    if (selectOutput.Count > 0)
                     {
                         foreach (var line in selectOutput)
                         {
@@ -1783,11 +1795,11 @@ namespace Jad_Bot
             {
                 try
                 {
-                    string objectowner = trigger.Args.Remainder;
-                    string Object = "cookie";
+                    var objectowner = trigger.Args.Remainder;
+                    var obj = "cookie";
                     if (trigger.Args.NextModifiers() == "object")
                     {
-                        Object = trigger.Args.NextWord();
+                        obj = trigger.Args.NextWord();
                     }
                     string target = trigger.Target.ToString();
                     if (trigger.Args.NextModifiers() == "target")
@@ -1798,7 +1810,7 @@ namespace Jad_Bot
                     {
                         trigger.Reply("You didn't tell me who to steal from!");
                     }
-                    if (Object.ToLower() == "cookie")
+                    if (obj.ToLower() == "cookie")
                     {
                         Irc.CommandHandler.Describe(target,
                                                     string.Format("steals {0}'s cookie, om nom nom nom!", objectowner),
@@ -1808,7 +1820,7 @@ namespace Jad_Bot
                     {
                         Irc.CommandHandler.Describe(target,
                                                     string.Format("steals {0}'s {1}, ha! Pwned", trigger.Args.Remainder,
-                                                                  Object), trigger.Args);
+                                                                  obj), trigger.Args);
                     }
                 }
                 catch (Exception e)
