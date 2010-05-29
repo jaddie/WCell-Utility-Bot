@@ -1416,7 +1416,6 @@ namespace Jad_Bot
                                 "\n There are even more results, check the link or be more specific use same command again but with -i file id at the start.");
                             trigger.Reply(WebLinkToGeneralFolder + "SourceOptions.txt");
                         }
-                        readWriter.Flush();
                         readWriter.Close();
                     }
                     else
@@ -1434,7 +1433,6 @@ namespace Jad_Bot
                             selectionWriter.Write(lines);
                             selectionWriter.WriteLine("</pre>\n</body>\n</html>");
                             trigger.Reply(WebLinkToGeneralFolder + "{0}.html", path);
-                            _readWriter.Flush();
                             selectionWriter.Close();
                         }
                         else
