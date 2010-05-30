@@ -26,19 +26,19 @@ namespace Jad_Bot
 
         #region Lists
 
-        private static readonly List<string> ChannelList = new List<string> {"#WOC", "#wcell.dev,wcellrulz", "#wcell"};
-        private static readonly List<string> Matches = new List<string>();
-        private static readonly List<string> FileLines = new List<string>();
+        public static readonly List<string> ChannelList = new List<string> {"#WOC", "#wcell.dev,wcellrulz", "#wcell"};
+        public static readonly List<string> Matches = new List<string>();
+        public static readonly List<string> FileLines = new List<string>();
 
         #endregion
 
-        private static readonly DumpReader DumpReader = new DumpReader();
+        public static readonly DumpReader DumpReader = new DumpReader();
 
         #region IRC Connection info
 
         private const int Port = 6667;
 
-        private static readonly JadBot Irc = new JadBot
+        public static readonly JadBot Irc = new JadBot
                                                  {
                                                      Nicks = new[] {"WCellUtilityBot", "Jad|UtilityBot"},
                                                      UserName = "Jad_WCellParser",
@@ -52,9 +52,9 @@ namespace Jad_Bot
 
         #region Streams
 
-        private static StreamReader _config;
-        private static StreamWriter _parserConsoleInput;
-        private static readonly StreamWriter IrcLog = new StreamWriter("IrcLog.log", true);
+        public static StreamReader Config;
+        public static StreamWriter ParserConsoleInput;
+        public static readonly StreamWriter IrcLog = new StreamWriter("IrcLog.log", true);
         #endregion
 
         #region Folder strings
@@ -73,17 +73,17 @@ namespace Jad_Bot
 
         #region Other
 
-        private static readonly Process Parser = new Process();
-        private static string _logFile;
-        private static string _replyChan = "#woc";
-        private static readonly Stopwatch Runtimer = new Stopwatch();
+        public static readonly Process Parser = new Process();
+        public static string LogFile;
+        public static string ReplyChan = "#woc";
+        public static readonly Stopwatch Runtimer = new Stopwatch();
 
         #endregion
 
         #region ErrorHandling
 
-        private static readonly Timer ErrorTimer = new Timer();
-        private static string _error = "Error: ";
+        public static readonly Timer ErrorTimer = new Timer();
+        public static string Error = "Error: ";
 
         #endregion
 
@@ -105,11 +105,11 @@ namespace Jad_Bot
                     var configfile = File.CreateText("Config.txt");
                     configfile.WriteLine("ToolsFolder:");
                     configfile.Close();
-                    _config = new StreamReader("Config.txt");
+                    Config = new StreamReader("Config.txt");
                 }
                 else
                 {
-                    _config = new StreamReader("config.txt");
+                    Config = new StreamReader("config.txt");
                 }
 
                 #endregion
@@ -117,11 +117,11 @@ namespace Jad_Bot
                 #region Setup Variables from config
 
                 string readLine;
-                while (!_config.EndOfStream)
+                while (!Config.EndOfStream)
                 {
                     try
                     {
-                        readLine = _config.ReadLine();
+                        readLine = Config.ReadLine();
                         if (readLine.StartsWith("ToolsFolder:", true, null))
                             ToolsFolder = readLine.Remove(0, 12);
                         if (readLine.StartsWith("UnparsedFolder:", true, null))
@@ -148,7 +148,7 @@ namespace Jad_Bot
                         Console.WriteLine("Please check your config, one of your variables is not correctly set.");
                     }
                 }
-                _config.Close();
+                Config.Close();
 
                 #region ExceptionsForNullConfigSettings
 
@@ -179,7 +179,7 @@ namespace Jad_Bot
                 Parser.StartInfo.WorkingDirectory = ToolsFolder;
                 Parser.Start();
                 Parser.BeginOutputReadLine();
-                _parserConsoleInput = new StreamWriter(Parser.StandardInput.BaseStream) {AutoFlush = false};
+                ParserConsoleInput = new StreamWriter(Parser.StandardInput.BaseStream) {AutoFlush = false};
                 // Input into the console
                 Irc.Disconnected += Irc_Disconnected;
                 Process utility = Process.GetCurrentProcess();
@@ -234,7 +234,7 @@ namespace Jad_Bot
             #endregion
         }
 
-        private static void UtilityExited(object sender, EventArgs e)
+        public static void UtilityExited(object sender, EventArgs e)
         {
             Parser.Kill();
         }
@@ -254,12 +254,12 @@ namespace Jad_Bot
 
         }
 
-        private static void Client_Connected(Connection con)
+        public static void Client_Connected(Connection con)
         {
             Print("Connected to IRC Server", true);
         }
 
-        private static void Irc_Disconnected(IrcClient arg1, bool arg2)
+        public static void Irc_Disconnected(IrcClient arg1, bool arg2)
         {
             try
             {
@@ -274,7 +274,7 @@ namespace Jad_Bot
 
         }
 
-        private static void OnConsoleText(StringStream cText)
+        public static void OnConsoleText(StringStream cText)
         {
             try
             {
@@ -388,7 +388,7 @@ namespace Jad_Bot
             }
         }
 
-        private static void OnConnecting(Connection con)
+        public static void OnConnecting(Connection con)
         {
             Print("Connecting to IRC server", true);
             IrcLog.WriteLine(DateTime.Now + " : Connecting to server");
@@ -399,7 +399,7 @@ namespace Jad_Bot
             Print(user + text.String, true);
         }
 
-        private static string ReactToAction()
+        public static string ReactToAction()
         {
             try
             {
@@ -454,7 +454,7 @@ namespace Jad_Bot
 
         #region ParserOutput Handling
 
-        private static void Parser_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        public static void Parser_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             #region Done
             try
@@ -463,18 +463,18 @@ namespace Jad_Bot
                 {
                     try
                     {
-                        using (var parsedFile = new StreamReader(ParsedFolder + _logFile))
+                        using (var parsedFile = new StreamReader(ParsedFolder + LogFile))
                         {
                             if (parsedFile.BaseStream.Length < 1)
                                 throw new Exception("Parsed file is empty");
 
-                            Irc.CommandHandler.Msg(_replyChan, "Completed Parsing your file is at {0}{1}",
-                                                   WebLinkToParsedFolder, _logFile);
+                            Irc.CommandHandler.Msg(ReplyChan, "Completed Parsing your file is at {0}{1}",
+                                                   WebLinkToParsedFolder, LogFile);
                         }
                     }
                     catch (Exception excep)
                     {
-                        Irc.CommandHandler.Msg(_replyChan, "The Following Exception Occured {0}, check input file",
+                        Irc.CommandHandler.Msg(ReplyChan, "The Following Exception Occured {0}, check input file",
                                                excep.Message);
                     }
                 }
@@ -493,7 +493,7 @@ namespace Jad_Bot
                     ErrorTimer.Elapsed += ErrorTimerElapsed;
                     while (ErrorTimer.Enabled)
                     {
-                        _error = _error + e.Data + "\n";
+                        Error = Error + e.Data + "\n";
                     }
                 }
 
@@ -507,13 +507,13 @@ namespace Jad_Bot
 
         #region Parser Error Handling
 
-        private static void ErrorTimerElapsed(object sender, ElapsedEventArgs e)
+        public static void ErrorTimerElapsed(object sender, ElapsedEventArgs e)
         {
             try
             {
                 ErrorTimer.Stop();
-                WriteErrorSystem.WriteError(new List<string> {"Exception:", _error});
-                Irc.CommandHandler.Msg(_replyChan, WebLinkToGeneralFolder + "ErrorLog.txt");
+                WriteErrorSystem.WriteError(new List<string> {"Exception:", Error});
+                Irc.CommandHandler.Msg(ReplyChan, WebLinkToGeneralFolder + "ErrorLog.txt");
                 Print(WebLinkToGeneralFolder + "ErrorLog.txt");
             }
             catch(Exception ex)
@@ -545,7 +545,7 @@ namespace Jad_Bot
             return null;
         }
 
-        private static string RandomString(int size, bool lowerCase)
+        public static string RandomString(int size, bool lowerCase)
         {
             try
             {
@@ -565,7 +565,7 @@ namespace Jad_Bot
             }
         }
 
-        private static int RandomNumber(int min, int max)
+        public static int RandomNumber(int min, int max)
         {
             try
             {
@@ -993,69 +993,6 @@ namespace Jad_Bot
 
         #endregion
 
-        #region Nested type: ParseCommand
-
-        public class ParseCommand : Command
-        {
-            public ParseCommand()
-                : base("Parse", "P")
-            {
-                Usage = "Parse logname.extension parsertype";
-                Description =
-                    "Command to parse a log file using the PacketAnalyser in WCell.Tools, parsertype can be selected if not selected defaults to KSnifferSingleLine, to view parsers use the Listparsers command";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                try
-                {
-                    string logFile = trigger.Args.NextWord();
-                    string parser = trigger.Args.Remainder;
-                    int parserChoice;
-                    bool temp = int.TryParse(parser, out parserChoice);
-                    if (!temp)
-                    {
-                        parserChoice = 1;
-                    }
-                    if (parser != null)
-                    {
-                        switch (parser.ToLower())
-                        {
-                            case "ksniffer":
-                                {
-                                    parserChoice = 0;
-                                }
-                                break;
-                            case "ksniffersingleline":
-                                {
-                                    parserChoice = 1;
-                                }
-                                break;
-                            case "sniffitzt":
-                                {
-                                    parserChoice = 2;
-                                }
-                                break;
-                        }
-                    }
-                    trigger.Reply("Command recieved attempting to parse file: {0} with parser {1}", logFile, parser);
-                    _logFile = logFile;
-                    _parserConsoleInput.WriteLine("pa uf -a");
-                    _parserConsoleInput.WriteLine("pa sp {0}", parserChoice);
-                    _parserConsoleInput.WriteLine(string.Format("pa sf {0}{1}", UnparsedFolder, logFile));
-                    _parserConsoleInput.WriteLine(string.Format("pa so {0}{1}", ParsedFolder, logFile));
-                    _parserConsoleInput.WriteLine("pa af eo _MOVE,_WARDEN");
-                    _parserConsoleInput.WriteLine("pa parse");
-                    _replyChan = trigger.Channel.ToString();
-                }
-                catch(Exception e)
-                {
-                    Print(e.Data + e.StackTrace,true);
-                }
-            }
-        }
-
-        #endregion
 
         #region Nested type: ParsedLogsCommand
 
@@ -1348,7 +1285,7 @@ namespace Jad_Bot
                 }
             }
 
-            private static void GetFilesNormalName(DirectoryInfo sourceDir, List<FileInfo> files)
+            public static void GetFilesNormalName(DirectoryInfo sourceDir, List<FileInfo> files)
             {
                 try
                 {
@@ -1368,7 +1305,7 @@ namespace Jad_Bot
                 }
             }
 
-            private static string HighlightText(string text)
+            public static string HighlightText(string text)
             {
                 text = "<span class=\"highlighttext\">" + text + "</span>";
                 return text;
@@ -1637,7 +1574,7 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                _parserConsoleInput.WriteLine(trigger.Args.Remainder);
+                ParserConsoleInput.WriteLine(trigger.Args.Remainder);
                 trigger.Reply("To see streaming output: {0}", WebLinkToGeneralFolder + "toolsoutput.txt");
             }
         }
