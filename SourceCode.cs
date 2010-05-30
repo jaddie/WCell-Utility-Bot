@@ -284,7 +284,6 @@ namespace Jad_Bot
         }
 
         #endregion
-
         #region oldidea
 
         /*var filename = trigger.Args.NextWord(".");
@@ -323,6 +322,5 @@ namespace Jad_Bot
                 return readresults;*/
 
         #endregion
-
     }
 }
