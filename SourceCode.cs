@@ -257,6 +257,72 @@ namespace Jad_Bot
         }
 
         #endregion
+        #region FindMethod
+
+        public class FindMethod : Command
+        {
+            public FindMethod()
+                : base("method", "findmethod", "print")
+            {
+                Usage = "method World.Resync";
+                Description = "Find and display a method from the code";
+            }
+
+            //~find World.ReSync
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    trigger.Reply("Hai, I don't work yet! :O");
+
+                }
+                catch (Exception e)
+                {
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                }
+            }
+        }
+
+        #endregion
+
+        #region oldidea
+
+        /*var filename = trigger.Args.NextWord(".");
+                var method = trigger.Args.NextWord();
+                DirectoryInfo wcellsource = new DirectoryInfo(@"c:\wcellsource");
+                FileInfo[] wcellsourcefiles = wcellsource.GetFiles(string.Format("{0}.cs",filename), SearchOption.AllDirectories);
+                int leftbracecount = 0;
+                int rightbracecount = 0;
+                foreach(FileInfo fileinfo in wcellsourcefiles)
+                {
+                    StreamReader file = new StreamReader(fileinfo.FullName);
+                    while(!file.EndOfStream)
+                    {
+                        string line = file.ReadLine();
+                        if(line.ToLower().Contains(method))
+                        {
+                            while (rightbracecount <= leftbracecount)
+                            {
+                                line = file.ReadLine();
+
+                            }
+                        }
+                    }
+                }
+                readresults.Clear();
+                dumptype = dump;
+                var dumpreader = new StreamReader(dumptype);
+                while (!dumpreader.EndOfStream)
+                {
+                    var currentline = dumpreader.ReadLine().ToLower();
+                    if (currentline.Contains(query.ToLower()))
+                    {
+                        readresults.Add(currentline);
+                    }
+                }
+                return readresults;*/
+
+        #endregion
 
     }
 }
