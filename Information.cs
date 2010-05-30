@@ -100,6 +100,5 @@ namespace Jad_Bot
         }
 
         #endregion
-
     }
 }

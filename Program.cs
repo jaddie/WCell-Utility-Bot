@@ -1330,25 +1330,6 @@ namespace Jad_Bot
 
         #endregion
 
-        #region Nested type: SendToolsCommand
-
-        public class SendToolsCommand : Command
-        {
-            public SendToolsCommand()
-                : base("st", "sendtools", "tools")
-            {
-                Usage = "tools command to send here";
-                Description = "Sends a command directly through the tools project";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                ParserConsoleInput.WriteLine(trigger.Args.Remainder);
-                trigger.Reply("To see streaming output: {0}", WebLinkToGeneralFolder + "toolsoutput.txt");
-            }
-        }
-
-        #endregion
 
 
 
