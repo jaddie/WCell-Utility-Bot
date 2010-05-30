@@ -429,10 +429,5 @@ namespace Jad_Bot
         #endregion
 
         #endregion
-
-
-        #region Custom Commands
-
-        #endregion
     }
 }
