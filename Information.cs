@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Squishy.Irc.Commands;
 
 namespace Jad_Bot
 {
@@ -20,7 +21,7 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                trigger.Reply("The WCell AutoDeploy Logs are at: " + WebLinkToLogsFolder);
+                trigger.Reply("The WCell AutoDeploy Logs are at: " + JadBot.WebLinkToLogsFolder);
             }
         }
 
@@ -38,7 +39,7 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                trigger.Reply(WebLinkToUnparsedFolder);
+                trigger.Reply(JadBot.WebLinkToUnparsedFolder);
             }
         }
 
@@ -58,7 +59,7 @@ namespace Jad_Bot
             public override void Process(CmdTrigger trigger)
             {
                 trigger.Reply("Please use {0} for uploads such as unparsed logs you wish to parse with this bot",
-                              UploadSite);
+                              JadBot.UploadSite);
             }
         }
 
@@ -76,7 +77,7 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                trigger.Reply(WebLinkToParsedFolder);
+                trigger.Reply(JadBot.WebLinkToParsedFolder);
             }
         }
 
@@ -94,7 +95,7 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                trigger.Reply(WebLinkToGeneralFolder);
+                trigger.Reply(JadBot.WebLinkToGeneralFolder);
             }
         }
 
