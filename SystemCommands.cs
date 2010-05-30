@@ -143,7 +143,7 @@ namespace Jad_Bot
                 }
                 catch (Exception e)
                 {
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
             }
         }
@@ -170,7 +170,7 @@ namespace Jad_Bot
                 }
                 catch (Exception e)
                 {
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
             }
         }

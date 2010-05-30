@@ -35,20 +35,20 @@ namespace Jad_Bot
                     {
                         target = trigger.Args.NextWord();
                     }
-                    if (string.IsNullOrEmpty(objectowner))
+                    if (String.IsNullOrEmpty(objectowner))
                     {
                         trigger.Reply("You didn't tell me who to steal from!");
                     }
                     if (obj.ToLower() == "cookie")
                     {
                         JadBot.Irc.CommandHandler.Describe(target,
-                                                    string.Format("steals {0}'s cookie, om nom nom nom!", objectowner),
+                                                    String.Format("steals {0}'s cookie, om nom nom nom!", objectowner),
                                                     trigger.Args);
                     }
                     else
                     {
                         JadBot.Irc.CommandHandler.Describe(target,
-                                                    string.Format("steals {0}'s {1}, ha! Pwned", trigger.Args.Remainder,
+                                                    String.Format("steals {0}'s {1}, ha! Pwned", trigger.Args.Remainder,
                                                                   obj), trigger.Args);
                     }
                 }
@@ -56,7 +56,7 @@ namespace Jad_Bot
                 {
                     trigger.Reply("I cant steal their cookie :'(");
                     trigger.Reply(e.Message);
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
             }
         }
@@ -81,7 +81,7 @@ namespace Jad_Bot
                     return;
                 }
                 trigger.Irc.CommandHandler.Describe(trigger.Target,
-                                                    string.Format("steals {0}'s pizza and eats it nomnomnom!",
+                                                    String.Format("steals {0}'s pizza and eats it nomnomnom!",
                                                                   trigger.Args.Remainder), trigger.Args);
             }
         }
@@ -124,7 +124,7 @@ namespace Jad_Bot
                                                     "Yes - definitely",
                                                     "You may rely on it"
                                                 };
-                    if (!string.IsNullOrEmpty(trigger.Args.Remainder))
+                    if (!String.IsNullOrEmpty(trigger.Args.Remainder))
                     {
                         var rand = new Random();
                         var randomchoice = rand.Next(0, 19);
@@ -137,7 +137,7 @@ namespace Jad_Bot
                 }
                 catch (Exception e)
                 {
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
             }
         }
@@ -164,12 +164,12 @@ namespace Jad_Bot
                         return;
                     }
                     trigger.Irc.CommandHandler.Describe(trigger.Target,
-                                                        string.Format("steals {0}'s beer and gulps it all down *slurp*!",
+                                                        String.Format("steals {0}'s beer and gulps it all down *slurp*!",
                                                                       trigger.Args.Remainder), trigger.Args);
                 }
                 catch (Exception e)
                 {
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
             }
         }
@@ -201,12 +201,34 @@ namespace Jad_Bot
                 {
                     trigger.Reply("I cant write that action, perhaps invalid target?");
                     trigger.Reply(e.Message);
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
             }
         }
 
         #endregion
 
+        public static string ReactToAction()
+        {
+            try
+            {
+                string[] actions = {
+                                       "dodges",
+                                       "ducks",
+                                       "evades",
+                                       "parries",
+                                       "blocks",
+                                       "does the monkey dance"
+                                   };
+                var rand = new Random();
+                var randomchoice = rand.Next(0, 5);
+                return actions[randomchoice];
+            }
+            catch(Exception e)
+            {
+                UtilityMethods.Print(e.Data + e.StackTrace,true);
+                return "";
+            }
+        }
     }
 }

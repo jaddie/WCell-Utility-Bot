@@ -168,7 +168,7 @@ namespace Jad_Bot
 
                 #endregion
 
-                #endregion
+                #endregion // TODO: Clean this ugly setting up.
 
                 #region Parser Setup
 
@@ -211,16 +211,16 @@ namespace Jad_Bot
                 while (true) // Prevent WCell.Tools from crashing - due to console methods inside the program.
                 {
                     var line = new StringStream(Console.ReadLine());
-                    OnConsoleText(line);
+                    UtilityMethods.OnConsoleText(line);
                 }
             }
                 #region Main Exception Handling
 
             catch (Exception e)
             {
-                Print(string.Format("Exception {0} \n {1}", e.Message, e.StackTrace), true);
+                UtilityMethods.Print(string.Format("Exception {0} \n {1}", e.Message, e.StackTrace), true);
                 WriteErrorSystem.WriteError(new List<string> {"Exception:", e.Message, e.StackTrace});
-                Print(WebLinkToGeneralFolder + "ErrorLog.txt", true);
+                UtilityMethods.Print(WebLinkToGeneralFolder + "ErrorLog.txt", true);
                 foreach (var chan in ChannelList)
                 {
                     Irc.CommandHandler.Msg(chan, "The error is at the following address: {0}",
@@ -238,94 +238,31 @@ namespace Jad_Bot
         {
             Parser.Kill();
         }
-
-        public static void Print(string text, bool irclog = false)
-        {
-            try
-            {
-                Console.WriteLine(DateTime.Now + text);
-                if (irclog)
-                    IrcLog.WriteLine(DateTime.Now + text);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Write Failure" + e.Data + e.StackTrace);
-            }
-
-        }
-
         public static void Client_Connected(Connection con)
         {
-            Print("Connected to IRC Server", true);
+            UtilityMethods.Print("Connected to IRC Server", true);
         }
-
         public static void Irc_Disconnected(IrcClient arg1, bool arg2)
         {
             try
             {
-                Print("Disconnected from IRC server, Attempting reconnect in 5 seconds", true);
+                UtilityMethods.Print("Disconnected from IRC server, Attempting reconnect in 5 seconds", true);
                 Thread.Sleep(5000);
                 Irc.BeginConnect(Irc._network[0].ToString(), Port);
             }
             catch (Exception e)
             {
-                Print(e.Data + e.StackTrace,true);
+                UtilityMethods.Print(e.Data + e.StackTrace,true);
             }
 
-        }
-
-        public static void OnConsoleText(StringStream cText)
-        {
-            try
-            {
-                switch (cText.NextWord().ToLower())
-                {
-                    case "join":
-                        {
-                            if (cText.Remainder.Contains(","))
-                            {
-                                var chaninfo = cText.Remainder.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
-                                if (chaninfo.Length > 1)
-                                    Irc.CommandHandler.Join(chaninfo[0], chaninfo[1]);
-                                else
-                                    Irc.CommandHandler.Join(chaninfo[0]);
-                            }
-                            else
-                            {
-                                Irc.CommandHandler.Join(cText.Remainder);
-                            }
-                        }
-                        break;
-                    case "say":
-                        {
-                            var chan = cText.NextWord();
-                            var msg = cText.Remainder;
-                            Irc.CommandHandler.Msg(chan, msg);
-                        }
-                        break;
-                    case "quit":
-                        {
-                            Parser.Kill();
-                            Print("Shutting down due to console quit command..", true);
-                            foreach (var chan in ChannelList)
-                            {
-                                Irc.CommandHandler.Msg(chan, "Shutting down in 5 seconds due to console quit command..");
-                            }
-                            Thread.Sleep(5000);
-                            Irc.Client.DisconnectNow();
-                            Environment.Exit(0);
-                        }
-                        break;
-                }
-            }
-            catch(Exception e)
-            {
-                Print(e.Data + e.StackTrace, true);
-            }
         }
 
         #region IrcSystem
-
+        public static void OnConnecting(Connection con)
+        {
+            UtilityMethods.Print("Connecting to IRC server", true);
+            IrcLog.WriteLine(DateTime.Now + " : Connecting to server");
+        }
         protected override void Perform()
         {
             try
@@ -350,15 +287,42 @@ namespace Jad_Bot
             }
             catch (Exception e)
             {
-                Print(e.Data + e.StackTrace, true);
+                UtilityMethods.Print(e.Data + e.StackTrace, true);
             }
         }
-
         protected override void OnUnknownCommandUsed(CmdTrigger trigger)
         {
             return;
         }
+        protected override void OnQueryMsg(IrcUser user, StringStream text)
+        {
+            UtilityMethods.Print(user + text.String, true);
+        }
+        protected override void OnText(IrcUser user, IrcChannel chan, StringStream text)
+        {
+            try
+            {
+                CommandHandler.RemoteCommandPrefix = text.String.StartsWith("~") ? "~" : "@";
+                if (text.String.Contains("ACTION") && text.String.ToLower().Contains("utilitybot"))
+                {
+                    if (chan != null)
+                        Irc.CommandHandler.Describe(chan, FunCommands.ReactToAction(), chan.Args);
+                    else
+                        Irc.CommandHandler.Describe(user, FunCommands.ReactToAction(), user.Args);
+                }
 
+                #region MessagesSent
+
+                UtilityMethods.Print(string.Format("User {0} on channel {1} Sent {2}", user, chan, text), true);
+
+                #endregion
+            }
+            catch (Exception e)
+            {
+                CommandHandler.Msg("#woc", e.Message);
+                UtilityMethods.Print(e.StackTrace + e.Message, true);
+            }
+        }
         public override bool MayTriggerCommand(CmdTrigger trigger, Command cmd)
         {
             try
@@ -383,68 +347,8 @@ namespace Jad_Bot
             }
             catch(Exception e)
             {
-                Print(e.Data + e.StackTrace,true);
+                UtilityMethods.Print(e.Data + e.StackTrace,true);
                 return false;
-            }
-        }
-
-        public static void OnConnecting(Connection con)
-        {
-            Print("Connecting to IRC server", true);
-            IrcLog.WriteLine(DateTime.Now + " : Connecting to server");
-        }
-
-        protected override void OnQueryMsg(IrcUser user, StringStream text)
-        {
-            Print(user + text.String, true);
-        }
-
-        public static string ReactToAction()
-        {
-            try
-            {
-                string[] actions = {
-                                       "dodges",
-                                       "ducks",
-                                       "evades",
-                                       "parries",
-                                       "blocks",
-                                       "does the monkey dance"
-                                   };
-                var rand = new Random();
-                var randomchoice = rand.Next(0, 5);
-                return actions[randomchoice];
-            }
-            catch(Exception e)
-            {
-                Print(e.Data + e.StackTrace,true);
-                return "";
-            }
-        }
-
-        protected override void OnText(IrcUser user, IrcChannel chan, StringStream text)
-        {
-            try
-            {
-                CommandHandler.RemoteCommandPrefix = text.String.StartsWith("~") ? "~" : "@";
-                if (text.String.Contains("ACTION") && text.String.ToLower().Contains("utilitybot"))
-                {
-                    if (chan != null)
-                        Irc.CommandHandler.Describe(chan, ReactToAction(), chan.Args);
-                    else
-                        Irc.CommandHandler.Describe(user, ReactToAction(), user.Args);
-                }
-
-                #region MessagesSent
-
-                Print(string.Format("User {0} on channel {1} Sent {2}", user, chan, text), true);
-
-                #endregion
-            }
-            catch (Exception e)
-            {
-                CommandHandler.Msg("#woc", e.Message);
-                Print(e.StackTrace + e.Message, true);
             }
         }
 
@@ -501,7 +405,7 @@ namespace Jad_Bot
             }
             catch(Exception ex)
             {
-                Print(ex.Data + ex.StackTrace,true);
+                UtilityMethods.Print(ex.Data + ex.StackTrace,true);
             }
         }
 
@@ -514,11 +418,11 @@ namespace Jad_Bot
                 ErrorTimer.Stop();
                 WriteErrorSystem.WriteError(new List<string> {"Exception:", Error});
                 Irc.CommandHandler.Msg(ReplyChan, WebLinkToGeneralFolder + "ErrorLog.txt");
-                Print(WebLinkToGeneralFolder + "ErrorLog.txt");
+                UtilityMethods.Print(WebLinkToGeneralFolder + "ErrorLog.txt");
             }
             catch(Exception ex)
             {
-                Print(ex.Data + ex.StackTrace);
+                UtilityMethods.Print(ex.Data + ex.StackTrace);
             }
         }
 
@@ -526,71 +430,8 @@ namespace Jad_Bot
 
         #endregion
 
-        #region RandomLinkGeneration
-
-        public static string GetLink()
-        {
-            try
-            {
-                var builder = new StringBuilder();
-                builder.Append(RandomString(4, true));
-                builder.Append(RandomNumber(1000, 999999));
-                builder.Append(RandomString(2, true));
-                return builder.ToString();
-            }
-            catch(Exception e)
-            {
-                Print(e.Data + e.StackTrace,true);
-            }
-            return null;
-        }
-
-        public static string RandomString(int size, bool lowerCase)
-        {
-            try
-            {
-                var builder = new StringBuilder();
-                var random = new Random();
-                for (var i = 0; i < size; i++)
-                {
-                    var ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26*random.NextDouble() + 65)));
-                    builder.Append(ch);
-                }
-                return lowerCase ? builder.ToString().ToLower() : builder.ToString();
-            }
-            catch(Exception e)
-            {
-                Print(e.Data + e.StackTrace, true);
-                return "";
-            }
-        }
-
-        public static int RandomNumber(int min, int max)
-        {
-            try
-            {
-                var random = new Random();
-                return random.Next(min, max);
-            }
-            catch(Exception e)
-            {
-                Print(e.Data + e.StackTrace,true);
-            }
-            return 0;
-        }
-
-        #endregion
 
         #region Custom Commands
-
-
-
-
-
-
-
-
-
 
         #region FindMethod
 
@@ -613,7 +454,7 @@ namespace Jad_Bot
                 }
                 catch (Exception e)
                 {
-                    Print(e.Data + e.StackTrace,true);
+                    UtilityMethods.Print(e.Data + e.StackTrace,true);
                 }            }
         }
 
@@ -657,24 +498,6 @@ namespace Jad_Bot
                 return readresults;*/
 
         #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         #endregion
     }
 }

@@ -85,7 +85,7 @@ namespace Jad_Bot
                 }
                 catch (Exception e)
                 {
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
             }
         }
@@ -107,7 +107,7 @@ namespace Jad_Bot
             {
                 try
                 {
-                    string randfilename = JadBot.GetLink();
+                    string randfilename = UtilityMethods.GetLink();
                     using (var selectionWriter = new StreamWriter(JadBot.GeneralFolder + string.Format("Selection{0}.txt", randfilename)))
                     {
                         List<string> selectOutput = JadBot.DumpReader.Select(trigger.Args.NextInt());
@@ -128,7 +128,7 @@ namespace Jad_Bot
                 catch (Exception excep)
                 {
                     trigger.Reply("The Following Exception Occured {0}, check input", excep.Message);
-                    JadBot.Print(excep.Data + excep.StackTrace, true);
+                    UtilityMethods.Print(excep.Data + excep.StackTrace, true);
                 }
             }
         }
@@ -154,7 +154,7 @@ namespace Jad_Bot
                 }
                 catch (Exception e)
                 {
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
             }
         }

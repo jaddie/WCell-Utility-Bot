@@ -86,6 +86,7 @@
     <Compile Include="SourceCode.cs" />
     <Compile Include="SyntaxHightlighter.cs" />
     <Compile Include="SystemCommands.cs" />
+    <Compile Include="UtilityMethods.cs" />
     <Compile Include="WriteError.cs" />
   </ItemGroup>
   <ItemGroup>

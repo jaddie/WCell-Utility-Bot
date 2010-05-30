@@ -67,7 +67,7 @@ namespace Jad_Bot
                 }
                 catch (Exception e)
                 {
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
             }
         }
@@ -150,7 +150,7 @@ namespace Jad_Bot
                 {
                     WriteErrorSystem.WriteError(new List<string> { e.Message + e.StackTrace + e.InnerException + e.Source });
                     trigger.Reply("Error occured:{0}", JadBot.WebLinkToGeneralFolder + "ErrorLog.txt");
-                    JadBot.Print(string.Format("Error Occured in download file command: {0}", e.Message + e.StackTrace + e.InnerException + e.Source), true);
+                    UtilityMethods.Print(string.Format("Error Occured in download file command: {0}", e.Message + e.StackTrace + e.InnerException + e.Source), true);
                 }
             }
         }

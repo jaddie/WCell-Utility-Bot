@@ -164,7 +164,7 @@ namespace Jad_Bot
                 catch (Exception e)
                 {
                     trigger.Reply("Please check your input, error occured: {0}", e.Message);
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
             }
 
@@ -184,7 +184,7 @@ namespace Jad_Bot
                 }
                 catch (Exception e)
                 {
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
             }
 
@@ -250,7 +250,7 @@ namespace Jad_Bot
                 }
                 catch (Exception e)
                 {
-                    JadBot.Print(e.Data + e.StackTrace, true);
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
                 }
                 return null;
             }
