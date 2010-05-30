@@ -583,82 +583,9 @@ namespace Jad_Bot
 
         #region Custom Commands
 
-        #region DumpTypesCommand
-
-        public class DumpTypesCommand : Command
-        {
-            public DumpTypesCommand()
-                : base("DumpTypes")
-            {
-                Usage = "Dumptypes";
-                Description = "Prints out the list of different dump types";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                try
-                {
-                    trigger.Reply(
-                        "AreaTriggers \n GOs \n Items \n NPCs \n Quests \n SpellsAndEffects \n Vehicles \n use these for the dumptype on the query command!");
-                }
-                catch (Exception e)
-                {
-                    Print(e.Data + e.StackTrace, true);
-                }
-            }
-        }
-
-        #endregion
 
 
 
-        #region Nested type: AttackCommand
-
-        public class AttackCommand : Command
-        {
-            public AttackCommand()
-                : base("attack")
-            {
-                Usage = "attack nick";
-                Description = "Attack the given user";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                try
-                {
-                    string[] attacks = {
-                                           "slaps %s",
-                                           "kicks %s",
-                                           "punches %s in the face",
-                                           "stings %s with a needle",
-                                           "shoots %s with a phaser"
-                                       };
-                    if (!string.IsNullOrEmpty(trigger.Args.Remainder))
-                    {
-                        var rand = new Random();
-                        int randomchoice = rand.Next(0, 4);
-                        if (trigger.Channel != null && !trigger.Channel.HasUser(trigger.Args.Remainder))
-                        {
-                            trigger.Reply("I can't find that person to attack them!");
-                            return;
-                        }
-                        string attack = attacks[randomchoice].Replace("%s", trigger.Args.Remainder);
-                        Irc.CommandHandler.Describe(trigger.Target, attack, trigger.Args);
-                    }
-                    else
-                    {
-                        trigger.Reply("You didnt give me a nick to attack!");
-                    }
-                }
-                catch(Exception e)
-                {
-                    Print(e.Data + e.StackTrace,true);
-                }
-            }
-        }
-
-        #endregion
 
 
         #region Nested type: ClearQueueCommand
@@ -808,88 +735,6 @@ namespace Jad_Bot
 
 
 
-        #region Nested type: QueryDumpCommand
-
-        public class QueryDumpCommand : Command
-        {
-            public QueryDumpCommand()
-                : base("Query")
-            {
-                Usage = "Query dumptype partialspelloreffectname";
-                Description =
-                    "Command to read the spelldump from WCell.Tools and return a list of different matches for the query, dump defaults to spell if not recognised - use dumptypes command to see list.";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                try
-                {
-                    if (trigger.Args.Remainder.Length > 0)
-                    {
-                        using (var readWriter = new StreamWriter(GeneralFolder + "Options.txt") { AutoFlush = false })
-                        {
-                            string dumptype;
-                            switch (trigger.Args.NextWord().ToLower())
-                            {
-                                case "areatriggers":
-                                    {
-                                        dumptype = "areatriggers.txt";
-                                    }
-                                    break;
-                                case "gos":
-                                    {
-                                        dumptype = "gos.txt";
-                                    }
-                                    break;
-                                case "items":
-                                    {
-                                        dumptype = "items.txt";
-                                    }
-                                    break;
-                                case "npcs":
-                                    {
-                                        dumptype = "npcs.txt";
-                                    }
-                                    break;
-                                case "quests":
-                                    {
-                                        dumptype = "quests.txt";
-                                    }
-                                    break;
-                                default:
-                                    {
-                                        dumptype = "spellsandeffects.txt";
-                                    }
-                                    break;
-                                case "vehicles":
-                                    {
-                                        dumptype = "vehicles.txt";
-                                    }
-                                    break;
-                            }
-                            IEnumerable<string> readOutput = DumpReader.Read(dumptype, trigger.Args.Remainder);
-                            int id = -1;
-                            foreach (var line in readOutput)
-                            {
-                                id++;
-                                readWriter.WriteLine(id + ": " + line);
-                            }
-                        }
-                        trigger.Reply(WebLinkToGeneralFolder + "Options.txt");
-                    }
-                    else
-                    {
-                        trigger.Reply("It looks to me like you didnt put a query! :O");
-                    }
-                }
-                catch(Exception e)
-                {
-                    Print(e.Data + e.StackTrace,true);
-                }
-            }
-        }
-
-        #endregion
 
 
 
@@ -1286,49 +1131,6 @@ namespace Jad_Bot
 
         #endregion
 
-        #region Nested type: SelectDumpCommand
-
-        public class SelectDumpCommand : Command
-        {
-            public SelectDumpCommand()
-                : base("Select")
-            {
-                Usage = "Select id";
-                Description =
-                    "Select from the generated list from the Query command, where id is the number in the list to the left";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                try
-                {
-                    string randfilename = GetLink();
-                    using (var selectionWriter = new StreamWriter(GeneralFolder + string.Format("Selection{0}.txt", randfilename)))
-                    {
-                        List<string> selectOutput = DumpReader.Select(trigger.Args.NextInt());
-                        if (selectOutput.Count > 0)
-                        {
-                            foreach (var line in selectOutput)
-                            {
-                                selectionWriter.WriteLine(line);
-                            }
-                        }
-                        else
-                        {
-                            trigger.Reply("The output from the selector was null :O");
-                        }
-                    }
-                    trigger.Reply(WebLinkToGeneralFolder + string.Format("Selection{0}.txt", randfilename));
-                }
-                catch (Exception excep)
-                {
-                    trigger.Reply("The Following Exception Occured {0}, check input", excep.Message);
-                    Print(excep.Data + excep.StackTrace,true);
-                }
-            }
-        }
-
-        #endregion
 
 
 
