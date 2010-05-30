@@ -55,9 +55,6 @@ namespace Jad_Bot
         private static StreamReader _config;
         private static StreamWriter _parserConsoleInput;
         private static readonly StreamWriter IrcLog = new StreamWriter("IrcLog.log", true);
-        private static StreamWriter _readWriter;
-        private static StreamWriter _selectionWriter;
-
         #endregion
 
         #region Folder strings
@@ -1179,54 +1176,55 @@ namespace Jad_Bot
                 {
                     if (trigger.Args.Remainder.Length > 0)
                     {
-                        _readWriter = new StreamWriter(GeneralFolder + "Options.txt") {AutoFlush = false};
-                        string dumptype;
-                        switch (trigger.Args.NextWord().ToLower())
+                        using (var readWriter = new StreamWriter(GeneralFolder + "Options.txt") { AutoFlush = false })
                         {
-                            case "areatriggers":
-                                {
-                                    dumptype = "areatriggers.txt";
-                                }
-                                break;
-                            case "gos":
-                                {
-                                    dumptype = "gos.txt";
-                                }
-                                break;
-                            case "items":
-                                {
-                                    dumptype = "items.txt";
-                                }
-                                break;
-                            case "npcs":
-                                {
-                                    dumptype = "npcs.txt";
-                                }
-                                break;
-                            case "quests":
-                                {
-                                    dumptype = "quests.txt";
-                                }
-                                break;
-                            default:
-                                {
-                                    dumptype = "spellsandeffects.txt";
-                                }
-                                break;
-                            case "vehicles":
-                                {
-                                    dumptype = "vehicles.txt";
-                                }
-                                break;
+                            string dumptype;
+                            switch (trigger.Args.NextWord().ToLower())
+                            {
+                                case "areatriggers":
+                                    {
+                                        dumptype = "areatriggers.txt";
+                                    }
+                                    break;
+                                case "gos":
+                                    {
+                                        dumptype = "gos.txt";
+                                    }
+                                    break;
+                                case "items":
+                                    {
+                                        dumptype = "items.txt";
+                                    }
+                                    break;
+                                case "npcs":
+                                    {
+                                        dumptype = "npcs.txt";
+                                    }
+                                    break;
+                                case "quests":
+                                    {
+                                        dumptype = "quests.txt";
+                                    }
+                                    break;
+                                default:
+                                    {
+                                        dumptype = "spellsandeffects.txt";
+                                    }
+                                    break;
+                                case "vehicles":
+                                    {
+                                        dumptype = "vehicles.txt";
+                                    }
+                                    break;
+                            }
+                            IEnumerable<string> readOutput = DumpReader.Read(dumptype, trigger.Args.Remainder);
+                            int id = -1;
+                            foreach (var line in readOutput)
+                            {
+                                id++;
+                                readWriter.WriteLine(id + ": " + line);
+                            }
                         }
-                        IEnumerable<string> readOutput = DumpReader.Read(dumptype, trigger.Args.Remainder);
-                        int id = -1;
-                        foreach (var line in readOutput)
-                        {
-                            id++;
-                            _readWriter.WriteLine(id + ": " + line);
-                        }
-                        _readWriter.Close();
                         trigger.Reply(WebLinkToGeneralFolder + "Options.txt");
                     }
                     else
@@ -1453,15 +1451,15 @@ namespace Jad_Bot
                         string path = Matches[fileid];
                         path = path.Replace("c:\\wcellsource", "Master");
                         path = path.Replace('\\', '-');
-                        var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path))
-                                                  {AutoFlush = false};
-                        string lines = ReadFileLines(Matches[fileid], linenumber, upperlinenumber, fileid);
-                        selectionWriter.WriteLine("<html>\n<body>\n");
-                        selectionWriter.WriteLine("Filename: {0}", path);
-                        selectionWriter.Write(lines);
-                        selectionWriter.WriteLine("\n</body>\n</html>");
-                        trigger.Reply(WebLinkToGeneralFolder + "{0}.html", path);
-                        selectionWriter.Close();
+                        using (var selectionWriter = new StreamWriter(GeneralFolder + string.Format("\\{0}.html", path)))
+                        {
+                            string lines = ReadFileLines(Matches[fileid], linenumber, upperlinenumber, fileid);
+                            selectionWriter.WriteLine("<html>\n<body>\n");
+                            selectionWriter.WriteLine("Filename: {0}", path);
+                            selectionWriter.Write(lines);
+                            selectionWriter.WriteLine("\n</body>\n</html>");
+                            trigger.Reply(WebLinkToGeneralFolder + "{0}.html", path);
+                        }
                     }
                     Matches.Clear();
                     _files.Clear();
@@ -1505,60 +1503,54 @@ namespace Jad_Bot
                 try
                 {
                     var syn = new SyntaxHighlighter {AddStyleDefinition = true};
-                    var file = new StreamReader(readFile);
-                    int currentlinenumber = 1;
-                    if (readLineUpper == 0 && readLineUpper < readLineLower)
+                    using(var file = new StreamReader(readFile))
                     {
-                        readLineUpper = readLineLower;
-                    }
-                    string returnlines =
-                        "<table border=\"0\"> <style> .highlighttext { BACKGROUND-COLOR:#F4FA58 } </style>";
-                    var filelinesids = new List<string>();
-                    var filelines = new List<string>();
-                    string path = Matches[fileId];
-                    path = path.Replace("c:\\wcellsource", "Master");
-                    path = path.Replace('\\', '-');
-                    while (!file.EndOfStream)
-                    {
-                        string line = file.ReadLine();
-                        var fileinfo = new FileInfo(readFile);
-                        if (fileinfo.Extension == ".cs")
-                            line = syn.Highlight(line);
-                        syn.AddStyleDefinition = false;
-                        if (currentlinenumber >= readLineLower && currentlinenumber <= readLineUpper &&
-                            readLineUpper != 0)
+                        int currentlinenumber = 1;
+                        if (readLineUpper == 0 && readLineUpper < readLineLower)
                         {
-                            filelinesids.Add(
-                                string.Format("<a name=\"{0}\" href=\"{1}/{2}.html#{0}\">", currentlinenumber,
-                                              WebLinkToGeneralFolder, path) + currentlinenumber + "</a>:");
-                            filelines.Add(HighlightText(line));
+                            readLineUpper = readLineLower;
                         }
-                        else
+                        string returnlines =
+                            "<table border=\"0\"> <style> .highlighttext { BACKGROUND-COLOR:#F4FA58 } </style>";
+                        var filelinesids = new List<string>();
+                        var filelines = new List<string>();
+                        string path = Matches[fileId];
+                        path = path.Replace("c:\\wcellsource", "Master");
+                        path = path.Replace('\\', '-');
+                        while (!file.EndOfStream)
                         {
-                            filelinesids.Add(
-                                string.Format("<a name=\"{0}\" href=\"{1}/{2}.html#{0}\">", currentlinenumber,
-                                              WebLinkToGeneralFolder, path) + currentlinenumber + "</a>:");
-                            filelines.Add(line);
+                            string line = file.ReadLine();
+                            var fileinfo = new FileInfo(readFile);
+                            if (fileinfo.Extension == ".cs")
+                                line = syn.Highlight(line);
+                            syn.AddStyleDefinition = false;
+                            if (currentlinenumber >= readLineLower && currentlinenumber <= readLineUpper &&
+                                readLineUpper != 0)
+                            {
+                                filelinesids.Add(
+                                    string.Format("<a name=\"{0}\" href=\"{1}/{2}.html#{0}\">", currentlinenumber,
+                                                  WebLinkToGeneralFolder, path) + currentlinenumber + "</a>:");
+                                filelines.Add(HighlightText(line));
+                            }
+                            else
+                            {
+                                filelinesids.Add(
+                                    string.Format("<a name=\"{0}\" href=\"{1}/{2}.html#{0}\">", currentlinenumber,
+                                                  WebLinkToGeneralFolder, path) + currentlinenumber + "</a>:");
+                                filelines.Add(line);
+                            }
+                            currentlinenumber = currentlinenumber + 1;
                         }
-                        currentlinenumber = currentlinenumber + 1;
+                        string[] fileids = {""};
+                        string[] fileLines = {""};
+                        filelinesids.ForEach(filelineid => fileids[0] = fileids[0] + "\n" + filelineid);
+                        filelines.ForEach(fileline => fileLines[0] = fileLines[0] + "\n" + fileline);
+                        returnlines = returnlines + "\n <tr><td><pre>" + fileids[0] + "</pre></td> <td><pre>" +
+                                      fileLines[0] +
+                                      "</pre></td></tr>";
+                        returnlines = returnlines + "</table>";
+                        return returnlines;
                     }
-                    string[] fileids = {""};
-                    string[] fileLines = {""};
-                    filelinesids.ForEach(filelineid => fileids[0] = fileids[0] + "\n" + filelineid);
-                    /*foreach (var fileLineid in filelinesids)
-                    {
-                        fileids[0] = fileids[0] + "\n" + fileLineid;
-                    }*/
-                    filelines.ForEach(fileline => fileLines[0] = fileLines[0] + "\n" + fileline);
-                    /*foreach (var fileline in filelines)
-                    {
-                        fileLines[0] = fileLines[0] + "\n" + fileline;
-                    }*/
-                    returnlines = returnlines + "\n <tr><td><pre>" + fileids[0] + "</pre></td> <td><pre>" + fileLines[0] +
-                                  "</pre></td></tr>";
-                    file.Close();
-                    returnlines = returnlines + "</table>";
-                    return returnlines;
                 }
                 catch(Exception e)
                 {
@@ -1729,21 +1721,21 @@ namespace Jad_Bot
                 try
                 {
                     string randfilename = GetLink();
-                    _selectionWriter = new StreamWriter(GeneralFolder + string.Format("Selection{0}.txt", randfilename))
-                                           {AutoFlush = false};
-                    List<string> selectOutput = DumpReader.Select(trigger.Args.NextInt());
-                    if (selectOutput.Count > 0)
+                    using (var selectionWriter = new StreamWriter(GeneralFolder + string.Format("Selection{0}.txt", randfilename)))
                     {
-                        foreach (var line in selectOutput)
+                        List<string> selectOutput = DumpReader.Select(trigger.Args.NextInt());
+                        if (selectOutput.Count > 0)
                         {
-                            _selectionWriter.WriteLine(line);
+                            foreach (var line in selectOutput)
+                            {
+                                selectionWriter.WriteLine(line);
+                            }
+                        }
+                        else
+                        {
+                            trigger.Reply("The output from the selector was null :O");
                         }
                     }
-                    else
-                    {
-                        trigger.Reply("The output from the selector was null :O");
-                    }
-                    _selectionWriter.Close();
                     trigger.Reply(WebLinkToGeneralFolder + string.Format("Selection{0}.txt", randfilename));
                 }
                 catch (Exception excep)
