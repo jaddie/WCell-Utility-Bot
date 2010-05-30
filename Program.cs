@@ -239,7 +239,7 @@ namespace Jad_Bot
             Parser.Kill();
         }
 
-        private static void Print(string text, bool irclog = false)
+        public static void Print(string text, bool irclog = false)
         {
             try
             {
@@ -648,34 +648,6 @@ namespace Jad_Bot
 
         #endregion
 
-        #region Nested type: AddChuckNorrisFactCommand
-
-        public class AddChuckNorrisFactCommand : Command
-        {
-            public AddChuckNorrisFactCommand()
-                : base("ac", "addchuck", "addnorris")
-            {
-                Usage = "ac Norris fact here.";
-                Description = "Add a chuck norris fact to storage";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                try
-                {
-                    var norris = new StreamWriter("ChuckNorrisFacts.txt", true) {AutoFlush = false};
-                    norris.WriteLine(trigger.Args.Remainder);
-                    trigger.Reply("Added the new Chuck Norris fact: {0} to storage", trigger.Args.Remainder);
-                    norris.Close();
-                }
-                catch(Exception e)
-                {
-                    Print(e.Data + e.StackTrace,true);
-                }
-            }
-        }
-
-        #endregion
 
         #region Nested type: AddLinusTorvaldsFactCommand
 
@@ -1241,40 +1213,6 @@ namespace Jad_Bot
 
         #endregion
 
-        #region Nested type: RandomChuckNorrisFactCommand
-
-        public class RandomChuckNorrisFactCommand : Command
-        {
-            public RandomChuckNorrisFactCommand()
-                : base("rc", "chuck", "norris")
-            {
-                Usage = "rc";
-                Description = "Get a random fact about Chuck Norris";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                try
-                {
-                    var norrisLines = new List<string>();
-                    var norris = new StreamReader("ChuckNorrisFacts.txt");
-                    while (!norris.EndOfStream)
-                    {
-                        norrisLines.Add(norris.ReadLine());
-                    }
-                    var rand = new Random();
-                    int randnum = rand.Next(0, norrisLines.Count - 1);
-                    trigger.Reply(norrisLines[randnum]);
-                    norris.Close();
-                }
-                catch(Exception e)
-                {
-                    Print(e.Data + e.StackTrace,true);
-                }
-            }
-        }
-
-        #endregion
 
         #region Nested type: RandomLinusTorvaldsFactCommand
 
