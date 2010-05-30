@@ -132,7 +132,7 @@ namespace Jad_Bot
                             return;
                         }
                         string attack = attacks[randomchoice].Replace("%s", trigger.Args.Remainder);
-                        Irc.CommandHandler.Describe(trigger.Target, attack, trigger.Args);
+                        JadBot.Irc.CommandHandler.Describe(trigger.Target, attack, trigger.Args);
                     }
                     else
                     {
@@ -141,7 +141,7 @@ namespace Jad_Bot
                 }
                 catch (Exception e)
                 {
-                    Print(e.Data + e.StackTrace, true);
+                    JadBot.Print(e.Data + e.StackTrace, true);
                 }
             }
         }
