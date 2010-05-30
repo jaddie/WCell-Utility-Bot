@@ -9,7 +9,7 @@ namespace Jad_Bot
 {
     class DumpOperator
     {
-        #region Nested type: QueryDumpCommand
+        #region QueryDumpCommand
 
         public class QueryDumpCommand : Command
         {
@@ -91,7 +91,7 @@ namespace Jad_Bot
         }
 
         #endregion
-        #region Nested type: SelectDumpCommand
+        #region SelectDumpCommand
 
         public class SelectDumpCommand : Command
         {

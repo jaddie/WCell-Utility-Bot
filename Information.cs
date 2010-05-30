@@ -100,7 +100,7 @@ namespace Jad_Bot
         }
 
         #endregion
-        #region Nested type: AttackCommand
+        #region AttackCommand
 
         public class AttackCommand : Command
         {

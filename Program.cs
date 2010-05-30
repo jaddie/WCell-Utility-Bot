@@ -588,7 +588,7 @@ namespace Jad_Bot
 
 
 
-        #region Nested type: ClearQueueCommand
+        #region ClearQueueCommand
 
         public class ClearQueueCommand : Command
         {
@@ -615,7 +615,7 @@ namespace Jad_Bot
 
         #endregion
 
-        #region Nested type: DownloadLogRemotely
+        #region DownloadLogRemotely
 
         public class DownloadLogRemotely : Command
         {
@@ -664,7 +664,7 @@ namespace Jad_Bot
 
 
 
-        #region Nested type: FindMethod
+        #region FindMethod
 
         public class FindMethod : Command
         {

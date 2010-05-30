@@ -9,7 +9,7 @@ namespace Jad_Bot
 {
     class SourceCode
     {
-        #region Nested type: ReadSourceFile
+        #region ReadSourceFile
 
         public class ReadSourceFile : Command
         {

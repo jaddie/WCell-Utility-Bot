@@ -10,7 +10,7 @@ namespace Jad_Bot
 {
     class SystemCommands
     {
-        #region Nested type: RuntimeCommand
+        #region RuntimeCommand
 
         public class RuntimeCommand : Command
         {
@@ -29,7 +29,7 @@ namespace Jad_Bot
         }
 
         #endregion
-        #region Nested type: RestartWcellCommand
+        #region RestartWcellCommand
 
         public class RestartWcellCommand : Command
         {

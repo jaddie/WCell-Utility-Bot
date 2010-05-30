@@ -8,7 +8,7 @@ namespace Jad_Bot
 {
     class FunCommands
     {
-        #region Nested type: StealObjectCommand
+        #region StealObjectCommand
 
         public class StealObjectCommand : Command
         {
@@ -62,7 +62,7 @@ namespace Jad_Bot
         }
 
         #endregion
-        #region Nested type: PizzaCommand
+        #region PizzaCommand
 
         public class PizzaCommand : Command
         {
@@ -87,7 +87,7 @@ namespace Jad_Bot
         }
 
         #endregion
-        #region Nested type: EightBallCommand
+        #region EightBallCommand
 
         public class EightBallCommand : Command
         {
@@ -143,7 +143,7 @@ namespace Jad_Bot
         }
 
         #endregion
-        #region Nested type: BeerCommand
+        #region BeerCommand
 
         public class BeerCommand : Command
         {
@@ -175,7 +175,7 @@ namespace Jad_Bot
         }
 
         #endregion
-        #region Nested type: ActionCommand
+        #region ActionCommand
 
         public class ActionCommand : Command
         {
