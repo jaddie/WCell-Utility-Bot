@@ -100,5 +100,53 @@ namespace Jad_Bot
         }
 
         #endregion
+        #region Nested type: AttackCommand
+
+        public class AttackCommand : Command
+        {
+            public AttackCommand()
+                : base("attack")
+            {
+                Usage = "attack nick";
+                Description = "Attack the given user";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    string[] attacks = {
+                                           "slaps %s",
+                                           "kicks %s",
+                                           "punches %s in the face",
+                                           "stings %s with a needle",
+                                           "shoots %s with a phaser"
+                                       };
+                    if (!string.IsNullOrEmpty(trigger.Args.Remainder))
+                    {
+                        var rand = new Random();
+                        int randomchoice = rand.Next(0, 4);
+                        if (trigger.Channel != null && !trigger.Channel.HasUser(trigger.Args.Remainder))
+                        {
+                            trigger.Reply("I can't find that person to attack them!");
+                            return;
+                        }
+                        string attack = attacks[randomchoice].Replace("%s", trigger.Args.Remainder);
+                        Irc.CommandHandler.Describe(trigger.Target, attack, trigger.Args);
+                    }
+                    else
+                    {
+                        trigger.Reply("You didnt give me a nick to attack!");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Print(e.Data + e.StackTrace, true);
+                }
+            }
+        }
+
+        #endregion
+
     }
 }
