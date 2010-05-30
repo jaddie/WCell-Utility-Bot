@@ -102,8 +102,8 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                ParserConsoleInput.WriteLine(trigger.Args.Remainder);
-                trigger.Reply("To see streaming output: {0}", WebLinkToGeneralFolder + "toolsoutput.txt");
+                JadBot.ParserConsoleInput.WriteLine(trigger.Args.Remainder);
+                trigger.Reply("To see streaming output: {0}", JadBot.WebLinkToGeneralFolder + "toolsoutput.txt");
             }
         }
 
