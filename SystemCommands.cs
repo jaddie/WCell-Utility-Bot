@@ -149,6 +149,33 @@ namespace Jad_Bot
         }
 
         #endregion
+        #region ClearQueueCommand
+
+        public class ClearQueueCommand : Command
+        {
+            public ClearQueueCommand()
+                : base("ClearQueue", "CQ")
+            {
+                Usage = "ClearSendQueue";
+                Description = "Command to clear the send queue. Useful if you want the bot to stop spamming";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    var lines = trigger.Irc.Client.SendQueue.Length;
+                    trigger.Irc.Client.SendQueue.Clear();
+                    trigger.Reply("Cleared SendQueue of {0} lines", lines);
+                }
+                catch (Exception e)
+                {
+                    JadBot.Print(e.Data + e.StackTrace, true);
+                }
+            }
+        }
+
+        #endregion
 
     }
 }

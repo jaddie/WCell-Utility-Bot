@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using Squishy.Irc.Commands;
 
@@ -104,6 +106,52 @@ namespace Jad_Bot
             {
                 JadBot.ParserConsoleInput.WriteLine(trigger.Args.Remainder);
                 trigger.Reply("To see streaming output: {0}", JadBot.WebLinkToGeneralFolder + "toolsoutput.txt");
+            }
+        }
+
+        #endregion
+        #region DownloadLogRemotely
+
+        public class DownloadLogRemotely : Command
+        {
+            public DownloadLogRemotely()
+                : base("downloadlog")
+            {
+                Usage = "downloadlog savefilename httplink";
+                Description =
+                    "Downloads a log from the specified link, savefilename is the name to use for the downloaded file, httplink is the direct link to the file on the site / server";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    string filename = trigger.Args.NextWord();
+                    string httpLink = trigger.Args.Remainder;
+                    trigger.Reply("Attempting to download log from {0} and save in unparsed folder as {1}", httpLink,
+                                  filename);
+                    var client = new WebClient();
+                    client.DownloadFile(httpLink, JadBot.UnparsedFolder + filename);
+                    using (var downloadedfile = new StreamReader(JadBot.UnparsedFolder + filename))
+                    {
+                        if (downloadedfile.BaseStream.Length < 1)
+                        {
+                            trigger.Reply("The downloaded file looks empty, are you sure your link is valid?");
+                        }
+                        else
+                        {
+                            trigger.Reply(
+                                "Download complete file is saved in the unparsed logs folder as {0} you can now use the parse command on it.",
+                                filename);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    WriteErrorSystem.WriteError(new List<string> { e.Message + e.StackTrace + e.InnerException + e.Source });
+                    trigger.Reply("Error occured:{0}", JadBot.WebLinkToGeneralFolder + "ErrorLog.txt");
+                    JadBot.Print(string.Format("Error Occured in download file command: {0}", e.Message + e.StackTrace + e.InnerException + e.Source), true);
+                }
             }
         }
 

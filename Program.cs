@@ -588,79 +588,7 @@ namespace Jad_Bot
 
 
 
-        #region ClearQueueCommand
 
-        public class ClearQueueCommand : Command
-        {
-            public ClearQueueCommand() : base("ClearQueue", "CQ")
-            {
-                Usage = "ClearSendQueue";
-                Description = "Command to clear the send queue. Useful if you want the bot to stop spamming";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                try
-                {
-                    var lines = trigger.Irc.Client.SendQueue.Length;
-                    trigger.Irc.Client.SendQueue.Clear();
-                    trigger.Reply("Cleared SendQueue of {0} lines", lines);
-                }
-                catch(Exception e)
-                {
-                    Print(e.Data + e.StackTrace,true);
-                }
-            }
-        }
-
-        #endregion
-
-        #region DownloadLogRemotely
-
-        public class DownloadLogRemotely : Command
-        {
-            public DownloadLogRemotely() : base("downloadlog")
-            {
-                Usage = "downloadlog savefilename httplink";
-                Description =
-                    "Downloads a log from the specified link, savefilename is the name to use for the downloaded file, httplink is the direct link to the file on the site / server";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                try
-                {
-                    string filename = trigger.Args.NextWord();
-                    string httpLink = trigger.Args.Remainder;
-                    trigger.Reply("Attempting to download log from {0} and save in unparsed folder as {1}", httpLink,
-                                  filename);
-                    var client = new WebClient();
-                    client.DownloadFile(httpLink, UnparsedFolder + filename);
-                    using (var downloadedfile = new StreamReader(UnparsedFolder + filename))
-                    {
-                        if (downloadedfile.BaseStream.Length < 1)
-                        {
-                            trigger.Reply("The downloaded file looks empty, are you sure your link is valid?");
-                        }
-                        else
-                        {
-                            trigger.Reply(
-                                "Download complete file is saved in the unparsed logs folder as {0} you can now use the parse command on it.",
-                                filename);
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    WriteErrorSystem.WriteError(new List<string>
-                                                    {e.Message + e.StackTrace + e.InnerException + e.Source});
-                    trigger.Reply("Error occured:{0}", WebLinkToGeneralFolder + "ErrorLog.txt");
-                    Print(string.Format("Error Occured in download file command: {0}",e.Message + e.StackTrace + e.InnerException + e.Source),true);
-                }
-            }
-        }
-
-        #endregion
 
 
 
