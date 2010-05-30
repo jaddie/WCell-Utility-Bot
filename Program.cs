@@ -615,33 +615,27 @@ namespace Jad_Bot
         }
 
         #endregion
+        #region DumpTypesCommand
 
-        #region Nested type: AddAuthCommand
-
-        public class AddAuthCommand : Command
+        public class DumpTypesCommand : Command
         {
-            public AddAuthCommand()
-                : base("AddAuth", "AuthAdd")
+            public DumpTypesCommand()
+                : base("DumpTypes")
             {
-                Usage = "Auth qauthusername";
-                Description = "Adds the username to Auth list";
+                Usage = "Dumptypes";
+                Description = "Prints out the list of different dump types";
             }
 
             public override void Process(CmdTrigger trigger)
             {
                 try
                 {
-                    using (var streamWriter = new StreamWriter("auth.txt", true))
-                    {
-                        streamWriter.WriteLine(trigger.Args.Remainder);
-                        trigger.Reply("Added Q Auth {0}", trigger.Args.Remainder);
-                    }
+                    trigger.Reply(
+                        "AreaTriggers \n GOs \n Items \n NPCs \n Quests \n SpellsAndEffects \n Vehicles \n use these for the dumptype on the query command!");
                 }
                 catch (Exception e)
                 {
-                    trigger.Reply("I cant write to the auth file!");
-                    trigger.Reply(e.Message);
-                    Print(e.Data + e.StackTrace,true);
+                    Print(e.Data + e.StackTrace, true);
                 }
             }
         }
@@ -805,32 +799,6 @@ namespace Jad_Bot
 
         #endregion
 
-        #region Nested type: DumpTypesCommand
-
-        public class DumpTypesCommand : Command
-        {
-            public DumpTypesCommand()
-                : base("DumpTypes")
-            {
-                Usage = "Dumptypes";
-                Description = "Prints out the list of different dump types";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                try
-                {
-                    trigger.Reply(
-                        "AreaTriggers \n GOs \n Items \n NPCs \n Quests \n SpellsAndEffects \n Vehicles \n use these for the dumptype on the query command!");
-                }
-                catch (Exception e)
-                {
-                    Print(e.Data + e.StackTrace,true);
-                }
-            }
-        }
-
-        #endregion
 
         #region Nested type: EightBallCommand
 
@@ -955,63 +923,9 @@ namespace Jad_Bot
 
         #endregion
 
-        #region Nested type: GeneralFilesCommand
-
-        public class GeneralFilesCommand : Command
-        {
-            public GeneralFilesCommand()
-                : base("general")
-            {
-                Usage = "general";
-                Description = "Replies with link to the folder with general files in.";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                trigger.Reply(WebLinkToGeneralFolder);
-            }
-        }
-
-        #endregion
-
-        #region Nested type: ListParsers
-
-        public class ListParsers : Command
-        {
-            public ListParsers()
-                : base("listparsers", "parsers")
-            {
-                Usage = "listparsers";
-                Description = "Lists the various available parsers for use with the parsing system";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                trigger.Reply("Available Parsers are as follows: \n 0:KSniffer \n 1: KSnifferSingleLine \n 2:Sniffitzt");
-            }
-        }
-
-        #endregion
 
 
-        #region Nested type: ParsedLogsCommand
 
-        public class ParsedLogsCommand : Command
-        {
-            public ParsedLogsCommand()
-                : base("parsed")
-            {
-                Usage = "parsed";
-                Description = "Replies with the link to the folder with parsed logs in.";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                trigger.Reply(WebLinkToParsedFolder);
-            }
-        }
-
-        #endregion
 
         #region Nested type: PizzaCommand
 
@@ -1636,64 +1550,8 @@ namespace Jad_Bot
 
         #endregion
 
-        #region Nested type: UnparsedLogsCommand
 
-        public class UnparsedLogsCommand : Command
-        {
-            public UnparsedLogsCommand()
-                : base("unparsed")
-            {
-                Usage = "unparsed";
-                Description = "Replies with the link to the folder with the unparsed logs in.";
-            }
 
-            public override void Process(CmdTrigger trigger)
-            {
-                trigger.Reply(WebLinkToUnparsedFolder);
-            }
-        }
-
-        #endregion
-
-        #region Nested type: UploadCommand
-
-        public class UploadCommand : Command
-        {
-            public UploadCommand()
-                : base("Upload")
-            {
-                Usage = "Upload";
-                Description =
-                    "Replies with the address to use for uploading unparsed logs, and downloading parsed logs.";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                trigger.Reply("Please use {0} for uploads such as unparsed logs you wish to parse with this bot",
-                              UploadSite);
-            }
-        }
-
-        #endregion
-
-        #region Nested type: WCellLogsCommand
-
-        public class WCellLogsCommand : Command
-        {
-            public WCellLogsCommand()
-                : base("WCellLogs", "logs")
-            {
-                Usage = "wcelllogs";
-                Description = "Show the link to the logs from the AutoDeployServer";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                trigger.Reply("The WCell AutoDeploy Logs are at: " + WebLinkToLogsFolder);
-            }
-        }
-
-        #endregion
 
         #endregion
     }

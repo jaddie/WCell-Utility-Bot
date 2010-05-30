@@ -71,6 +71,24 @@ namespace Jad_Bot
         }
 
         #endregion
+        #region ListParsers
+
+        public class ListParsers : Command
+        {
+            public ListParsers()
+                : base("listparsers", "parsers")
+            {
+                Usage = "listparsers";
+                Description = "Lists the various available parsers for use with the parsing system";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                trigger.Reply("Available Parsers are as follows: \n 0:KSniffer \n 1: KSnifferSingleLine \n 2:Sniffitzt");
+            }
+        }
+
+        #endregion
 
     }
 }
