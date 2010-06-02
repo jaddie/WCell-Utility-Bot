@@ -20,7 +20,8 @@ namespace Jad_Bot
         {
             try
             {
-                trigger.Reply("http://thepiratebay.org/search/" + trigger.Args.Remainder + "/0/7/0");
+                string searchTerm = trigger.Args.Remainder.Replace(" ", "%20");
+                trigger.Reply("http://thepiratebay.org/search/" + searchTerm + "/0/7/0");
             }
             catch (Exception e)
             {
