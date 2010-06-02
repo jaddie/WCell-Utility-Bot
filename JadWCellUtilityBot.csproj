@@ -78,7 +78,8 @@
     <Compile Include="DumpOperator.cs" />
     <Compile Include="FunCommands.cs" />
     <Compile Include="Information.cs" />
-    <Compile Include="LinusTorvaldus.cs" />
+    <Compile Include="LegalBay.cs" />
+    <Compile Include="LinusTorvalds.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
