@@ -382,8 +382,9 @@ namespace Jad_Bot
                                                excep.Message);
                     }
                 }
-                var writer = new StreamWriter(GeneralFolder + "toolsoutput.txt", true) {AutoFlush = false};
+                var writer = new StreamWriter(GeneralFolder + "toolsoutput.txt", true) {AutoFlush = true};
                 writer.WriteLine(e.Data);
+                UtilityMethods.Print(e.Data,true);
                 writer.Close();
 
                 #endregion
