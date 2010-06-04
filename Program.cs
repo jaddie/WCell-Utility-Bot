@@ -179,7 +179,7 @@ namespace Jad_Bot
                 Parser.StartInfo.WorkingDirectory = ToolsFolder;
                 Parser.Start();
                 Parser.BeginOutputReadLine();
-                ParserConsoleInput = new StreamWriter(Parser.StandardInput.BaseStream) {AutoFlush = false};
+                ParserConsoleInput = new StreamWriter(Parser.StandardInput.BaseStream) {AutoFlush = true};
                 // Input into the console
                 Irc.Disconnected += Irc_Disconnected;
                 Process utility = Process.GetCurrentProcess();
