@@ -13,13 +13,15 @@ namespace Jad_Bot
         {
             Readresults.Clear();
             Dumptype = dump;
-            var dumpreader = new StreamReader(Dumptype);
-            while (!dumpreader.EndOfStream)
+            using (var dumpreader = new StreamReader(Dumptype))
             {
-                var currentline = dumpreader.ReadLine().ToLower();
-                if (currentline.Contains(query.ToLower()))
+                while (!dumpreader.EndOfStream)
                 {
-                    Readresults.Add(currentline);
+                    var currentline = dumpreader.ReadLine().ToLower();
+                    if (currentline.Contains(query.ToLower()))
+                    {
+                        Readresults.Add(currentline);
+                    }
                 }
             }
             return Readresults;
@@ -27,19 +29,21 @@ namespace Jad_Bot
         public List<string> Select(int queryid)
         {
             Selectresults.Clear();
-            var dumpreader = new StreamReader(Dumptype);
-            string currentline;
-            var queryidfromlist = Readresults[queryid];
-            Console.WriteLine(queryidfromlist);
-            while (!dumpreader.EndOfStream)
+            using (var dumpreader = new StreamReader(Dumptype))
             {
-                currentline = dumpreader.ReadLine();
-                if(currentline.ToLower() == Readresults[queryid])
+                string currentline;
+                var queryidfromlist = Readresults[queryid];
+                Console.WriteLine(queryidfromlist);
+                while (!dumpreader.EndOfStream)
                 {
-                    while (!currentline.Contains("#####"))
+                    currentline = dumpreader.ReadLine();
+                    if(currentline.ToLower() == Readresults[queryid])
                     {
-                        Selectresults.Add(currentline);
-                        currentline = dumpreader.ReadLine();
+                        while (!currentline.Contains("#####"))
+                        {
+                            Selectresults.Add(currentline);
+                            currentline = dumpreader.ReadLine();
+                        }
                     }
                 }
             }
