@@ -7,12 +7,12 @@ using Squishy.Irc.Commands;
 
 namespace Jad_Bot.Utilities
 {
-    class Celsius : Command
+    class Celcius : Command
     {
-                public Celsius()
-            : base("celsius")
+                public Celcius()
+            : base("celcius")
         {
-            Usage = "celsius degree";
+            Usage = "celcius degree";
             Description = "returns celsius converted to other measurements";
         }
 
@@ -20,11 +20,11 @@ namespace Jad_Bot.Utilities
         {
             try
             {
-                int celsius = Convert.ToInt32(trigger.Args.Remainder.Trim());
-                int fahrenheit = (celsius * 9 / 5) + 32;
-                int kelvin = celsius + 273;
+                int celcius = Convert.ToInt32(trigger.Args.Remainder.Trim());
+                int fahrenheit = (celcius * 9 / 5) + 32;
+                int kelvin = celcius + 273;
 
-                trigger.Reply(trigger.Args.Remainder + " Celsius is , " + fahrenheit.ToString() + "F , " + kelvin.ToString() + " Kelvin");
+                trigger.Reply(trigger.Args.Remainder + " Celcius is , " + fahrenheit.ToString() + "F , " + kelvin.ToString() + " Kelvin");
             }
             catch(Exception e)
             {
@@ -38,7 +38,7 @@ namespace Jad_Bot.Utilities
         public Fahrenheit()
             : base("fahrenheit")
         {
-            Usage = "celsius degree";
+            Usage = "fahrenheit degree";
             Description = "returns fahrenheit converted to other measurements";
         }
 
@@ -47,10 +47,10 @@ namespace Jad_Bot.Utilities
             try
             {
                 int fahrenheit = Convert.ToInt32(trigger.Args.Remainder.Trim());
-                int celsius = (fahrenheit - 32) * 5 / 9;
+                int celcius = (fahrenheit - 32) * 5 / 9;
                 int kelvin = (fahrenheit + 459) * 5 / 9;
 
-                trigger.Reply(trigger.Args.Remainder + " Fahrenheit is , " + celsius.ToString() + "C , " + kelvin.ToString() + " Kelvin");
+                trigger.Reply(trigger.Args.Remainder + " Fahrenheit is , " + celcius + "C , " + kelvin + " Kelvin");
             }
             catch (Exception e)
             {
