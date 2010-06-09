@@ -28,6 +28,7 @@ namespace Jad_Bot.Utilities
             }
             catch(Exception e)
             {
+                trigger.Reply(e.ToString());
             }
         }
     }
@@ -53,6 +54,7 @@ namespace Jad_Bot.Utilities
             }
             catch (Exception e)
             {
+                trigger.Reply(e.ToString());
             }
         }
     }
