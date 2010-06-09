@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Utilities\Calculator.cs" />
     <Compile Include="FunCommands\ChuckNorris.cs" />
+    <Compile Include="Utilities\Temperature.cs" />
     <Compile Include="WCellCommands\DumpOperator.cs" />
     <Compile Include="FunCommands\FunCommands.cs" />
     <Compile Include="IrcCommands\Information.cs" />
