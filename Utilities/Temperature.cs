@@ -20,7 +20,7 @@ namespace Jad_Bot.Utilities
         {
             try
             {
-                int celsius = Convert.ToInt32(trigger.Args.Remainder);
+                int celsius = Convert.ToInt32(trigger.Args.Remainder.Trim());
                 int fahrenheit = (celsius * 9 / 5) + 32;
                 int kelvin = celsius + 273;
 
@@ -45,7 +45,7 @@ namespace Jad_Bot.Utilities
         {
             try
             {
-                int fahrenheit = Convert.ToInt32(trigger.Args.Remainder);
+                int fahrenheit = Convert.ToInt32(trigger.Args.Remainder.Trim());
                 int celsius = (fahrenheit - 32) * 5 / 9;
                 int kelvin = (fahrenheit + 459) * 5 / 9;
 
