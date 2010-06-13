@@ -306,11 +306,16 @@ namespace Jad_Bot
                 if (text.String.ToLower().Contains("badger"))
                 {
                     Random rand = new Random();
-                    var randomint = rand.Next(1, 2);
-                    if(randomint == 1)
+                    var randomint = rand.Next(0, 100);
+                    chan.Msg(randomint);
+                    if(randomint > 50)
+                    {
                         chan.Msg("Ahhhh Snakkeeee its a snaakee!!!! http://www.youtube.com/watch?v=EIyixC9NsLI");
+                    }
                     else
-                    chan.Msg("Mushroom Mushroom Mushroom! http://www.youtube.com/watch?v=EIyixC9NsLI");
+                    {
+                        chan.Msg("Mushroom Mushroom Mushroom! http://www.youtube.com/watch?v=EIyixC9NsLI");
+                    }
                 }
                 else
                 {
