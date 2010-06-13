@@ -147,6 +147,31 @@ namespace Jad_Bot
         }
 
         #endregion
+        #region GitRepoCommand
+
+        public class GitRepoCommand : Command
+        {
+            public GitRepoCommand()
+                : base("git","repo")
+            {
+                Usage = "git";
+                Description = "Display git repo info";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    trigger.Reply("You can find WCell's GIT repository at: http://github.com/WCell/WCell");  //TODO: Add link to wiki
+                }
+                catch (Exception e)
+                {
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                }
+            }
+        }
+
+        #endregion
 
     }
 }
