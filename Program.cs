@@ -307,7 +307,6 @@ namespace Jad_Bot
                 {
                     Random rand = new Random();
                     var randomint = rand.Next(0, 100);
-                    chan.Msg(randomint);
                     if(randomint > 50)
                     {
                         chan.Msg("Ahhhh Snakkeeee its a snaakee!!!! http://www.youtube.com/watch?v=EIyixC9NsLI");
