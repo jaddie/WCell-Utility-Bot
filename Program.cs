@@ -303,7 +303,19 @@ namespace Jad_Bot
             try
             {
                 CommandHandler.RemoteCommandPrefix = text.String.StartsWith("~") ? "~" : "@";
-                if (text.String.Contains("ACTION") && text.String.ToLower().Contains("utilitybot"))
+                if(text.String.ToLower().Contains("badger"))
+                {
+                    chan.Msg("Ahhhh Snakkeeee its a snaakee!!!!");
+                }
+                if(text.String.ToLower().Contains("snake"))
+                {
+                    chan.Msg("Mushroom Mushroom Mushroom!!");
+                }
+                if (text.String.ToLower().Contains("mushroom"))
+                {
+                    chan.Msg("Badger..Badger..Badger!");
+                }
+                if (text.String.Contains("ACTION") && text.String.ToLower().Contains("utility") && text.String.ToLower().Contains("bot"))
                 {
                     if (chan != null)
                         Irc.CommandHandler.Describe(chan, FunCommands.ReactToAction(), chan.Args);

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using Squishy.Irc.Commands;
 
 namespace Jad_Bot.Utilities
@@ -24,7 +20,7 @@ namespace Jad_Bot.Utilities
                 int fahrenheit = (celsius * 9 / 5) + 32;
                 int kelvin = celsius + 273;
 
-                trigger.Reply(trigger.Args.Remainder + " Celsius is , " + fahrenheit.ToString() + "F , " + kelvin.ToString() + " Kelvin");
+                trigger.Reply(trigger.Args.Remainder + " Celsius is , " + fahrenheit + "F , " + kelvin + " Kelvin");
             }
             catch(Exception e)
             {
@@ -50,7 +46,7 @@ namespace Jad_Bot.Utilities
                 int celsius = (fahrenheit - 32) * 5 / 9;
                 int kelvin = (fahrenheit + 459) * 5 / 9;
 
-                trigger.Reply(trigger.Args.Remainder + " Fahrenheit is , " + celsius.ToString() + "C , " + kelvin.ToString() + " Kelvin");
+                trigger.Reply(trigger.Args.Remainder + " Fahrenheit is , " + celsius + "C , " + kelvin + " Kelvin");
             }
             catch (Exception e)
             {
