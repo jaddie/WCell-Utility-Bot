@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>UtilityBot Command Snippet</Title>
+      <Author>Jaddie</Author>
+      <Description>
+      </Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>
+      </Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>commandname</ID>
+          <ToolTip>The name of the command you are creating</ToolTip>
+          <Default>commandname</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>Howto</ID>
+          <ToolTip>How to use the command from Irc</ToolTip>
+          <Default>Howto</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>Info</ID>
+          <ToolTip>Description of the command, what does it do?</ToolTip>
+          <Default>Info</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>NameOfCommand</ID>
+          <ToolTip>The name for this command.</ToolTip>
+          <Default>NameOfCommand</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[        #region $NameOfCommand$
+
+        public class $NameOfCommand$ : Command
+        {
+            public $NameOfCommand$()
+                : base("$commandname$")
+            {
+                Usage = "$Howto$";
+                Description = "$Info$";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    //Main method to execute when the command is activated from Irc
+                }
+                catch (Exception e)
+                {
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                    // Error handling
+                }
+            }
+        }
+
+        #endregion]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

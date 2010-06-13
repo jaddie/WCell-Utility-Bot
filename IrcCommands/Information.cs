@@ -151,8 +151,7 @@ namespace Jad_Bot
 
         public class GitRepoCommand : Command
         {
-            public GitRepoCommand()
-                : base("git","repo")
+            public GitRepoCommand() : base("git","repo")
             {
                 Usage = "git";
                 Description = "Display git repo info";
@@ -172,6 +171,30 @@ namespace Jad_Bot
         }
 
         #endregion
+        #region WCellTerrainRepoCommand
 
+        public class WCellTerrainRepoCommand : Command
+        {
+            public WCellTerrainRepoCommand()
+                : base("wcellterrain")
+            {
+                Usage = "wcellterrain";
+                Description = "Replies with the link to the wcell terrain repo";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    trigger.Reply("WCell Terrain Git Repo: http://github.com/WCell/WCell-Terrain");
+                }
+                catch (Exception e)
+                {
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                }
+            }
+        }
+
+        #endregion
     }
 }
