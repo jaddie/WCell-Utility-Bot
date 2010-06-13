@@ -196,5 +196,30 @@ namespace Jad_Bot
         }
 
         #endregion
+        #region DBCommand
+
+        public class DBCommand : Command
+        {
+            public DBCommand()
+                : base("db")
+            {
+                Usage = "db";
+                Description = "Shows the wiki link for supported databases";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    trigger.Reply("WCell supports the following database projects: http://www.wcell.org/Wiki/index.php?title=Supported_Databases");
+                }
+                catch (Exception e)
+                {
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                }
+            }
+        }
+
+        #endregion
     }
 }
