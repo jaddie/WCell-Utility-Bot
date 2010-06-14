@@ -77,7 +77,7 @@ namespace Jad_Bot
         public static string LogFile;
         public static string ReplyChan = "#woc";
         public static readonly Stopwatch Runtimer = new Stopwatch();
-
+        public static Process Utility = Process.GetCurrentProcess();
         #endregion
 
         #region ErrorHandling
@@ -182,8 +182,7 @@ namespace Jad_Bot
                 ParserConsoleInput = new StreamWriter(Parser.StandardInput.BaseStream) {AutoFlush = true};
                 // Input into the console
                 Irc.Disconnected += Irc_Disconnected;
-                Process utility = Process.GetCurrentProcess();
-                utility.Exited += UtilityExited;
+                Utility.Exited += UtilityExited;
 
                 #endregion
 

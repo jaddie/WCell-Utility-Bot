@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading;
 using Squishy.Irc.Commands;
@@ -82,13 +84,14 @@ namespace Jad_Bot
                             p.Kill();
                         }
                         var wcellRealmserver = new Process
-                        {
-                            StartInfo =
-                            {
-                                FileName = @"c:\run\debug\wcell.realmserverconsole.exe",
-                                WorkingDirectory = @"c:\realmserver\"
-                            }
-                        };
+                                                   {
+                                                       StartInfo =
+                                                           {
+                                                               FileName = @"c:\run\debug\wcell.realmserverconsole.exe",
+                                                               WorkingDirectory = @"c:\realmserver\",
+                                                               UseShellExecute = true
+                                                           }
+                                                   };
                         wcellRealmserver.Start();
                         Process[] killauth = System.Diagnostics.Process.GetProcessesByName("wcell.authserverconsole");
                         foreach (var p in killauth)
@@ -100,12 +103,11 @@ namespace Jad_Bot
                             StartInfo =
                             {
                                 FileName =
-                                    @"c:\run\authserver\wcell.authserverconsole.exe",
-                                WorkingDirectory = @"c:\authserver",
+                                    @"c:\run\debug\authserver\wcell.authserverconsole.exe",
+                                WorkingDirectory = @"c:\run\debug\authserver",
                                 UseShellExecute = true
                             }
                         };
-                        wcellRealmserver.StartInfo.UseShellExecute = true;
                         wCellAuthserver.Start();
                         wcellRealmserver.Start();
                     }
@@ -122,7 +124,11 @@ namespace Jad_Bot
                     {
                         trigger.Reply("Restarting Utility - If there is no auto restarter the utility will not return");
                         JadBot.Parser.Kill();
-                        Environment.Exit(0);
+                        var restartbat = new StreamWriter("Restartbat.bat") {AutoFlush = true};
+                        restartbat.WriteLine("taskkill /F /IM jad_bot.exe");
+                        restartbat.WriteLine("start " + JadBot.Utility.StartInfo.FileName);
+                        var cmd = new Process {StartInfo = {FileName = "cmd.exe", Arguments = "start RestartBat.bat"}};
+                        cmd.Start();
                     }
                     if (nextWord == "authserver")
                     {
@@ -142,9 +148,6 @@ namespace Jad_Bot
                             wCellStarter.Start();
                         }
                         Thread.Sleep(3000);
-                        authServer = System.Diagnostics.Process.GetProcessesByName("WCell.AuthServerConsole");
-                        if (authServer.Length > 0)
-                            trigger.Reply("AuthServer Seems to be Online again!");
                     }
                     if (nextWord != "realmserver") return;
                     Process[] realmServer = System.Diagnostics.Process.GetProcessesByName("WCell.RealmServerConsole");
@@ -167,6 +170,9 @@ namespace Jad_Bot
                     realmServer = System.Diagnostics.Process.GetProcessesByName("WCell.RealmServerConsole");
                     if (realmServer.Length > 0)
                         trigger.Reply("RealmServer Seems to be Online again!");
+                    var authConsoleServer = System.Diagnostics.Process.GetProcessesByName("WCell.AuthServerConsole");
+                    if (authConsoleServer.Length > 0)
+                        trigger.Reply("AuthServer Seems to be Online again!");
                 }
                 catch (Exception e)
                 {
