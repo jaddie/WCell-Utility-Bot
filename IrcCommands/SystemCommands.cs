@@ -103,8 +103,8 @@ namespace Jad_Bot
                             StartInfo =
                             {
                                 FileName =
-                                    @"c:\run\debug\authserver\wcell.authserverconsole.exe",
-                                WorkingDirectory = @"c:\run\debug\authserver",
+                                    @"c:\run\debug\wcell.authserverconsole.exe",
+                                WorkingDirectory = @"c:\run\debug\",
                                 UseShellExecute = true
                             }
                         };
