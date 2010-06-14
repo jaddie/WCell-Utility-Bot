@@ -21,7 +21,7 @@ namespace Jad_Bot
 
             public override void Process(CmdTrigger trigger)
             {
-                trigger.Reply("The WCell AutoDeploy Logs are at: " + JadBot.WebLinkToLogsFolder);
+                trigger.Reply("The WCell Test Server Logs are at: " + JadBot.WebLinkToLogsFolder);
             }
         }
 
@@ -212,6 +212,31 @@ namespace Jad_Bot
                 try
                 {
                     trigger.Reply("WCell supports the following database projects: http://www.wcell.org/Wiki/index.php?title=Supported_Databases");
+                }
+                catch (Exception e)
+                {
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                }
+            }
+        }
+
+        #endregion
+        #region WCellDumpsCommand
+
+        public class WCellDumpsCommand : Command
+        {
+            public WCellDumpsCommand()
+                : base("dumps", "wcelldumps")
+            {
+                Usage = "wcelldumps";
+                Description = "Provides link to dumps folder";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    trigger.Reply("WCell Test Server Dumps Are At: http://wcell.org/Dumps");
                 }
                 catch (Exception e)
                 {
