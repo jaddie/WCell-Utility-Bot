@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using Squishy.Network;
 
-namespace Jad_Bot
+namespace Jad_Bot.Utilities
 {
     public class UtilityMethods
     {

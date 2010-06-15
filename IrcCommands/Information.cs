@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Jad_Bot.Utilities;
 using Squishy.Irc.Commands;
 
-namespace Jad_Bot
+namespace Jad_Bot.IrcCommands
 {
     class Information
     {
@@ -237,6 +235,31 @@ namespace Jad_Bot
                 try
                 {
                     trigger.Reply("WCell Test Server Dumps Are At: http://wcell.org/Dumps");
+                }
+                catch (Exception e)
+                {
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                }
+            }
+        }
+
+        #endregion
+        #region WikiCommand
+
+        public class WikiCommand : Command
+        {
+            public WikiCommand()
+                : base("wiki")
+            {
+                Usage = "wiki";
+                Description = "Displays the link for the wcell wiki page";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    trigger.Reply("The WCell Wiki is located at: http://wiki.wcell.org");
                 }
                 catch (Exception e)
                 {

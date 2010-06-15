@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-namespace Jad_Bot
+
+namespace Jad_Bot.Utilities
 {
     static class WriteErrorSystem
     {

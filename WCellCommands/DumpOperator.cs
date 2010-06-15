@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+using Jad_Bot.Utilities;
 using Squishy.Irc.Commands;
 
-namespace Jad_Bot
+namespace Jad_Bot.WCellCommands
 {
     class DumpOperator
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-namespace Jad_Bot
+
+namespace Jad_Bot.Utilities
 {
     /// <summary>
     /// A basic implementation of a pretty-printer or syntax highlighter for C# soure code.

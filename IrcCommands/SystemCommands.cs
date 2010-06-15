@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net.Mime;
-using System.Text;
 using System.Threading;
+using Jad_Bot.Utilities;
 using Squishy.Irc.Commands;
 
-namespace Jad_Bot
+namespace Jad_Bot.IrcCommands
 {
     class SystemCommands
     {

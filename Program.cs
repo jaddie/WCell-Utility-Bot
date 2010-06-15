@@ -9,6 +9,8 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Timers;
+using Jad_Bot.Utilities;
+using Jad_Bot.WCellCommands;
 using Squishy.Irc;
 using Squishy.Irc.Commands;
 using Squishy.Network;

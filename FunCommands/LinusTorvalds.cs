@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Jad_Bot.Utilities;
 using Squishy.Irc.Commands;
 
-namespace Jad_Bot
+namespace Jad_Bot.FunCommands
 {
     class LinusTorvalds
     {
