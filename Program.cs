@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using Jad_Bot.FunCommands;
 using System.Text;
 using System.Threading;
 using System.Timers;
@@ -335,9 +336,9 @@ namespace Jad_Bot
                 if (text.String.Contains("ACTION") && text.String.ToLower().Contains("utility") && text.String.ToLower().Contains("bot"))
                 {
                     if (chan != null)
-                        Irc.CommandHandler.Describe(chan, FunCommands.ReactToAction(), chan.Args);
+                        Irc.CommandHandler.Describe(chan, FunCommands.FunCommands.ReactToAction(), chan.Args);
                     else
-                        Irc.CommandHandler.Describe(user, FunCommands.ReactToAction(), user.Args);
+                        Irc.CommandHandler.Describe(user, FunCommands.FunCommands.ReactToAction(), user.Args);
                 }
 
                 #region MessagesSent

@@ -205,7 +205,7 @@ namespace Jad_Bot.FunCommands
         }
 
         #endregion
-
+        #region ReactToAction
         public static string ReactToAction()
         {
             try
@@ -228,5 +228,6 @@ namespace Jad_Bot.FunCommands
                 return "";
             }
         }
+        #endregion
     }
 }
