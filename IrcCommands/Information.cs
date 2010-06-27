@@ -269,5 +269,29 @@ namespace Jad_Bot.IrcCommands
         }
 
         #endregion
+        #region Express2010AdvancedCommand
+
+        public class Express2010AdvancedCommand : Command
+        {
+            public Express2010AdvancedCommand() : base("express")
+            {
+                Usage = "express";
+                Description = "Shows the info to make 2010 express into a usable IDE";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    trigger.Reply("Click tools -> settings -> Expert Settings -- This should provide you with most options of the bigger versions of VS so you can actually get something done, including the break button!");
+				}
+                catch (Exception e)
+                {
+                    UtilityMethods.Print(e.Data + e.Message + e.StackTrace + e.Source + e.TargetSite, true);
+                }
+            }
+        }
+
+        #endregion
     }
 }
