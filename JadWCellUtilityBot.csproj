@@ -79,7 +79,7 @@
     <Compile Include="WCellCommands\DumpOperator.cs" />
     <Compile Include="FunCommands\FunCommands.cs" />
     <Compile Include="IrcCommands\Information.cs" />
-    <Compile Include="FunCommands\LegalBay.cs" />
+    <Compile Include="FunCommands\BayCommands.cs" />
     <Compile Include="FunCommands\LinusTorvalds.cs" />
     <Compile Include="WCellCommands\Parser.cs" />
     <Compile Include="Program.cs" />

@@ -6,8 +6,6 @@ namespace Jad_Bot.FunCommands
 {
     class FunCommands
     {
-        #region StealObjectCommand
-
         public class StealObjectCommand : Command
         {
             public StealObjectCommand()
@@ -58,10 +56,6 @@ namespace Jad_Bot.FunCommands
                 }
             }
         }
-
-        #endregion
-        #region PizzaCommand
-
         public class PizzaCommand : Command
         {
             public PizzaCommand()
@@ -83,10 +77,6 @@ namespace Jad_Bot.FunCommands
                                                                   trigger.Args.Remainder), trigger.Args);
             }
         }
-
-        #endregion
-        #region EightBallCommand
-
         public class EightBallCommand : Command
         {
             public EightBallCommand()
@@ -139,10 +129,6 @@ namespace Jad_Bot.FunCommands
                 }
             }
         }
-
-        #endregion
-        #region BeerCommand
-
         public class BeerCommand : Command
         {
             public BeerCommand()
@@ -171,10 +157,6 @@ namespace Jad_Bot.FunCommands
                 }
             }
         }
-
-        #endregion
-        #region ActionCommand
-
         public class ActionCommand : Command
         {
             public ActionCommand()
@@ -203,9 +185,6 @@ namespace Jad_Bot.FunCommands
                 }
             }
         }
-
-        #endregion
-        #region ReactToAction
         public static string ReactToAction()
         {
             try
@@ -228,6 +207,5 @@ namespace Jad_Bot.FunCommands
                 return "";
             }
         }
-        #endregion
     }
 }

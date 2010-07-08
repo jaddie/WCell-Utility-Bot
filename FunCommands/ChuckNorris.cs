@@ -8,8 +8,6 @@ namespace Jad_Bot.FunCommands
 {
     class ChuckNorris
     {
-        #region AddChuckNorrisFactCommand
-
         public class AddChuckNorrisFactCommand : Command
         {
             public AddChuckNorrisFactCommand()
@@ -35,10 +33,6 @@ namespace Jad_Bot.FunCommands
                 }
             }
         }
-
-        #endregion
-        #region RandomChuckNorrisFactCommand
-
         public class RandomChuckNorrisFactCommand : Command
         {
             public RandomChuckNorrisFactCommand()
@@ -69,7 +63,5 @@ namespace Jad_Bot.FunCommands
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -6,8 +6,6 @@ namespace Jad_Bot.IrcCommands
 {
     class Information
     {
-        #region WCellLogsCommand
-
         public class WCellLogsCommand : Command
         {
             public WCellLogsCommand()
@@ -22,10 +20,6 @@ namespace Jad_Bot.IrcCommands
                 trigger.Reply("The WCell Test Server Logs are at: " + JadBot.WebLinkToLogsFolder);
             }
         }
-
-        #endregion
-        #region UnparsedLogsCommand
-
         public class UnparsedLogsCommand : Command
         {
             public UnparsedLogsCommand()
@@ -40,10 +34,6 @@ namespace Jad_Bot.IrcCommands
                 trigger.Reply(JadBot.WebLinkToUnparsedFolder);
             }
         }
-
-        #endregion
-        #region UploadCommand
-
         public class UploadCommand : Command
         {
             public UploadCommand()
@@ -60,10 +50,6 @@ namespace Jad_Bot.IrcCommands
                               JadBot.UploadSite);
             }
         }
-
-        #endregion
-        #region ParsedLogsCommand
-
         public class ParsedLogsCommand : Command
         {
             public ParsedLogsCommand()
@@ -78,10 +64,6 @@ namespace Jad_Bot.IrcCommands
                 trigger.Reply(JadBot.WebLinkToParsedFolder);
             }
         }
-
-        #endregion
-        #region GeneralFilesCommand
-
         public class GeneralFilesCommand : Command
         {
             public GeneralFilesCommand()
@@ -96,10 +78,6 @@ namespace Jad_Bot.IrcCommands
                 trigger.Reply(JadBot.WebLinkToGeneralFolder);
             }
         }
-
-        #endregion
-        #region AttackCommand
-
         public class AttackCommand : Command
         {
             public AttackCommand()
@@ -143,10 +121,6 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
-
-        #endregion
-        #region GitRepoCommand
-
         public class GitRepoCommand : Command
         {
             public GitRepoCommand() : base("git","repo")
@@ -167,10 +141,6 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
-
-        #endregion
-        #region WCellTerrainRepoCommand
-
         public class WCellTerrainRepoCommand : Command
         {
             public WCellTerrainRepoCommand()
@@ -192,10 +162,6 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
-
-        #endregion
-        #region DBCommand
-
         public class DBCommand : Command
         {
             public DBCommand()
@@ -217,10 +183,6 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
-
-        #endregion
-        #region WCellDumpsCommand
-
         public class WCellDumpsCommand : Command
         {
             public WCellDumpsCommand()
@@ -242,10 +204,6 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
-
-        #endregion
-        #region WikiCommand
-
         public class WikiCommand : Command
         {
             public WikiCommand()
@@ -267,10 +225,6 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
-
-        #endregion
-        #region Express2010AdvancedCommand
-
         public class Express2010AdvancedCommand : Command
         {
             public Express2010AdvancedCommand() : base("express")
@@ -291,7 +245,5 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
-
-        #endregion
     }
 }
