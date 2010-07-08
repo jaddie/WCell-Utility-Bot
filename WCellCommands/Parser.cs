@@ -9,12 +9,9 @@ namespace Jad_Bot.WCellCommands
 {
     class Parser
     {
-        #region ParseCommand
-
         public class ParseCommand : Command
         {
-            public ParseCommand()
-                : base("Parse", "P")
+            public ParseCommand() : base("Parse", "P")
             {
                 Usage = "Parse logname.extension parsertype";
                 Description =
@@ -70,10 +67,6 @@ namespace Jad_Bot.WCellCommands
                 }
             }
         }
-
-        #endregion
-        #region ListParsers
-
         public class ListParsers : Command
         {
             public ListParsers()
@@ -88,10 +81,6 @@ namespace Jad_Bot.WCellCommands
                 trigger.Reply("Available Parsers are as follows: \n 0:KSniffer \n 1: KSnifferSingleLine \n 2:Sniffitzt");
             }
         }
-
-        #endregion
-        #region SendToolsCommand
-
         public class SendToolsCommand : Command
         {
             public SendToolsCommand()
@@ -107,10 +96,6 @@ namespace Jad_Bot.WCellCommands
                 trigger.Reply("To see streaming output: {0}", JadBot.WebLinkToGeneralFolder + "toolsoutput.txt");
             }
         }
-
-        #endregion
-        #region DownloadLogRemotely
-
         public class DownloadLogRemotely : Command
         {
             public DownloadLogRemotely()
@@ -153,8 +138,5 @@ namespace Jad_Bot.WCellCommands
                 }
             }
         }
-
-        #endregion
-
     }
 }

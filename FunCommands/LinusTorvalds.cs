@@ -8,8 +8,6 @@ namespace Jad_Bot.FunCommands
 {
     class LinusTorvalds
     {
-        #region AddLinusTorvaldsFactCommand
-
         public class AddLinusTorvaldsFactCommand : Command
         {
             public AddLinusTorvaldsFactCommand()
@@ -34,10 +32,6 @@ namespace Jad_Bot.FunCommands
                 }
             }
         }
-
-        #endregion
-        #region RandomLinusTorvaldsFactCommand
-
         public class RandomLinusTorvaldsFactCommand : Command
         {
             public RandomLinusTorvaldsFactCommand()
@@ -68,7 +62,5 @@ namespace Jad_Bot.FunCommands
                 }
             }
         }
-
-        #endregion
     }
 }

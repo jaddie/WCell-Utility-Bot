@@ -8,12 +8,9 @@ namespace Jad_Bot.WCellCommands
 {
     class DumpOperator
     {
-        #region QueryDumpCommand
-
         public class QueryDumpCommand : Command
         {
-            public QueryDumpCommand()
-                : base("Query")
+            public QueryDumpCommand() : base("Query")
             {
                 Usage = "Query dumptype partialspelloreffectname";
                 Description =
@@ -88,14 +85,9 @@ namespace Jad_Bot.WCellCommands
                 }
             }
         }
-
-        #endregion
-        #region SelectDumpCommand
-
         public class SelectDumpCommand : Command
         {
-            public SelectDumpCommand()
-                : base("Select")
+            public SelectDumpCommand() : base("Select")
             {
                 Usage = "Select id";
                 Description =
@@ -131,14 +123,9 @@ namespace Jad_Bot.WCellCommands
                 }
             }
         }
-
-        #endregion
-        #region DumpTypesCommand
-
         public class DumpTypesCommand : Command
         {
-            public DumpTypesCommand()
-                : base("DumpTypes")
+            public DumpTypesCommand() : base("DumpTypes")
             {
                 Usage = "Dumptypes";
                 Description = "Prints out the list of different dump types";
@@ -157,8 +144,5 @@ namespace Jad_Bot.WCellCommands
                 }
             }
         }
-
-        #endregion
-
     }
 }

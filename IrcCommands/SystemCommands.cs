@@ -9,8 +9,6 @@ namespace Jad_Bot.IrcCommands
 {
     class SystemCommands
     {
-        #region RuntimeCommand
-
         public class RuntimeCommand : Command
         {
             public RuntimeCommand()
@@ -26,10 +24,6 @@ namespace Jad_Bot.IrcCommands
                               " minutes, oh yeah I'm a good bot!");
             }
         }
-
-        #endregion
-        #region ClearQueueCommand
-
         public class ClearQueueCommand : Command
         {
             public ClearQueueCommand()
@@ -53,10 +47,6 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
-
-        #endregion
-        #region RestartCommand
-
         public class RestartCommand : Command
         {
             public RestartCommand()
@@ -177,8 +167,5 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
-
-        #endregion
-
     }
 }

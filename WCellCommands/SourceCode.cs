@@ -9,8 +9,6 @@ namespace Jad_Bot.WCellCommands
 {
     class SourceCode
     {
-        #region ReadSourceFile
-
         public class ReadSourceFile : Command
         {
             private readonly List<FileInfo> _files = new List<FileInfo>();
@@ -255,10 +253,6 @@ namespace Jad_Bot.WCellCommands
                 return null;
             }
         }
-
-        #endregion
-        #region FindMethod
-
         public class FindMethod : Command
         {
             public FindMethod()
@@ -282,10 +276,6 @@ namespace Jad_Bot.WCellCommands
                 }
             }
         }
-
-        #endregion
-        #region oldidea
-
         /*var filename = trigger.Args.NextWord(".");
                 var method = trigger.Args.NextWord();
                 DirectoryInfo wcellsource = new DirectoryInfo(@"c:\wcellsource");
@@ -320,7 +310,5 @@ namespace Jad_Bot.WCellCommands
                     }
                 }
                 return readresults;*/
-
-        #endregion
     }
 }

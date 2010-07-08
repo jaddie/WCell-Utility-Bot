@@ -3,54 +3,54 @@ using Squishy.Irc.Commands;
 
 namespace Jad_Bot.Utilities
 {
-    class Celsius : Command
+    class Temperature
     {
-                public Celsius()
-            : base("celsius")
+        public class Celsius : Command
         {
-            Usage = "celsius degree";
-            Description = "returns celsius converted to other measurements";
-        }
-
-        public override void Process(CmdTrigger trigger)
-        {
-            try
+            public Celsius() : base("celsius")
             {
-                int celsius = Convert.ToInt32(trigger.Args.Remainder.Trim());
-                int fahrenheit = (celsius * 9 / 5) + 32;
-                int kelvin = celsius + 273;
-
-                trigger.Reply(trigger.Args.Remainder + " Celsius is , " + fahrenheit + "F , " + kelvin + " Kelvin");
+                Usage = "celsius degree";
+                Description = "returns celsius converted to other measurements";
             }
-            catch(Exception e)
+
+            public override void Process(CmdTrigger trigger)
             {
-                trigger.Reply(e.ToString());
+                try
+                {
+                    int celsius = Convert.ToInt32(trigger.Args.Remainder.Trim());
+                    int fahrenheit = (celsius * 9 / 5) + 32;
+                    int kelvin = celsius + 273;
+
+                    trigger.Reply(trigger.Args.Remainder + " Celsius is , " + fahrenheit + "F , " + kelvin + " Kelvin");
+                }
+                catch (Exception e)
+                {
+                    trigger.Reply(e.ToString());
+                }
             }
         }
-    }
-
-    class Fahrenheit : Command
-    {
-        public Fahrenheit()
-            : base("fahrenheit")
+        public class Fahrenheit : Command
         {
-            Usage = "fahrenheit degree";
-            Description = "returns fahrenheit converted to other measurements";
-        }
-
-        public override void Process(CmdTrigger trigger)
-        {
-            try
+            public Fahrenheit() : base("fahrenheit")
             {
-                int fahrenheit = Convert.ToInt32(trigger.Args.Remainder.Trim());
-                int celsius = (fahrenheit - 32) * 5 / 9;
-                int kelvin = (fahrenheit + 459) * 5 / 9;
-
-                trigger.Reply(trigger.Args.Remainder + " Fahrenheit is , " + celsius + "C , " + kelvin + " Kelvin");
+                Usage = "fahrenheit degree";
+                Description = "returns fahrenheit converted to other measurements";
             }
-            catch (Exception e)
+
+            public override void Process(CmdTrigger trigger)
             {
-                trigger.Reply(e.ToString());
+                try
+                {
+                    int fahrenheit = Convert.ToInt32(trigger.Args.Remainder.Trim());
+                    int celsius = (fahrenheit - 32) * 5 / 9;
+                    int kelvin = (fahrenheit + 459) * 5 / 9;
+
+                    trigger.Reply(trigger.Args.Remainder + " Fahrenheit is , " + celsius + "C , " + kelvin + " Kelvin");
+                }
+                catch (Exception e)
+                {
+                    trigger.Reply(e.ToString());
+                }
             }
         }
     }
