@@ -40,7 +40,11 @@ namespace Jad_Bot
         #region IRC Connection info
 
         private const int Port = 6667;
-
+        public static int SendQueue
+        {
+            get { return ThrottledSendQueue.CharsPerSecond; }
+            set { ThrottledSendQueue.CharsPerSecond = value; }
+        }
         public static readonly JadBot Irc = new JadBot
                                                  {
                                                      Nicks = new[] {"WCellUtilityBot", "Jad|UtilityBot"},

@@ -61,18 +61,25 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Squishy.Irc">
-      <HintPath>Dependencies\Squishy.Irc.dll</HintPath>
-    </Reference>
-    <Reference Include="Squishy.Network">
-      <HintPath>Dependencies\Squishy.Network.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IrcCommands\Accounts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Accounts.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="IrcCommands\HelpCommands.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HelpCommands.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\Calculator.cs" />
     <Compile Include="FunCommands\ChuckNorris.cs" />
     <Compile Include="Utilities\Temperature.cs" />
@@ -92,9 +99,19 @@
     <Compile Include="Utilities\WriteError.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EntityDeploy Include="IrcCommands\Accounts.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Accounts.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <None Include="app.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EntityDeploy Include="IrcCommands\HelpCommands.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>HelpCommands.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="IrcCommands\Accounts.edmx.sqlce" />
+    <None Include="IrcCommands\HelpCommands.edmx.sqlce" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -133,6 +150,16 @@
     <Content Include="config.txt" />
     <Content Include="LinusFacts.txt" />
     <Content Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Dependencies\Squishy.Irc\Squishy.Irc.csproj">
+      <Project>{7E1B9148-4616-419E-BA43-0413500D56FB}</Project>
+      <Name>Squishy.Irc</Name>
+    </ProjectReference>
+    <ProjectReference Include="Dependencies\Squishy.Network\Squishy.Network.csproj">
+      <Project>{86B7C009-4933-40DF-9847-42B32B39FC61}</Project>
+      <Name>Squishy.Network</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

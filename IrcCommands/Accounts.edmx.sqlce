@@ -1,0 +1,52 @@
+
+-- --------------------------------------------------
+-- Entity Designer DDL Script for SQL Server Compact Edition
+-- --------------------------------------------------
+-- Date Created: 07/08/2010 11:46:36
+-- Generated from EDMX file: E:\WCell-Utility-Bot\IrcCommands\Accounts.edmx
+-- --------------------------------------------------
+
+
+-- --------------------------------------------------
+-- Dropping existing FOREIGN KEY constraints
+-- NOTE: if the constraint does not exist, an ignorable error will be reported.
+-- --------------------------------------------------
+
+
+-- --------------------------------------------------
+-- Dropping existing tables
+-- NOTE: if the table does not exist, an ignorable error will be reported.
+-- --------------------------------------------------
+
+    DROP TABLE [Accounts];
+GO
+
+-- --------------------------------------------------
+-- Creating all tables
+-- --------------------------------------------------
+
+-- Creating table 'Accounts'
+CREATE TABLE [Accounts] (
+    [Username] nvarchar(4000)  NOT NULL,
+    [Password] nvarchar(4000)  NOT NULL,
+    [UserLevel] nvarchar(4000)  NOT NULL
+);
+GO
+
+-- --------------------------------------------------
+-- Creating all PRIMARY KEY constraints
+-- --------------------------------------------------
+
+-- Creating primary key on [Username] in table 'Accounts'
+ALTER TABLE [Accounts]
+ADD CONSTRAINT [PK_Accounts]
+    PRIMARY KEY ([Username] );
+GO
+
+-- --------------------------------------------------
+-- Creating all FOREIGN KEY constraints
+-- --------------------------------------------------
+
+-- --------------------------------------------------
+-- Script has ended
+-- --------------------------------------------------
