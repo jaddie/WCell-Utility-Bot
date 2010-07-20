@@ -52,7 +52,7 @@ namespace Jad_Bot
                                                      Info = "WCell's AutoParser",
                                                      _network = Dns.GetHostAddresses("irc.quakenet.org")
                                                  };
-
+        public static System.Timers.Timer SpamTimer = new System.Timers.Timer();
         private IPAddress[] _network;
 
         #endregion
@@ -101,8 +101,9 @@ namespace Jad_Bot
             try
             {
                 Parser.OutputDataReceived += Parser_OutputDataReceived;
-                IrcLog.AutoFlush = false;
-
+                IrcLog.AutoFlush = true;
+                SpamTimer.Interval = 5000;
+                SpamTimer.Elapsed += SpamTimer_Elapsed;
                 Console.ForegroundColor = ConsoleColor.Yellow;
 
                 #region Config File Setup
@@ -239,6 +240,10 @@ namespace Jad_Bot
 
             #endregion
         }
+        static void SpamTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            SpamTimer.Stop();
+        }
 
         public static void UtilityExited(object sender, EventArgs e)
         {
@@ -361,27 +366,32 @@ namespace Jad_Bot
         {
             try
             {
-                if (File.Exists("auth.txt") && cmd.Name.ToLower() != "restartwcellcommand" &&
-                    cmd.Name.ToLower() != "addauth")
+                if (base.MayTriggerCommand(trigger, cmd))
                 {
-                    using (var reader = new StreamReader("auth.txt"))
+                    if (trigger.Channel != null && trigger.Target == trigger.Channel &&
+                        !trigger.Args.String.ToLower().StartsWith(CommandHandler.RemoteCommandPrefix + "help"))
                     {
-                        var usernames = new List<string>();
-                        while (!reader.EndOfStream)
+                        if (!SpamTimer.Enabled)
                         {
-                            usernames.Add(reader.ReadLine());
-                        }
-                        if (usernames.Any(username => username == trigger.User.AuthName))
-                        {
+                            SpamTimer.Start();
                             return true;
                         }
+                        else
+                        {
+                            trigger.User.Msg("Don't try to make me spam!");
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return true;
                     }
                 }
-                return trigger.User.IsOn("#wcell.dev") || trigger.User.IsOn("#woc") || trigger.User.IsOn("#wcell");
+                return false;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                UtilityMethods.Print(e.Data + e.StackTrace,true);
+                Console.WriteLine(DateTime.Now.ToString() + ":" + e.ToString());
                 return false;
             }
         }

@@ -78,7 +78,7 @@ namespace Jad_Bot.IrcCommands
                                                        StartInfo =
                                                            {
                                                                FileName = @"c:\run\debug\wcell.realmserverconsole.exe",
-                                                               WorkingDirectory = @"c:\realmserver\",
+                                                               WorkingDirectory = @"c:\run\debug\",
                                                                UseShellExecute = true
                                                            }
                                                    };
@@ -106,7 +106,7 @@ namespace Jad_Bot.IrcCommands
                         trigger.Reply("Safely shutting down WCell saving data and Starting it up again");
                         var prog = new Process
                         {
-                            StartInfo = { FileName = @"c:\program_launcher.exe", Arguments = @"c:\config.txt" }
+                            StartInfo = { FileName = @"c:\wcellupdater.exe", Arguments = @"c:\wcellsource\run\ c:\run\ debug\" }
                         };
                         prog.Start();
                     }
