@@ -84,13 +84,6 @@ namespace Jad_Bot.IrcCommands
                         var cmd = new Process {StartInfo = {FileName = "cmd.exe", Arguments = "start RestartBat.bat"}};
                         cmd.Start();
                     }
-                    Thread.Sleep(5000);
-                    var realmServer = System.Diagnostics.Process.GetProcessesByName("WCell.RealmServerConsole");
-                    if (realmServer.Length > 0)
-                        trigger.Reply("RealmServer Seems to be Online again!");
-                    var authConsoleServer = System.Diagnostics.Process.GetProcessesByName("WCell.AuthServerConsole");
-                    if (authConsoleServer.Length > 0)
-                        trigger.Reply("AuthServer Seems to be Online again!");
                 }
                 catch (Exception e)
                 {
