@@ -55,7 +55,7 @@ namespace Jad_Bot.IrcCommands
             public RestartCommand()
                 : base("Restart")
             {
-                Usage = "Restart Kill or Restart Safe or Restart Utility";
+                Usage = "Restart Safe or Restart Utility";
                 Description =
                     "Command which will shutdown the WCell server or Utility Bot depending on what you set, use Kill to instant kill the server, use Safe to close with saving data and safely etc";
             }
@@ -65,42 +65,6 @@ namespace Jad_Bot.IrcCommands
                 try
                 {
                     string nextWord = trigger.Args.NextWord().ToLower();
-                    if (nextWord == "kill")
-                    {
-                        trigger.Reply("Killing WCell and restarting it");
-                        Process[] killWCell = System.Diagnostics.Process.GetProcessesByName("wcell.realmserverconsole");
-                        foreach (var p in killWCell)
-                        {
-                            p.Kill();
-                        }
-                        var wcellRealmserver = new Process
-                                                   {
-                                                       StartInfo =
-                                                           {
-                                                               FileName = @"c:\run\debug\wcell.realmserverconsole.exe",
-                                                               WorkingDirectory = @"c:\run\debug\",
-                                                               UseShellExecute = true
-                                                           }
-                                                   };
-                        wcellRealmserver.Start();
-                        Process[] killauth = System.Diagnostics.Process.GetProcessesByName("wcell.authserverconsole");
-                        foreach (var p in killauth)
-                        {
-                            p.Kill();
-                        }
-                        var wCellAuthserver = new Process
-                        {
-                            StartInfo =
-                            {
-                                FileName =
-                                    @"c:\run\debug\wcell.authserverconsole.exe",
-                                WorkingDirectory = @"c:\run\debug\",
-                                UseShellExecute = true
-                            }
-                        };
-                        wCellAuthserver.Start();
-                        wcellRealmserver.Start();
-                    }
                     if (nextWord == "safe")
                     {
                         trigger.Reply("Safely shutting down WCell saving data and Starting it up again");
@@ -120,44 +84,8 @@ namespace Jad_Bot.IrcCommands
                         var cmd = new Process {StartInfo = {FileName = "cmd.exe", Arguments = "start RestartBat.bat"}};
                         cmd.Start();
                     }
-                    if (nextWord == "authserver")
-                    {
-                        Process[] authServer = System.Diagnostics.Process.GetProcessesByName("WCell.AuthServerConsole");
-                        foreach (var process in authServer)
-                        {
-                            trigger.Reply("Attempting to restart AuthServer");
-                            process.Kill();
-                            var wCellStarter = new Process
-                            {
-                                StartInfo =
-                                {
-                                    FileName = @"c:\run\debug\wcell.authserverconsole.exe",
-                                    UseShellExecute = true
-                                }
-                            };
-                            wCellStarter.Start();
-                        }
-                        Thread.Sleep(3000);
-                    }
-                    if (nextWord != "realmserver") return;
-                    Process[] realmServer = System.Diagnostics.Process.GetProcessesByName("WCell.RealmServerConsole");
-                    foreach (var process in realmServer)
-                    {
-                        trigger.Reply("Attempting to restart RealmServer");
-                        process.Kill();
-                        var wcellRealmserver = new Process
-                        {
-                            StartInfo =
-                            {
-                                FileName = @"c:\run\debug\wcell.realmserverconsole.exe",
-                                WorkingDirectory = @"c:\run\debug\",
-                                UseShellExecute = true
-                            }
-                        };
-                        wcellRealmserver.Start();
-                    }
-                    Thread.Sleep(3000);
-                    realmServer = System.Diagnostics.Process.GetProcessesByName("WCell.RealmServerConsole");
+                    Thread.Sleep(5000);
+                    var realmServer = System.Diagnostics.Process.GetProcessesByName("WCell.RealmServerConsole");
                     if (realmServer.Length > 0)
                         trigger.Reply("RealmServer Seems to be Online again!");
                     var authConsoleServer = System.Diagnostics.Process.GetProcessesByName("WCell.AuthServerConsole");

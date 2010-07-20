@@ -27,26 +27,6 @@ namespace Jad_Bot.FunCommands
                 }
             }
         }
-        public class PasteBay : Command
-        {
-            public PasteBay() : base("paste", "pastebay")
-            {
-                Usage = "pastebay";
-                Description = "returns link to pastebay";
-            }
-
-            public override void Process(CmdTrigger trigger)
-            {
-                try
-                {
-                    trigger.Reply("If you have more than 2 lines to show us, please paste them at http://wcell.pastebay.com/ and show us the link.");
-                }
-                catch (Exception e)
-                {
-                    UtilityMethods.Print(e.Data + e.StackTrace, true);
-                }
-            }
-        }
         public class BayImg : Command
         {
             public BayImg() : base("BayImg")

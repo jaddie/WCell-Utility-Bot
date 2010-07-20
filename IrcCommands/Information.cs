@@ -245,5 +245,47 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
+        public class Pastebin : Command
+        {
+            public Pastebin()
+                : base("paste", "pastebin")
+            {
+                Usage = "pastebin";
+                Description = "returns link to pastebin";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    trigger.Reply("If you have more than 2 lines to show us, please paste them at http://wcell.pastebin.com/ and show us the link.");
+                }
+                catch (Exception e)
+                {
+                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                }
+            }
+        }
+        public class MSDNSearch : Command
+        {
+            public MSDNSearch() : base("msdn")
+            {
+                Usage = "msdn search query";
+                Description = "Provide a link to an msdn search for your query";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    trigger.Args.Remainder.Replace(" ", "%20");
+                    trigger.Reply("Link to MSDN Search: http://social.msdn.microsoft.com/Search/en-gb?query=" + trigger.Args.Remainder);
+				}
+                catch (Exception)
+                {
+                    trigger.Reply("I failed :P");
+                }
+            }
+        }
     }
 }
