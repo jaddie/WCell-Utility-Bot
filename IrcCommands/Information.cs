@@ -278,8 +278,8 @@ namespace Jad_Bot.IrcCommands
             {
                 try
                 {
-                    trigger.Args.Remainder.Replace(" ", "%20");
-                    trigger.Reply("Link to MSDN Search: http://social.msdn.microsoft.com/Search/en-gb?query=" + trigger.Args.Remainder);
+                    var query = trigger.Args.Remainder.Replace(" ", "%20");
+                    trigger.Reply("Link to MSDN Search: http://social.msdn.microsoft.com/Search/en-gb?query=" + query);
 				}
                 catch (Exception)
                 {
