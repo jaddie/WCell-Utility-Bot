@@ -21,6 +21,11 @@ namespace Jad_Bot.WCellCommands
             {
                 try
                 {
+                    bool spellsonly = false;
+                    if(trigger.Args.NextModifiers() == "spellsonly" || trigger.Args.NextModifiers() == "so")
+                    {
+                        spellsonly = true;
+                    }
                     if (trigger.Args.Remainder.Length > 0)
                     {
                         using (var readWriter = new StreamWriter(JadBot.GeneralFolder + "Options.txt") { AutoFlush = false })
@@ -64,7 +69,7 @@ namespace Jad_Bot.WCellCommands
                                     }
                                     break;
                             }
-                            IEnumerable<string> readOutput = JadBot.DumpReader.Read(dumptype, trigger.Args.Remainder);
+                            IEnumerable<string> readOutput = JadBot.DumpReader.Read(dumptype, trigger.Args.Remainder,spellsonly);
                             int id = -1;
                             foreach (var line in readOutput)
                             {

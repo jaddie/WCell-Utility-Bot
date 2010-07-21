@@ -9,7 +9,7 @@ namespace Jad_Bot.WCellCommands
         public List<string> Readresults = new List<string>();
         public readonly List<string> Selectresults = new List<string>();
         public string Dumptype;
-        public IEnumerable<string> Read(string dump, string query)
+        public IEnumerable<string> Read(string dump, string query,bool spellsonly = true)
         {
             Readresults.Clear();
             Dumptype = dump;
@@ -18,9 +18,19 @@ namespace Jad_Bot.WCellCommands
                 while (!dumpreader.EndOfStream)
                 {
                     var currentline = dumpreader.ReadLine().ToLower();
-                    if (currentline.Contains(query.ToLower()))
+                    if (spellsonly)
                     {
-                        Readresults.Add(currentline);
+                        if (currentline.Contains(query.ToLower()) && !currentline.Contains(query.ToLower()))
+                        {
+                            Readresults.Add(currentline);
+                        }
+                    }
+                    else
+                    {
+                        if (currentline.Contains(query.ToLower()))
+                        {
+                            Readresults.Add(currentline);
+                        }
                     }
                 }
             }
