@@ -20,7 +20,7 @@ namespace Jad_Bot.WCellCommands
                     var currentline = dumpreader.ReadLine().ToLower();
                     if (spellsonly)
                     {
-                        if (currentline.Contains(query.ToLower()) && currentline.Contains("Spell:"))
+                        if (currentline.Contains(query.ToLower()) && currentline.Contains("spell:"))
                         {
                             Readresults.Add(currentline);
                         }
