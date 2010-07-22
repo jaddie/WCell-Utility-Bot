@@ -29,8 +29,7 @@ namespace Jad_Bot.WCellCommands
                     }
                     if (trigger.Args.Remainder.Length > 0)
                     {
-                        Console.WriteLine(spellsonly);
-                        using (var readWriter = new StreamWriter(JadBot.GeneralFolder + "Options.txt") { AutoFlush = false })
+                        using (var readWriter = new StreamWriter(JadBot.GeneralFolder + "Options.txt") { AutoFlush = true })
                         {
                             string dumptype = "";
                             var next = trigger.Args.NextModifiers();
@@ -38,7 +37,6 @@ namespace Jad_Bot.WCellCommands
                             {
                                 dumptype = trigger.Args.NextWord();
                             }
-                            Console.WriteLine(dumptype);
                             switch (dumptype)
                             {
                                 case "areatriggers":

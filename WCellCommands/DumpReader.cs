@@ -9,7 +9,7 @@ namespace Jad_Bot.WCellCommands
         public List<string> Readresults = new List<string>();
         public readonly List<string> Selectresults = new List<string>();
         public string Dumptype;
-        public IEnumerable<string> Read(string dump, string query,bool spellsonly = true)
+        public IEnumerable<string> Read(string dump, string query,bool spellsonly = false)
         {
             Readresults.Clear();
             Dumptype = dump;
