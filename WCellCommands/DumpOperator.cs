@@ -22,20 +22,30 @@ namespace Jad_Bot.WCellCommands
                 try
                 {
                     bool spellsonly = false;
+                    var pos = trigger.Args.Position;
                     var nextmod = trigger.Args.NextModifiers();
                     if(nextmod == "spellsonly" || nextmod == "so")
                     {
                         spellsonly = true;
                     }
+                    else
+                    {
+                        trigger.Args.Position = pos;
+                    }
                     if (trigger.Args.Remainder.Length > 0)
                     {
                         using (var readWriter = new StreamWriter(JadBot.GeneralFolder + "Options.txt") { AutoFlush = true })
                         {
-                            string dumptype = "";
+                            var dumptype = "";
+                            pos = trigger.Args.Position;
                             var next = trigger.Args.NextModifiers().ToLower();
                             if(next == "dumptype")
                             {
                                 dumptype = trigger.Args.NextWord().ToLower();
+                            }
+                            else
+                            {
+                                trigger.Args.Position = pos;
                             }
                             switch (dumptype)
                             {
