@@ -32,10 +32,10 @@ namespace Jad_Bot.WCellCommands
                         using (var readWriter = new StreamWriter(JadBot.GeneralFolder + "Options.txt") { AutoFlush = true })
                         {
                             string dumptype = "";
-                            var next = trigger.Args.NextModifiers();
-                            if(next.ToLower() == "dumptype")
+                            var next = trigger.Args.NextModifiers().ToLower();
+                            if(next == "dumptype")
                             {
-                                dumptype = trigger.Args.NextWord();
+                                dumptype = trigger.Args.NextWord().ToLower();
                             }
                             switch (dumptype)
                             {
