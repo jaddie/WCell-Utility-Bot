@@ -12,9 +12,8 @@ namespace Jad_Bot.WCellCommands
         {
             public QueryDumpCommand() : base("Query")
             {
-                Usage = "Query dumptype partialspelloreffectname";
-                Description =
-                    "Command to read the spelldump from WCell.Tools and return a list of different matches for the query, dump defaults to spell if not recognised - use dumptypes command to see list.";
+                Usage = "Query -s -d dumptype partialspelloreffectname";
+                Description = "Command to read the spelldump from WCell.Tools and return a list of different matches for the query, dump defaults to spell if not recognised - use dumptypes command to see list, -s means search for only lines including spell: -d dumptype is used to specify the dumptype e.g. GOs";
             }
 
             public override void Process(CmdTrigger trigger)
