@@ -24,7 +24,7 @@ namespace Jad_Bot.WCellCommands
                     bool spellsonly = false;
                     var pos = trigger.Args.Position;
                     var nextmod = trigger.Args.NextModifiers();
-                    if(nextmod == "spellsonly" || nextmod == "so")
+                    if(nextmod == "spellsonly" || nextmod == "so" || nextmod == "s")
                     {
                         spellsonly = true;
                     }
@@ -39,7 +39,7 @@ namespace Jad_Bot.WCellCommands
                             var dumptype = "";
                             pos = trigger.Args.Position;
                             var next = trigger.Args.NextModifiers().ToLower();
-                            if(next == "dumptype")
+                            if(next == "dumptype" || next == "dt" || next == "d")
                             {
                                 dumptype = trigger.Args.NextWord().ToLower();
                             }

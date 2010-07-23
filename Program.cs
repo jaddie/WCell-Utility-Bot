@@ -404,9 +404,9 @@ namespace Jad_Bot
 
         public static void Parser_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            #region Done
             try
             {
+                #region Done
                 if (e.Data.Contains("Done."))
                 {
                     try
