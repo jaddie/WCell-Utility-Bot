@@ -105,7 +105,7 @@ namespace Jad_Bot
                 SpamTimer.Interval = 5000;
                 SpamTimer.Elapsed += SpamTimer_Elapsed;
                 Console.ForegroundColor = ConsoleColor.Yellow;
-
+                QuitReason = "I've been told to leave, bai!!";
                 #region Config File Setup
 
                 if (!File.Exists("config.txt"))
