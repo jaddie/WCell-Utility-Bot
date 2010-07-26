@@ -25,10 +25,19 @@ namespace Jad_Bot.WCellCommands
                         using (var readWriter = new StreamWriter(JadBot.GeneralFolder + "Options.txt") { AutoFlush = true })
                         {
                             var dumptype = "";
+                            string filterterms = "";
+                            var pos = trigger.Args.Position;
                             var next = trigger.Args.NextModifiers().ToLower();
-                            if(next == "dumptype" || next == "dt" || next == "d")
+                            if (next == "dumptype" || next == "dt" || next == "d")
                             {
                                 dumptype = trigger.Args.NextWord().ToLower();
+                            }
+                            else
+                                trigger.Args.Position = pos;
+                            next = trigger.Args.NextModifiers().ToLower;
+                            if (next == "filter" || next == "f" || next == "ft")
+                            {
+                                filterterms = trigger.Args.NextWord();
                             }
                             switch (dumptype)
                             {
@@ -68,7 +77,6 @@ namespace Jad_Bot.WCellCommands
                                     }
                                     break;
                             }
-                            var filterterms = trigger.Args.Remainder;
                             IEnumerable<string> readOutput = JadBot.DumpReader.Read(dumptype, trigger.Args.Remainder,filterterms);
                             int id = -1;
                             foreach (var line in readOutput)

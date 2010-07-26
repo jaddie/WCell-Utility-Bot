@@ -18,13 +18,6 @@ namespace Jad_Bot.WCellCommands
             {
                 terms = filterterms.Split(',');
             }
-            else
-            {
-                if (filterterms.Contains(" "))
-                {
-                    terms = filterterms.Split(' ');
-                }
-            }
             using (var dumpreader = new StreamReader(Dumptype))
             {
                 while (!dumpreader.EndOfStream)
