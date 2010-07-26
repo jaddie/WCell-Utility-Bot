@@ -57,7 +57,7 @@ namespace Jad_Bot.WCellCommands
                 while (!dumpreader.EndOfStream)
                 {
                     currentline = dumpreader.ReadLine();
-                    if(currentline.ToLower() == Readresults[queryid])
+                    if(currentline == Readresults[queryid])
                     {
                         while (!currentline.Contains("#####"))
                         {
