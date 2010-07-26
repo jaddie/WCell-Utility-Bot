@@ -9,7 +9,7 @@ namespace Jad_Bot.WCellCommands
         public List<string> Readresults = new List<string>();
         public readonly List<string> Selectresults = new List<string>();
         public string Dumptype;
-        public IEnumerable<string> Read(string dump, string query,string filterterms)
+        public List<string> Read(string dump, string query,string filterterms)
         {
             Readresults.Clear();
             Dumptype = dump;
@@ -18,19 +18,29 @@ namespace Jad_Bot.WCellCommands
             {
                 terms = filterterms.Split(',');
             }
+            else
+            {
+                terms = new string[] { filterterms } ;
+            }
             using (var dumpreader = new StreamReader(Dumptype))
             {
                 while (!dumpreader.EndOfStream)
                 {
-                    var currentline = dumpreader.ReadLine().ToLower();
-                        if (currentline.Contains(query.ToLower()))
+                    var currentline = dumpreader.ReadLine();
+                        if (currentline.ToLower().Contains(query.ToLower()))
                         {
+                            int runs = 0;
                             foreach(var term in terms)
                             {
-                                if (!currentline.Contains(term))
+                                runs++;
+                                if (!currentline.ToLower().Contains(term.ToLower()))
                                     break;
+                                else
+                                {
+                                    if(runs == terms.Length)
+                                    Readresults.Add(currentline);
+                                }
                             }
-                                Readresults.Add(currentline);
                     }
                 }
             }

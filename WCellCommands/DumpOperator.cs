@@ -77,7 +77,12 @@ namespace Jad_Bot.WCellCommands
                                     }
                                     break;
                             }
-                            IEnumerable<string> readOutput = JadBot.DumpReader.Read(dumptype, trigger.Args.Remainder,filterterms);
+                            List<string> readOutput = JadBot.DumpReader.Read(dumptype, trigger.Args.Remainder,filterterms);
+                            if (readOutput.Capacity < 1)
+                            {
+                                trigger.Reply("No Results!");
+                                return;
+                            }
                             int id = -1;
                             foreach (var line in readOutput)
                             {
