@@ -34,7 +34,7 @@ namespace Jad_Bot.WCellCommands
                             }
                             else
                                 trigger.Args.Position = pos;
-                            next = trigger.Args.NextModifiers().ToLower;
+                            next = trigger.Args.NextModifiers().ToLower();
                             if (next == "filter" || next == "f" || next == "ft")
                             {
                                 filterterms = trigger.Args.NextWord();
