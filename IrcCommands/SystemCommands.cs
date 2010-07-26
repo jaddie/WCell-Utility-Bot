@@ -157,36 +157,41 @@ namespace Jad_Bot.IrcCommands
 				: base("createaccount", "ca")
 			{
 				Description = "Create a account";
-				Usage = "createaccount accname pw";
+				Usage = "createaccount accname pw role";
 			}
 
 			public override void Process(CmdTrigger trigger)
 			{
 				var username = trigger.Args.NextWord();
 				var password = trigger.Args.NextWord();
+                var userlevel = trigger.Args.NextWord();
 				if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
 				{
 					trigger.Reply("Error invalid input please try again!");
 				}
-				else
-				{
+                if (string.IsNullOrEmpty(userlevel))
+                {
+                    trigger.Reply("Role not specified, defaulting to user level.");
+                }
+                else
+                {
                     using (var accounts = new AccountsContainer())
-					{
-						if (Enumerable.Any(Queryable.Where(accounts.Accounts,account => account.Username == username)))
-						{
-							trigger.Reply("That account already exists!");
-							return;
-						}
-					}
-					AddAccount(trigger, username, password);
-					trigger.Reply("Account created");
-				}
+                    {
+                        if (Enumerable.Any(Queryable.Where(accounts.Accounts, account => account.Username == username)))
+                        {
+                            trigger.Reply("That account already exists!");
+                            return;
+                        }
+                    }
+                    AddAccount(trigger, username, password, userlevel);
+                    trigger.Reply("Account created");
+                }
 			}
-			public static void AddAccount(CmdTrigger trigger, string username, string password)
+            public static void AddAccount(CmdTrigger trigger, string username, string password, string userlevel)
 			{
 				using (var accounts = new AccountsContainer())
 				{
-					var account = new Account { Username = username, Password = password, UserLevel = "guest" };
+                    var account = new Account { Username = username, Password = password, UserLevel = userlevel };
 					accounts.Accounts.AddObject(account);
 					accounts.SaveChanges();
 				}

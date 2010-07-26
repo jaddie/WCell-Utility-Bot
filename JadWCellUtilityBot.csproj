@@ -151,13 +151,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Accounts.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Accounts_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>Accounts.mdf</DependentUpon>
-    </Content>
     <Content Include="ChuckNorrisFacts.txt" />
     <Content Include="config.txt" />
     <Content Include="LinusFacts.txt" />
