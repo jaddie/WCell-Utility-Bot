@@ -62,13 +62,15 @@ namespace Jad_Bot.Utilities
 
         #endregion
 
-        public static void Print(string text, bool irclog = false)
+        public static void Print(string text, bool irclog = false,string chan = null)
         {
             try
             {
                 Console.WriteLine(DateTime.Now + text);
                 if (irclog)
                     JadBot.IrcLog.WriteLine(DateTime.Now + text);
+                if (chan != null)
+                    JadBot.Irc.CommandHandler.Msg(chan, text, null);
             }
             catch(Exception e)
             {

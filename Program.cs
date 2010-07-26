@@ -305,6 +305,11 @@ namespace Jad_Bot
         {
             return;
         }
+        protected override void OnError(Squishy.Irc.Protocol.IrcPacket packet)
+        {
+            UtilityMethods.Print(packet.Args,true,"#wcell.dev"); // shouldn't be using a hardcoded value here, but its okay because this bot is specific to wcell anyway.
+            base.OnError(packet);
+        }
         protected override void OnQueryMsg(IrcUser user, StringStream text)
         {
             UtilityMethods.Print(user + text.String, true);
