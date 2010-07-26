@@ -20,31 +20,15 @@ namespace Jad_Bot.WCellCommands
             {
                 try
                 {
-                    bool spellsonly = false;
-                    var pos = trigger.Args.Position;
-                    var nextmod = trigger.Args.NextModifiers();
-                    if(nextmod == "spellsonly" || nextmod == "so" || nextmod == "s")
-                    {
-                        spellsonly = true;
-                    }
-                    else
-                    {
-                        trigger.Args.Position = pos;
-                    }
                     if (trigger.Args.Remainder.Length > 0)
                     {
                         using (var readWriter = new StreamWriter(JadBot.GeneralFolder + "Options.txt") { AutoFlush = true })
                         {
                             var dumptype = "";
-                            pos = trigger.Args.Position;
                             var next = trigger.Args.NextModifiers().ToLower();
                             if(next == "dumptype" || next == "dt" || next == "d")
                             {
                                 dumptype = trigger.Args.NextWord().ToLower();
-                            }
-                            else
-                            {
-                                trigger.Args.Position = pos;
                             }
                             switch (dumptype)
                             {
@@ -84,7 +68,8 @@ namespace Jad_Bot.WCellCommands
                                     }
                                     break;
                             }
-                            IEnumerable<string> readOutput = JadBot.DumpReader.Read(dumptype, trigger.Args.Remainder,spellsonly);
+                            var filterterms = trigger.Args.Remainder;
+                            IEnumerable<string> readOutput = JadBot.DumpReader.Read(dumptype, trigger.Args.Remainder,filterterms);
                             int id = -1;
                             foreach (var line in readOutput)
                             {

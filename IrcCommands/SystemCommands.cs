@@ -113,7 +113,7 @@ namespace Jad_Bot.IrcCommands
 			}
 			public static void Login(CmdTrigger trigger, string username, string password)
 			{
-                using (var accounts = new AccountsContainer())
+				using (var accounts = new AccountsContainer())
 				{
 					var authed = false;
 					foreach (var account in accounts.Accounts)
@@ -164,34 +164,34 @@ namespace Jad_Bot.IrcCommands
 			{
 				var username = trigger.Args.NextWord();
 				var password = trigger.Args.NextWord();
-                var userlevel = trigger.Args.NextWord();
+				var userlevel = trigger.Args.NextWord();
 				if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
 				{
 					trigger.Reply("Error invalid input please try again!");
 				}
-                if (string.IsNullOrEmpty(userlevel))
-                {
-                    trigger.Reply("Role not specified, defaulting to user level.");
-                }
-                else
-                {
-                    using (var accounts = new AccountsContainer())
-                    {
-                        if (Enumerable.Any(Queryable.Where(accounts.Accounts, account => account.Username == username)))
-                        {
-                            trigger.Reply("That account already exists!");
-                            return;
-                        }
-                    }
-                    AddAccount(trigger, username, password, userlevel);
-                    trigger.Reply("Account created");
-                }
+				if (string.IsNullOrEmpty(userlevel))
+				{
+					trigger.Reply("Role not specified, defaulting to user level.");
+				}
+				else
+				{
+					using (var accounts = new AccountsContainer())
+					{
+						if (Enumerable.Any(Queryable.Where(accounts.Accounts, account => account.Username == username)))
+						{
+							trigger.Reply("That account already exists!");
+							return;
+						}
+					}
+					AddAccount(trigger, username, password, userlevel);
+					trigger.Reply("Account created");
+				}
 			}
-            public static void AddAccount(CmdTrigger trigger, string username, string password, string userlevel)
+			public static void AddAccount(CmdTrigger trigger, string username, string password, string userlevel)
 			{
 				using (var accounts = new AccountsContainer())
 				{
-                    var account = new Account { Username = username, Password = password, UserLevel = userlevel };
+					var account = new Account { Username = username, Password = password, UserLevel = userlevel };
 					accounts.Accounts.AddObject(account);
 					accounts.SaveChanges();
 				}
@@ -218,7 +218,7 @@ namespace Jad_Bot.IrcCommands
 					}
 					else
 					{
-                        using (var accounts = new AccountsContainer())
+						using (var accounts = new AccountsContainer())
 						{
 							foreach (var account in Queryable.Where(accounts.Accounts,account => account.Username == username))
 							{
@@ -262,7 +262,7 @@ namespace Jad_Bot.IrcCommands
 						trigger.Reply("Invalid userlevel specified, options are guest,user,admin");
 						return;
 					}
-                    using (var accounts = new AccountsContainer())
+					using (var accounts = new AccountsContainer())
 					{
 						foreach (var account in Queryable.Where(accounts.Accounts,account => account.Username == username))
 						{
