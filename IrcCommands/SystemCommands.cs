@@ -113,7 +113,7 @@ namespace Jad_Bot.IrcCommands
 			}
 			public static void Login(CmdTrigger trigger, string username, string password)
 			{
-				using (var accounts = new AccountsEntities())
+                using (var accounts = new AccountsContainer())
 				{
 					var authed = false;
 					foreach (var account in accounts.Accounts)
@@ -170,7 +170,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				else
 				{
-					using (var accounts = new AccountsEntities())
+                    using (var accounts = new AccountsContainer())
 					{
 						if (Enumerable.Any(Queryable.Where(accounts.Accounts,account => account.Username == username)))
 						{
@@ -184,7 +184,7 @@ namespace Jad_Bot.IrcCommands
 			}
 			public static void AddAccount(CmdTrigger trigger, string username, string password)
 			{
-				using (var accounts = new AccountsEntities())
+				using (var accounts = new AccountsContainer())
 				{
 					var account = new Account { Username = username, Password = password, UserLevel = "guest" };
 					accounts.Accounts.AddObject(account);
@@ -213,7 +213,7 @@ namespace Jad_Bot.IrcCommands
 					}
 					else
 					{
-						using (var accounts = new AccountsEntities())
+                        using (var accounts = new AccountsContainer())
 						{
 							foreach (var account in Queryable.Where(accounts.Accounts,account => account.Username == username))
 							{
@@ -257,7 +257,7 @@ namespace Jad_Bot.IrcCommands
 						trigger.Reply("Invalid userlevel specified, options are guest,user,admin");
 						return;
 					}
-					using (var accounts = new AccountsEntities())
+                    using (var accounts = new AccountsContainer())
 					{
 						foreach (var account in Queryable.Where(accounts.Accounts,account => account.Username == username))
 						{
@@ -302,35 +302,5 @@ namespace Jad_Bot.IrcCommands
 				}
 			}
 		}
-		#region DisconnectCommand
-
-		public class DisconnectCommand : Command
-		{
-			public DisconnectCommand() : base("disconnect")
-			{
-				Usage = "disconnect";
-				Description = "Makes the bot disconnect from IRC";
-			}
-
-			public override void Process(CmdTrigger trigger)
-			{
-				try
-				{
-					UtilityMethods.Print("Disconnecting due to command...",true);
-						foreach(var channel in JadBot.ChannelList)
-						{
-							JadBot.Irc.CommandHandler.Msg(channel,"Disconnecting due to command...",null);
-						}
-					JadBot.Irc.Client.DisconnectNow();
-				}
-				catch (Exception e)
-				{
-					UtilityMethods.Print("Error Disconnecting after command", true);
-				}
-			}
-		}
-
-		#endregion
-
 	}
 }

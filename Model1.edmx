@@ -4,9 +4,9 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="AccountsModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
-  <EntityContainer Name="AccountsModelStoreContainer">
-    <EntitySet Name="Accounts" EntityType="AccountsModel.Store.Accounts" store:Type="Tables" Schema="dbo" />
+    <Schema Namespace="Jad_Bot.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="Jad_BotStoreContainer">
+    <EntitySet Name="Accounts" EntityType="Jad_Bot.Store.Accounts" store:Type="Tables" Schema="dbo" />
   </EntityContainer>
   <EntityType Name="Accounts">
     <Key>
@@ -19,11 +19,11 @@
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="AccountsModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-        <EntityContainer Name="AccountsEntities" annotation:LazyLoadingEnabled="true" >
-          <EntitySet Name="Accounts" EntityType="AccountsModel.Account" />
+      <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Jad_Bot" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="AccountsContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Jad_Bot.Account" />
         </EntityContainer>
-        <EntityType Name="Account">
+        <EntityType Name="Account" >
           <Key>
             <PropertyRef Name="Username" />
           </Key>
@@ -36,9 +36,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="AccountsModelStoreContainer" CdmEntityContainer="AccountsEntities">
+  <EntityContainerMapping StorageEntityContainer="Jad_BotStoreContainer" CdmEntityContainer="AccountsContainer">
     <EntitySetMapping Name="Accounts">
-      <EntityTypeMapping TypeName="IsTypeOf(AccountsModel.Account)">
+      <EntityTypeMapping TypeName="IsTypeOf(Jad_Bot.Account)">
         <MappingFragment StoreEntitySet="Accounts">
           <ScalarProperty Name="Username" ColumnName="Username" />
           <ScalarProperty Name="Password" ColumnName="Password" />
@@ -50,24 +50,23 @@
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
-    <Connection>
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <edmx:Connection>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
       </DesignerInfoPropertySet>
-    </Connection>
-    <Options>
+    </edmx:Connection>
+    <edmx:Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
       </DesignerInfoPropertySet>
-    </Options>
+    </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
-    <Diagrams>
+    <edmx:Diagrams>
       <Diagram Name="Model1" >
-        <EntityTypeShape EntityType="AccountsModel.Account" Width="1.5" PointX="2.5" PointY="1.5" Height="1.59568359375" />
+        <EntityTypeShape EntityType="Jad_Bot.Account" Width="1.5" PointX="5" PointY="1.25" Height="1.5956835937499996" />
       </Diagram>
-    </Diagrams>
-  </Designer>
+    </edmx:Diagrams>
+  </edmx:Designer>
 </edmx:Edmx>

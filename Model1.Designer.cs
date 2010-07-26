@@ -20,54 +20,51 @@ using System.Runtime.Serialization;
 namespace Jad_Bot
 {
     #region Contexts
-
+    
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    public partial class AccountsEntities : ObjectContext
+    public partial class AccountsContainer : ObjectContext
     {
         #region Constructors
-
+    
         /// <summary>
-        /// Initializes a new AccountsEntities object using the connection string found in the 'AccountsEntities' section of the application configuration file.
+        /// Initializes a new AccountsContainer object using the connection string found in the 'AccountsContainer' section of the application configuration file.
         /// </summary>
-        public AccountsEntities()
-            : base("name=AccountsEntities", "AccountsEntities")
+        public AccountsContainer() : base("name=AccountsContainer", "AccountsContainer")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
-
+    
         /// <summary>
-        /// Initialize a new AccountsEntities object.
+        /// Initialize a new AccountsContainer object.
         /// </summary>
-        public AccountsEntities(string connectionString)
-            : base(connectionString, "AccountsEntities")
+        public AccountsContainer(string connectionString) : base(connectionString, "AccountsContainer")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
-
+    
         /// <summary>
-        /// Initialize a new AccountsEntities object.
+        /// Initialize a new AccountsContainer object.
         /// </summary>
-        public AccountsEntities(EntityConnection connection)
-            : base(connection, "AccountsEntities")
+        public AccountsContainer(EntityConnection connection) : base(connection, "AccountsContainer")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
-
+    
         #endregion
-
+    
         #region Partial Methods
-
+    
         partial void OnContextCreated();
-
+    
         #endregion
-
+    
         #region ObjectSet Properties
-
+    
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
@@ -86,7 +83,7 @@ namespace Jad_Bot
 
         #endregion
         #region AddTo Methods
-
+    
         /// <summary>
         /// Deprecated Method for adding a new object to the Accounts EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
@@ -97,22 +94,22 @@ namespace Jad_Bot
 
         #endregion
     }
-
+    
 
     #endregion
-
+    
     #region Entities
-
+    
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName = "AccountsModel", Name = "Account")]
+    [EdmEntityTypeAttribute(NamespaceName="Jad_Bot", Name="Account")]
     [Serializable()]
-    [DataContractAttribute(IsReference = true)]
+    [DataContractAttribute(IsReference=true)]
     public partial class Account : EntityObject
     {
         #region Factory Method
-
+    
         /// <summary>
         /// Create a new Account object.
         /// </summary>
@@ -130,11 +127,11 @@ namespace Jad_Bot
 
         #endregion
         #region Primitive Properties
-
+    
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty = true, IsNullable = false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.String Username
         {
@@ -157,11 +154,11 @@ namespace Jad_Bot
         private global::System.String _Username;
         partial void OnUsernameChanging(global::System.String value);
         partial void OnUsernameChanged();
-
+    
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty = false, IsNullable = false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.String Password
         {
@@ -181,11 +178,11 @@ namespace Jad_Bot
         private global::System.String _Password;
         partial void OnPasswordChanging(global::System.String value);
         partial void OnPasswordChanged();
-
+    
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty = false, IsNullable = false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.String UserLevel
         {
@@ -207,9 +204,9 @@ namespace Jad_Bot
         partial void OnUserLevelChanged();
 
         #endregion
-
+    
     }
 
     #endregion
-
+    
 }

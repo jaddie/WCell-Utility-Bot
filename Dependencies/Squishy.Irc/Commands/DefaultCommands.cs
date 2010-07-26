@@ -27,7 +27,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Join|J <Channel>";
 			Description = "Joins a channel";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -58,7 +58,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Auth";
 			Description = "Will query the Authentication data from the server if not already present.";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -117,7 +117,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Nick <NewNnick>";
 			Description = "Changes your current nickname.";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -133,7 +133,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Topic [<Channel>] <Topic>";
 			Description = "Changes the Topic in the given Channel (if possible). The channel parameter will only be accepted if not used in a Channel.";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -159,7 +159,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Part [<Channel> [<Reason>]]";
 			Description = "Parts a given channel (or the channel of origin if no argument given) with an optional reason";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -181,7 +181,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "PartThis [<Reason>]";
 			Description = "Parts the channel from where the trigger originated";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -198,7 +198,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Msg|Message|Privmsg <Target> <Text>";
 			Description = "Sends a privmsg to the specified target";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -214,7 +214,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Notice <Target> <Text>";
 			Description = "Sends a notice to the specified target";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -230,7 +230,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Ctcp <Target> <Request> [<arguments>]";
 			Description = "Sends a ctcp - request to a target";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -247,7 +247,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Kick <Channel> <User> [<Reason>]";
 			Description = "Kicks a user from a channel with an optional reason";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -265,7 +265,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Kickmask|Kickm <Channel> <Mask> [<Reason>]";
 			Description = "Kicks all users with a specified mask for an optional reason";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -293,7 +293,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Mode <flags> <targets>";
 			Description = "Sets the specified mode";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -310,7 +310,7 @@ namespace Squishy.Irc.Commands
 			Usage = "Ban [-u <seconds>] <Channel> <Mask1> <Mask2> ...";
 			Description =
 				"Bans masks from a channel. If the -u switch is specified, the following argument must be the number of seconds before the masks are automatically unbanned again.";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -336,7 +336,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Unban <Channel> <Mask1> <Mask2> ...";
 			Description = "Unbans given masks from a channel";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -352,7 +352,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Invite <Nick> [<Channel>]";
 			Description = "Invites a person into a channel. Invites into the channel of origin if channel is left out.";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -374,7 +374,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "InviteMe <Channel>";
 			Description = "Invites the triggering user into a channel.";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -390,7 +390,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "BanList|ListBans <channel>";
 			Description = "Retrieves the active banmasks from a channel";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -406,7 +406,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "SetInfo|ChangeInfo <userinfo>";
 			Description = "Changes your user-info (will have effect after reconnect)";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -422,7 +422,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "SetPW|SetPass|ChangePass <newPassword>";
 			Description = "Changes your password (will have effect after reconnect)";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -430,36 +430,36 @@ namespace Squishy.Irc.Commands
 			trigger.Irc.ServerPassword = trigger.Args.NextWord();
 		}
 	}
-    public class SetUsernameCommand : Command
-    {
-        public SetUsernameCommand()
-            : base("SetUser", "SetUsername")
-        {
-            Usage = "SetUser|SetUserName <username>";
-            Description = "Changes your username (will have effect after reconnect)";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
-        }
+	public class SetUsernameCommand : Command
+	{
+		public SetUsernameCommand()
+			: base("SetUser", "SetUsername")
+		{
+			Usage = "SetUser|SetUserName <username>";
+			Description = "Changes your username (will have effect after reconnect)";
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+		}
 
-        public override void Process(CmdTrigger trigger)
-        {
-            trigger.Irc.UserName = trigger.Args.NextWord();
-        }
-    }
-    public class SetNicksCommand : Command
-    {
-        public SetNicksCommand()
-            : base("SetNicks")
-        {
-            Usage = "SetNicks <nick>[ <nick2> [<nick3>...]]";
-            Description = "Changes your default nicknames (seperated by space).";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
-        }
+		public override void Process(CmdTrigger trigger)
+		{
+			trigger.Irc.UserName = trigger.Args.NextWord();
+		}
+	}
+	public class SetNicksCommand : Command
+	{
+		public SetNicksCommand()
+			: base("SetNicks")
+		{
+			Usage = "SetNicks <nick>[ <nick2> [<nick3>...]]";
+			Description = "Changes your default nicknames (seperated by space).";
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+		}
 
-        public override void Process(CmdTrigger trigger)
-        {
-            trigger.Irc.Nicks = trigger.Args.RemainingWords();
-        }
-    }
+		public override void Process(CmdTrigger trigger)
+		{
+			trigger.Irc.Nicks = trigger.Args.RemainingWords();
+		}
+	}
 	public class ConnectCommand : Command
 	{
 		public ConnectCommand()
@@ -467,7 +467,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Connect|Con [<address> [<port>]]";
 			Description = "(Re)connects to the given server.";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -495,7 +495,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Disconnect|Discon";
 			Description = "Disconnects the current connection";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -511,7 +511,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "SetExternalIP <Ip>";
 			Description = "Changes your Util.ExternalAddres. This is used for DCC sessions and to bind local sockets to, if possible.";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -528,7 +528,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "DccSend <filename> [<port> [<target>]]";
 			Description = "Tries to send a file to a user.";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -552,7 +552,7 @@ namespace Squishy.Irc.Commands
 			Usage = "DccChat <target> [<port> [<text>]]";
 			Description =
 				"Tries to establish a direct Chat session with the specified target or sends the given text if the connection is already established.";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
@@ -591,7 +591,7 @@ namespace Squishy.Irc.Commands
 		{
 			Usage = "Send <args>";
 			Description = "Sends the given args as-is to the server (raw).";
-            RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
+			RequiredAccountLevel = Account.AccountMgr.AccountLevel.Admin;
 		}
 
 		public override void Process(CmdTrigger trigger)
