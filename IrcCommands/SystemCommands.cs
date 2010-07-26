@@ -321,11 +321,11 @@ namespace Jad_Bot.IrcCommands
 						{
 							JadBot.Irc.CommandHandler.Msg(channel,"Disconnecting due to command...",null);
 						}
-                    JadBot.Irc.Client.Disconnect();
+					JadBot.Irc.Client.DisconnectNow();
 				}
 				catch (Exception e)
 				{
-                    UtilityMethods.Print("Error Disconnecting after command", true);
+					UtilityMethods.Print("Error Disconnecting after command", true);
 				}
 			}
 		}
