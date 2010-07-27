@@ -289,7 +289,7 @@ namespace Jad_Bot.IrcCommands
 		}
         public class TrackerCommand : Command
         {
-            public TrackerCommand() : base("trac")
+            public TrackerCommand() : base("trac","tracker","track","bugs","issues","report","tickets")
             {
                 Usage = "tracker";
                 Description = "Shows the link to teh tracker for git browsing, and bug reports etc.";
