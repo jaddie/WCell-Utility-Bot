@@ -294,6 +294,11 @@ namespace Jad_Bot.IrcCommands
 				try
 				{
 					var sendqueue = trigger.Args.NextInt(60);
+                    if (sendqueue > 75)
+                    {
+                        trigger.Reply("Error invalid value!");
+                            return;
+                    }
 					JadBot.SendQueue = sendqueue;
 					trigger.Reply("Set sendqueue to " + sendqueue);
 				}
