@@ -299,7 +299,7 @@ namespace Jad_Bot.IrcCommands
             {
                 try
                 {
-                    trigger.Reply("http://tracker.wcell.org");
+                    trigger.Reply("http://tracker.wcell.org/wcellmaster");
 				}
                 catch (Exception e)
                 {
