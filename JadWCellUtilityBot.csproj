@@ -252,6 +252,9 @@
     <Content Include="config.txt" />
     <Content Include="LinusFacts.txt" />
     <Content Include="TODO.txt" />
+    <Content Include="UtilityBotIrcDB.sdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Dependencies\Squishy.Irc\Squishy.Irc.csproj">
