@@ -249,6 +249,8 @@ namespace Jad_Bot
                     if (message.IrcNick == user.Nick)
                     {
                         CommandHandler.Msg(user, message.MessageText, user.Args);
+                        db.Messages.DeleteObject(message);
+                        db.SaveChanges();
                     }
                 }
             }
