@@ -84,18 +84,18 @@ namespace Jad_Bot
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Messages> Messages
+        public ObjectSet<Message> Messages
         {
             get
             {
                 if ((_Messages == null))
                 {
-                    _Messages = base.CreateObjectSet<Messages>("Messages");
+                    _Messages = base.CreateObjectSet<Message>("Messages");
                 }
                 return _Messages;
             }
         }
-        private ObjectSet<Messages> _Messages;
+        private ObjectSet<Message> _Messages;
 
         #endregion
         #region AddTo Methods
@@ -111,9 +111,9 @@ namespace Jad_Bot
         /// <summary>
         /// Deprecated Method for adding a new object to the Messages EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToMessages(Messages messages)
+        public void AddToMessages(Message message)
         {
-            base.AddObject("Messages", messages);
+            base.AddObject("Messages", message);
         }
 
         #endregion
@@ -234,28 +234,28 @@ namespace Jad_Bot
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="Jad_Bot", Name="Messages")]
+    [EdmEntityTypeAttribute(NamespaceName="Jad_Bot", Name="Message")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class Messages : EntityObject
+    public partial class Message : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new Messages object.
+        /// Create a new Message object.
         /// </summary>
         /// <param name="dateLeft">Initial value of the DateLeft property.</param>
         /// <param name="ircNick">Initial value of the IrcNick property.</param>
-        /// <param name="message">Initial value of the Message property.</param>
+        /// <param name="messageText">Initial value of the MessageText property.</param>
         /// <param name="id">Initial value of the Id property.</param>
-        public static Messages CreateMessages(global::System.String dateLeft, global::System.String ircNick, global::System.String message, global::System.String id)
+        public static Message CreateMessage(global::System.String dateLeft, global::System.String ircNick, global::System.String messageText, global::System.String id)
         {
-            Messages messages = new Messages();
-            messages.DateLeft = dateLeft;
-            messages.IrcNick = ircNick;
-            messages.Message = message;
-            messages.Id = id;
-            return messages;
+            Message message = new Message();
+            message.DateLeft = dateLeft;
+            message.IrcNick = ircNick;
+            message.MessageText = messageText;
+            message.Id = id;
+            return message;
         }
 
         #endregion
@@ -314,24 +314,24 @@ namespace Jad_Bot
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String Message
+        public global::System.String MessageText
         {
             get
             {
-                return _Message;
+                return _MessageText;
             }
             set
             {
-                OnMessageChanging(value);
-                ReportPropertyChanging("Message");
-                _Message = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Message");
-                OnMessageChanged();
+                OnMessageTextChanging(value);
+                ReportPropertyChanging("MessageText");
+                _MessageText = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("MessageText");
+                OnMessageTextChanged();
             }
         }
-        private global::System.String _Message;
-        partial void OnMessageChanging(global::System.String value);
-        partial void OnMessageChanged();
+        private global::System.String _MessageText;
+        partial void OnMessageTextChanging(global::System.String value);
+        partial void OnMessageTextChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

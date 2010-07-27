@@ -23,7 +23,11 @@ namespace Jad_Bot.IrcCommands
             }
             else
             {
-              //  using(var UtilityBotDBContainer();
+                using (var db = new UtilityBotDBContainer())
+                {
+                    var msg = new Message();
+                    db.Messages.AddObject(msg);
+                }
             }
         }
     }
