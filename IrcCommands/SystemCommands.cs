@@ -113,10 +113,10 @@ namespace Jad_Bot.IrcCommands
 			}
 			public static void Login(CmdTrigger trigger, string username, string password)
 			{
-				using (var accounts = new UtilityBotDBContainer())
+				using (var db = new UtilityBotDBContainer())
 				{
 					var authed = false;
-					foreach (var account in accounts.Accounts)
+					foreach (var account in db.Accounts)
 					{
 						if(account.Username == username && account.Password == password)
 						{
@@ -171,9 +171,9 @@ namespace Jad_Bot.IrcCommands
 				}
 				else
 				{
-					using (var accounts = new  UtilityBotDBContainer())
+					using (var db = new UtilityBotDBContainer())
 					{
-						if (Enumerable.Any(Queryable.Where(accounts.Accounts, account => account.Username == username)))
+						if (Enumerable.Any(Queryable.Where(db.Accounts, account => account.Username == username)))
 						{
 							trigger.Reply("That account already exists!");
 							return;
@@ -185,11 +185,11 @@ namespace Jad_Bot.IrcCommands
 			}
 			public static void AddAccount(CmdTrigger trigger, string username, string password, string userlevel)
 			{
-				using (var accounts = new UtilityBotDBContainer())
+				using (var db = new UtilityBotDBContainer())
 				{
 					var account = new Account { Username = username, Password = password, UserLevel = userlevel };
-					accounts.Accounts.AddObject(account);
-					accounts.SaveChanges();
+					db.Accounts.AddObject(account);
+					db.SaveChanges();
 				}
 			}
 		}
@@ -214,12 +214,12 @@ namespace Jad_Bot.IrcCommands
 					}
 					else
 					{
-						using (var accounts = new UtilityBotDBContainer())
+						using (var db = new UtilityBotDBContainer())
 						{
-							foreach (var account in Queryable.Where(accounts.Accounts,account => account.Username == username))
+							foreach (var account in Queryable.Where(db.Accounts,account => account.Username == username))
 							{
-								accounts.DeleteObject(account);
-								accounts.SaveChanges();
+								db.DeleteObject(account);
+								db.SaveChanges();
 								trigger.Reply("Account deleted!");
 								return;
 							}
@@ -258,13 +258,13 @@ namespace Jad_Bot.IrcCommands
 						trigger.Reply("Invalid userlevel specified, options are guest,user,admin");
 						return;
 					}
-					using (var accounts = new UtilityBotDBContainer())
+					using (var db = new UtilityBotDBContainer())
 					{
-						foreach (var account in Queryable.Where(accounts.Accounts,account => account.Username == username))
+						foreach (var account in Queryable.Where(db.Accounts,account => account.Username == username))
 						{
 							account.UserLevel = userlevel;
 							trigger.Reply("Account level changed to " + userlevel);
-							accounts.SaveChanges();
+							db.SaveChanges();
 							return;
 						}
 					}
