@@ -16,3 +16,4 @@ bin
 TestResults
 TestPastebinSystem
 _ReSharper*
+*.vs10x
