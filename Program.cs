@@ -240,6 +240,19 @@ namespace Jad_Bot
 
             #endregion
         }
+        protected override void OnJoin(IrcUser user, IrcChannel chan)
+        {
+            using (var db = new UtilityBotDBContainer())
+            {
+                foreach (var message in db.Messages)
+                {
+                    if (message.IrcNick == user.Nick)
+                    {
+                        CommandHandler.Msg(user, message.MessageText, user.Args);
+                    }
+                }
+            }
+        }
         static void SpamTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             SpamTimer.Stop();

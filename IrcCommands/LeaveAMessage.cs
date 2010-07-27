@@ -26,7 +26,12 @@ namespace Jad_Bot.IrcCommands
                 using (var db = new UtilityBotDBContainer())
                 {
                     var msg = new Message();
+                    msg.DateLeft = DateTime.Now.ToString();
+                    msg.IrcNick = nick;
+                    msg.MessageText = messagetosend;
                     db.Messages.AddObject(msg);
+                    db.SaveChanges();
+                    trigger.Reply("Message saved");
                 }
             }
         }
