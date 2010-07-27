@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 07/26/2010 04:59:24
+-- Date Created: 07/28/2010 00:04:02
 -- Generated from EDMX file: C:\Users\Jaddie\Documents\coding\WCell-Utility-Bot\Model1.edmx
 -- --------------------------------------------------
 
@@ -33,6 +33,15 @@ CREATE TABLE [Accounts] (
 );
 GO
 
+-- Creating table 'Messages'
+CREATE TABLE [Messages] (
+    [DateLeft] nvarchar(4000)  NOT NULL,
+    [IrcNick] nvarchar(4000)  NOT NULL,
+    [Message] nvarchar(4000)  NOT NULL,
+    [Id] nvarchar(4000)  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -41,6 +50,12 @@ GO
 ALTER TABLE [Accounts]
 ADD CONSTRAINT [PK_Accounts]
     PRIMARY KEY ([Username] );
+GO
+
+-- Creating primary key on [Id] in table 'Messages'
+ALTER TABLE [Messages]
+ADD CONSTRAINT [PK_Messages]
+    PRIMARY KEY ([Id] );
 GO
 
 -- --------------------------------------------------

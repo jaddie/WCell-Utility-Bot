@@ -7,6 +7,7 @@
     <Schema Namespace="Jad_Bot.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
   <EntityContainer Name="Jad_BotStoreContainer">
     <EntitySet Name="Accounts" EntityType="Jad_Bot.Store.Accounts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Messages" EntityType="Jad_Bot.Store.Messages" store:Type="Tables" Schema="dbo" />
   </EntityContainer>
   <EntityType Name="Accounts">
     <Key>
@@ -16,12 +17,22 @@
     <Property Name="Password" Type="nvarchar" Nullable="false" />
     <Property Name="UserLevel" Type="nvarchar" Nullable="false" />
   </EntityType>
+  <EntityType Name="Messages">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="DateLeft" Type="nvarchar" Nullable="false" />
+    <Property Name="IrcNick" Type="nvarchar" Nullable="false" />
+    <Property Name="Message" Type="nvarchar" Nullable="false" />
+    <Property Name="Id" Type="nvarchar" Nullable="false" />
+  </EntityType>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Jad_Bot" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
-        <EntityContainer Name="AccountsContainer" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="UtilityBotDBContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Accounts" EntityType="Jad_Bot.Account" />
+          <EntitySet Name="Messages" EntityType="Jad_Bot.Messages" />
         </EntityContainer>
         <EntityType Name="Account" >
           <Key>
@@ -31,18 +42,37 @@
           <Property Type="String" Name="Password" Nullable="false" />
           <Property Type="String" Name="UserLevel" Nullable="false" />
         </EntityType>
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="DateLeft" Nullable="false" />
+          <Property Type="String" Name="IrcNick" Nullable="false" />
+          <Property Type="String" Name="Message" Nullable="false" />
+          <Property Type="String" Name="Id" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="Jad_BotStoreContainer" CdmEntityContainer="AccountsContainer">
+  <EntityContainerMapping StorageEntityContainer="Jad_BotStoreContainer" CdmEntityContainer="UtilityBotDBContainer">
     <EntitySetMapping Name="Accounts">
       <EntityTypeMapping TypeName="IsTypeOf(Jad_Bot.Account)">
         <MappingFragment StoreEntitySet="Accounts">
           <ScalarProperty Name="Username" ColumnName="Username" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="UserLevel" ColumnName="UserLevel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Messages">
+      <EntityTypeMapping TypeName="IsTypeOf(Jad_Bot.Messages)">
+        <MappingFragment StoreEntitySet="Messages">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DateLeft" ColumnName="DateLeft" />
+          <ScalarProperty Name="IrcNick" ColumnName="IrcNick" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -66,6 +96,7 @@
     <edmx:Diagrams>
       <Diagram Name="Model1" >
         <EntityTypeShape EntityType="Jad_Bot.Account" Width="1.5" PointX="2" PointY="1" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="Jad_Bot.Messages" Width="1.5" PointX="3.625" PointY="1" Height="1.787985026041667" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

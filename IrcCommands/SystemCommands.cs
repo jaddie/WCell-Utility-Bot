@@ -113,7 +113,7 @@ namespace Jad_Bot.IrcCommands
 			}
 			public static void Login(CmdTrigger trigger, string username, string password)
 			{
-				using (var accounts = new AccountsContainer())
+				using (var accounts = new UtilityBotDBContainer())
 				{
 					var authed = false;
 					foreach (var account in accounts.Accounts)
@@ -171,7 +171,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				else
 				{
-					using (var accounts = new AccountsContainer())
+					using (var accounts = new  UtilityBotDBContainer())
 					{
 						if (Enumerable.Any(Queryable.Where(accounts.Accounts, account => account.Username == username)))
 						{
@@ -185,7 +185,7 @@ namespace Jad_Bot.IrcCommands
 			}
 			public static void AddAccount(CmdTrigger trigger, string username, string password, string userlevel)
 			{
-				using (var accounts = new AccountsContainer())
+				using (var accounts = new UtilityBotDBContainer())
 				{
 					var account = new Account { Username = username, Password = password, UserLevel = userlevel };
 					accounts.Accounts.AddObject(account);
@@ -214,7 +214,7 @@ namespace Jad_Bot.IrcCommands
 					}
 					else
 					{
-						using (var accounts = new AccountsContainer())
+						using (var accounts = new UtilityBotDBContainer())
 						{
 							foreach (var account in Queryable.Where(accounts.Accounts,account => account.Username == username))
 							{
@@ -258,7 +258,7 @@ namespace Jad_Bot.IrcCommands
 						trigger.Reply("Invalid userlevel specified, options are guest,user,admin");
 						return;
 					}
-					using (var accounts = new AccountsContainer())
+					using (var accounts = new UtilityBotDBContainer())
 					{
 						foreach (var account in Queryable.Where(accounts.Accounts,account => account.Username == username))
 						{

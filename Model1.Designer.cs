@@ -24,32 +24,32 @@ namespace Jad_Bot
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    public partial class AccountsContainer : ObjectContext
+    public partial class UtilityBotDBContainer : ObjectContext
     {
         #region Constructors
     
         /// <summary>
-        /// Initializes a new AccountsContainer object using the connection string found in the 'AccountsContainer' section of the application configuration file.
+        /// Initializes a new UtilityBotDBContainer object using the connection string found in the 'UtilityBotDBContainer' section of the application configuration file.
         /// </summary>
-        public AccountsContainer() : base("name=AccountsContainer", "AccountsContainer")
+        public UtilityBotDBContainer() : base("name=UtilityBotDBContainer", "UtilityBotDBContainer")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new AccountsContainer object.
+        /// Initialize a new UtilityBotDBContainer object.
         /// </summary>
-        public AccountsContainer(string connectionString) : base(connectionString, "AccountsContainer")
+        public UtilityBotDBContainer(string connectionString) : base(connectionString, "UtilityBotDBContainer")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new AccountsContainer object.
+        /// Initialize a new UtilityBotDBContainer object.
         /// </summary>
-        public AccountsContainer(EntityConnection connection) : base(connection, "AccountsContainer")
+        public UtilityBotDBContainer(EntityConnection connection) : base(connection, "UtilityBotDBContainer")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
@@ -80,6 +80,22 @@ namespace Jad_Bot
             }
         }
         private ObjectSet<Account> _Accounts;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Messages> Messages
+        {
+            get
+            {
+                if ((_Messages == null))
+                {
+                    _Messages = base.CreateObjectSet<Messages>("Messages");
+                }
+                return _Messages;
+            }
+        }
+        private ObjectSet<Messages> _Messages;
 
         #endregion
         #region AddTo Methods
@@ -90,6 +106,14 @@ namespace Jad_Bot
         public void AddToAccounts(Account account)
         {
             base.AddObject("Accounts", account);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Messages EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToMessages(Messages messages)
+        {
+            base.AddObject("Messages", messages);
         }
 
         #endregion
@@ -202,6 +226,139 @@ namespace Jad_Bot
         private global::System.String _UserLevel;
         partial void OnUserLevelChanging(global::System.String value);
         partial void OnUserLevelChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="Jad_Bot", Name="Messages")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Messages : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Messages object.
+        /// </summary>
+        /// <param name="dateLeft">Initial value of the DateLeft property.</param>
+        /// <param name="ircNick">Initial value of the IrcNick property.</param>
+        /// <param name="message">Initial value of the Message property.</param>
+        /// <param name="id">Initial value of the Id property.</param>
+        public static Messages CreateMessages(global::System.String dateLeft, global::System.String ircNick, global::System.String message, global::System.String id)
+        {
+            Messages messages = new Messages();
+            messages.DateLeft = dateLeft;
+            messages.IrcNick = ircNick;
+            messages.Message = message;
+            messages.Id = id;
+            return messages;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String DateLeft
+        {
+            get
+            {
+                return _DateLeft;
+            }
+            set
+            {
+                OnDateLeftChanging(value);
+                ReportPropertyChanging("DateLeft");
+                _DateLeft = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("DateLeft");
+                OnDateLeftChanged();
+            }
+        }
+        private global::System.String _DateLeft;
+        partial void OnDateLeftChanging(global::System.String value);
+        partial void OnDateLeftChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String IrcNick
+        {
+            get
+            {
+                return _IrcNick;
+            }
+            set
+            {
+                OnIrcNickChanging(value);
+                ReportPropertyChanging("IrcNick");
+                _IrcNick = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("IrcNick");
+                OnIrcNickChanged();
+            }
+        }
+        private global::System.String _IrcNick;
+        partial void OnIrcNickChanging(global::System.String value);
+        partial void OnIrcNickChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Message
+        {
+            get
+            {
+                return _Message;
+            }
+            set
+            {
+                OnMessageChanging(value);
+                ReportPropertyChanging("Message");
+                _Message = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Message");
+                OnMessageChanged();
+            }
+        }
+        private global::System.String _Message;
+        partial void OnMessageChanging(global::System.String value);
+        partial void OnMessageChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.String _Id;
+        partial void OnIdChanging(global::System.String value);
+        partial void OnIdChanged();
 
         #endregion
     
