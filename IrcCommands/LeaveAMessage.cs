@@ -32,7 +32,9 @@ namespace Jad_Bot.IrcCommands
                     db.Messages.AddObject(msg);
                     db.SaveChanges();
                     trigger.Reply("Message saved");
+                    return;
                 }
+                trigger.Reply("Failed to save the message for some reason.");
             }
         }
     }
