@@ -307,8 +307,6 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
-        #region APICommand
-
         public class APICommand : Command
         {
             public APICommand() : base("api")
@@ -329,7 +327,5 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
-
-        #endregion
 	}
 }

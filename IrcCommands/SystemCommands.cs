@@ -165,13 +165,9 @@ namespace Jad_Bot.IrcCommands
 				var username = trigger.Args.NextWord();
 				var password = trigger.Args.NextWord();
 				var userlevel = trigger.Args.NextWord();
-				if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+				if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(userlevel))
 				{
-					trigger.Reply("Error invalid input please try again!");
-				}
-				if (string.IsNullOrEmpty(userlevel))
-				{
-					trigger.Reply("Role not specified, defaulting to user level.");
+					trigger.Reply("Error invalid input please try again!, remember the input order is username password userlevel \n userlevel options: guest user admin");
 				}
 				else
 				{
