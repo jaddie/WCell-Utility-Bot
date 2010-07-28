@@ -17,8 +17,6 @@ namespace Jad_Bot.IrcCommands
              }
              public override void Process(CmdTrigger trigger)
              {
-                 try
-                 {
                      var nick = trigger.Args.NextWord();
                      var messagetosend = trigger.Args.Remainder;
                      if (string.IsNullOrEmpty(nick) || string.IsNullOrEmpty(messagetosend))
@@ -39,11 +37,6 @@ namespace Jad_Bot.IrcCommands
                              return;
                          }
                      }
-                 }
-                 catch (Exception)
-                 {
-                     trigger.Reply("Failed to save the message for some reason.");
-                 }
              }
         }
     }
