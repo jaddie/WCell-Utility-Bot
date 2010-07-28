@@ -16,3 +16,7 @@ WebLinkToLogsFolder:
 LocalPathToGeneralFolder:
 #for the upload command so we can say a page to open in order to upload files to the above folders for users.
 UploadSite:
+#Email Checker
+EmailHost:
+EmailPassword:
+EmailUserName:

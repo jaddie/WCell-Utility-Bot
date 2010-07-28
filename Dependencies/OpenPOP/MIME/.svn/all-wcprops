@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME
+END
+MIMETypes.cs
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/MIMETypes.cs
+END
+Utility.cs
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/Utility.cs
+END
+Message.cs
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/Message.cs
+END
+TNEFAttachment.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/TNEFAttachment.cs
+END
+Attachment.cs
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/Attachment.cs
+END
+TNEFParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/TNEFParser.cs
+END

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/POP3
+END
+POPClient.cs
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/POP3/POPClient.cs
+END
+Logger.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/POP3/Logger.cs
+END
+AuthenticationMethod.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/POP3/AuthenticationMethod.cs
+END
+Exceptions.cs
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/POP3/Exceptions.cs
+END
+MD5.cs
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/POP3/MD5.cs
+END

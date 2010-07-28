@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Timers;
 using Jad_Bot.Utilities;
+using Jad_Bot.BuildSystem;
 using Jad_Bot.WCellCommands;
 using Squishy.Irc;
 using Squishy.Irc.Commands;
@@ -91,6 +92,9 @@ namespace Jad_Bot
 
         public static readonly Timer ErrorTimer = new Timer();
         public static string Error = "Error: ";
+        public static string EmailPassword;
+        public static string EmailHost;
+        public static string EmailUserName;
 
         #endregion
 
@@ -100,6 +104,9 @@ namespace Jad_Bot
         {
             try
             {
+                Timer EmailNotifications = new Timer(30000);
+                EmailNotifications.Start();
+                EmailNotifications.Elapsed += new ElapsedEventHandler(EmailNotifications_Elapsed);
                 Parser.OutputDataReceived += Parser_OutputDataReceived;
                 IrcLog.AutoFlush = true;
                 SpamTimer.Interval = 5000;
@@ -150,6 +157,12 @@ namespace Jad_Bot
                             UploadSite = readLine.Remove(0, 11);
                         if (readLine.StartsWith("Network:", true, null))
                             Irc._network = Dns.GetHostAddresses(readLine.Remove(0, 8));
+                        if (readLine.StartsWith("EmailHost:", true, null))
+                            EmailHost = readLine.Remove(0, 10);
+                        if (readLine.StartsWith("EmailUserName:", true, null))
+                            EmailUserName = readLine.Remove(0, 14);
+                        if (readLine.StartsWith("EmailPassword:", true, null))
+                            EmailPassword = readLine.Remove(0, 14);
                     }
                     catch (Exception)
                     {
@@ -239,6 +252,11 @@ namespace Jad_Bot
             }
 
             #endregion
+        }
+
+        static void EmailNotifications_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            EmailNotifierHandler.CheckMail();
         }
         protected override void OnUserEncountered(IrcUser user)
         {

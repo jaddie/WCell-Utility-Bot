@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/Decode
+END
+EncodedWord.cs
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/Decode/EncodedWord.cs
+END
+QuotedPrintable.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/Decode/QuotedPrintable.cs
+END
+Base64.cs
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/Decode/Base64.cs
+END

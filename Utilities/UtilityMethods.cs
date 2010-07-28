@@ -71,7 +71,7 @@ namespace Jad_Bot.Utilities
                 if (irclog)
                     JadBot.IrcLog.WriteLine(DateTime.Now + text);
                 if (chan != null)
-                    JadBot.Irc.CommandHandler.Msg(chan, text, null);
+                    JadBot.Irc.CommandHandler.Msg(chan, text);
             }
             catch(Exception e)
             {

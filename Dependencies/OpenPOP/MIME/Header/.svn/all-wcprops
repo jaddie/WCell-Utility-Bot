@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/Header
+END
+MessageHeader.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/hpop/!svn/ver/104/trunk/hpop/OpenPOP/MIME/Header/MessageHeader.cs
+END
+HeaderExtractor.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/Header/HeaderExtractor.cs
+END
+ContentTransferEncoding.cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/hpop/!svn/ver/100/trunk/hpop/OpenPOP/MIME/Header/ContentTransferEncoding.cs
+END
+MessageImportance.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/Header/MessageImportance.cs
+END
+HeaderFieldParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/hpop/!svn/ver/111/trunk/hpop/OpenPOP/MIME/Header/HeaderFieldParser.cs
+END
