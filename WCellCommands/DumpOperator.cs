@@ -12,7 +12,7 @@ namespace Jad_Bot.WCellCommands
         {
             public QueryDumpCommand() : base("Query")
             {
-                Usage = "Query -s -d dumptype partialspelloreffectname";
+                Usage = "Query -f filter,terms,here -d dumptype partialspelloreffectname";
                 Description = "Command to read the spelldump from WCell.Tools and return a list of different matches for the query, dump defaults to spell if not recognised - use dumptypes command to see list, -s means search for only lines including spell: -d dumptype is used to specify the dumptype e.g. GOs";
             }
 
@@ -78,7 +78,7 @@ namespace Jad_Bot.WCellCommands
                                     break;
                             }
                             List<string> readOutput = JadBot.DumpReader.Read(dumptype, trigger.Args.Remainder,filterterms);
-                            if (readOutput.Capacity < 1)
+                            if (readOutput.Capacity < 1 || string.IsNullOrEmpty(readOutput[0]))
                             {
                                 trigger.Reply("No Results!");
                                 return;
