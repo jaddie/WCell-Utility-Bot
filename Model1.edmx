@@ -44,12 +44,11 @@
         </EntityType>
         <EntityType Name="Message">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="DateLeft" />
           </Key>
           <Property Type="String" Name="DateLeft" Nullable="false" />
           <Property Type="String" Name="IrcNick" Nullable="false" />
           <Property Type="String" Name="MessageText" Nullable="false" />
-          <Property Type="String" Name="Id" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -69,7 +68,6 @@
     <EntitySetMapping Name="Messages">
       <EntityTypeMapping TypeName="IsTypeOf(Jad_Bot.Message)">
         <MappingFragment StoreEntitySet="Messages">
-          <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="DateLeft" ColumnName="DateLeft" />
           <ScalarProperty Name="IrcNick" ColumnName="IrcNick" />
           <ScalarProperty Name="MessageText" ColumnName="Message" />
@@ -96,7 +94,7 @@
     <edmx:Diagrams>
       <Diagram Name="Model1" >
         <EntityTypeShape EntityType="Jad_Bot.Account" Width="1.5" PointX="2" PointY="1" Height="1.5956835937499996" />
-        <EntityTypeShape EntityType="Jad_Bot.Message" Width="1.5" PointX="3.625" PointY="1" Height="1.787985026041667" />
+        <EntityTypeShape EntityType="Jad_Bot.Message" Width="1.5" PointX="3.625" PointY="1" Height="1.59568359375" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

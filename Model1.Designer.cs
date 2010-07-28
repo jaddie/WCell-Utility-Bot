@@ -247,14 +247,12 @@ namespace Jad_Bot
         /// <param name="dateLeft">Initial value of the DateLeft property.</param>
         /// <param name="ircNick">Initial value of the IrcNick property.</param>
         /// <param name="messageText">Initial value of the MessageText property.</param>
-        /// <param name="id">Initial value of the Id property.</param>
-        public static Message CreateMessage(global::System.String dateLeft, global::System.String ircNick, global::System.String messageText, global::System.String id)
+        public static Message CreateMessage(global::System.String dateLeft, global::System.String ircNick, global::System.String messageText)
         {
             Message message = new Message();
             message.DateLeft = dateLeft;
             message.IrcNick = ircNick;
             message.MessageText = messageText;
-            message.Id = id;
             return message;
         }
 
@@ -264,7 +262,7 @@ namespace Jad_Bot
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.String DateLeft
         {
@@ -274,11 +272,14 @@ namespace Jad_Bot
             }
             set
             {
-                OnDateLeftChanging(value);
-                ReportPropertyChanging("DateLeft");
-                _DateLeft = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("DateLeft");
-                OnDateLeftChanged();
+                if (_DateLeft != value)
+                {
+                    OnDateLeftChanging(value);
+                    ReportPropertyChanging("DateLeft");
+                    _DateLeft = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("DateLeft");
+                    OnDateLeftChanged();
+                }
             }
         }
         private global::System.String _DateLeft;
@@ -332,33 +333,6 @@ namespace Jad_Bot
         private global::System.String _MessageText;
         partial void OnMessageTextChanging(global::System.String value);
         partial void OnMessageTextChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value, false);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.String _Id;
-        partial void OnIdChanging(global::System.String value);
-        partial void OnIdChanged();
 
         #endregion
     

@@ -426,6 +426,10 @@ namespace Jad_Bot
         {
             try
             {
+                if (e.Data == null)
+                {
+                    return;
+                }
                 #region Done
                 if (e.Data.Contains("Done."))
                 {
