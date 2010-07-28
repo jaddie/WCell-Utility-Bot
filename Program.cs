@@ -240,13 +240,9 @@ namespace Jad_Bot
 
             #endregion
         }
-        protected override void OnUsersAdded(IrcChannel chan, IrcUser[] users)
-        {
-            base.OnUsersAdded(chan, users);
-        }
         protected override void OnUserEncountered(IrcUser user)
         {
-            if (user == null || user.Nick == null || user.Args == null)
+            if (user == null || user.Nick == null)
             {
                 return;
             }
@@ -256,7 +252,7 @@ namespace Jad_Bot
                 {
                     if (message.IrcNick == user.Nick)
                     {
-                        CommandHandler.Msg(user, message.MessageText, user.Args);
+                        CommandHandler.Msg(user, message.MessageText);
                         db.Messages.DeleteObject(message);
                         db.SaveChanges();
                     }
