@@ -26,9 +26,9 @@ namespace Jad_Bot.BuildSystem
                         var msgsplit = new StringStream(msgbody);
                         msgbody = msgsplit.NextWord("=====");
                         JadBot.Irc.CommandHandler.Msg("#wcell", msgbody);
+                        pop3.DeleteMessage(i);
                     }
                 }
-                pop3.DeleteAllMessages();
                 pop3.Disconnect();
             }
             catch (Exception e)
