@@ -19,6 +19,83 @@ namespace Squishy.Irc.Commands
 			trigger.Reply(asmName.Name + ", v" + asmName.Version);
 		}
 	}*/
+	/// <summary>
+	/// TODO: Use localized strings
+	/// The help command is special since it generates output.
+	/// This output needs to be shown in the GUI if used from commandline and 
+	/// sent to the requester if executed remotely.
+	/// </summary>
+	public class HelpCommand : Command
+	{
+		public static int MaxUncompressedCommands = 3;
+
+		public HelpCommand()
+			: base("Help", "?")
+		{
+			Usage = "Help|? [<match>]";
+			Description = "Shows an overview over all Commands or -if you specify a <match>- the help for any matching commands.";
+		}
+
+		public override void Process(CmdTrigger trigger)
+		{
+			var match = trigger.Args.NextWord();
+			IList<Command> cmds;
+			if (match.Length > 0)
+			{
+				cmds = new List<Command>();
+				foreach (var cmd in IrcCommandHandler.List)
+				{
+					if (cmd.Enabled &&
+						trigger.MayTrigger(cmd) &&
+						cmd.Aliases.FirstOrDefault(ali => ali.IndexOf(match, StringComparison.InvariantCultureIgnoreCase) != -1) != null)
+					{
+						cmds.Add(cmd);
+					}
+				}
+				if (cmds.Count == 0)
+				{
+					trigger.Reply("Could not find a command matching '{0}'", match);
+				}
+				else
+				{
+					trigger.Reply("Found {0} matching commands: ", cmds.Count);
+				}
+			}
+			else
+			{
+				trigger.Reply("Use \"Help <searchterm>\" to receive help on a certain command. - All current commands:");
+				cmds = IrcCommandHandler.List.Where(cmd => cmd.Enabled && trigger.MayTrigger(cmd)).ToList();
+			}
+
+			var line = "";
+			foreach (var cmd in cmds)
+			{
+				if (cmds.Count <= MaxUncompressedCommands)
+				{
+					var desc = string.Format("{0} ({1})", cmd.Usage, cmd.Description);
+					trigger.Reply(desc);
+				}
+				else
+				{
+					var info = cmd.Name;
+					info += " (" + cmd.Aliases.ToString(", ") + ")  ";
+
+					if (line.Length + info.Length >= IrcProtocol.MaxLineLength)
+					{
+						trigger.Reply(line);
+						line = "";
+					}
+
+					line += info;
+				}
+			}
+
+			if (line.Length > 0)
+			{
+				trigger.Reply(line);
+			}
+		}
+	}
 
 	public class JoinCommand : Command
 	{
