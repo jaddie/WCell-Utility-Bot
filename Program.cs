@@ -242,6 +242,10 @@ namespace Jad_Bot
         }
         protected override void OnJoin(IrcUser user, IrcChannel chan)
         {
+            if (user != null || chan != null)
+            {
+                return;
+            }
             using (var db = new UtilityBotDBContainer())
             {
                 foreach (var message in db.Messages)

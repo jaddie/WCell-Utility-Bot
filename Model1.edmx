@@ -19,12 +19,11 @@
   </EntityType>
   <EntityType Name="Messages">
     <Key>
-      <PropertyRef Name="Id" />
+      <PropertyRef Name="DateLeft" />
     </Key>
     <Property Name="DateLeft" Type="nvarchar" Nullable="false" />
     <Property Name="IrcNick" Type="nvarchar" Nullable="false" />
-    <Property Name="Message" Type="nvarchar" Nullable="false" />
-    <Property Name="Id" Type="nvarchar" Nullable="false" />
+    <Property Name="MessageText" Type="nvarchar" Nullable="false" />
   </EntityType>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -70,7 +69,7 @@
         <MappingFragment StoreEntitySet="Messages">
           <ScalarProperty Name="DateLeft" ColumnName="DateLeft" />
           <ScalarProperty Name="IrcNick" ColumnName="IrcNick" />
-          <ScalarProperty Name="MessageText" ColumnName="Message" />
+          <ScalarProperty Name="MessageText" ColumnName="MessageText" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
