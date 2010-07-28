@@ -166,7 +166,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildSystem\EmailNotifierHandler.cs" />
     <Compile Include="IrcCommands\UtilityCommands.cs" />
     <Compile Include="Model1.Designer.cs">
       <AutoGen>True</AutoGen>
