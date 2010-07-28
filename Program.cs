@@ -240,9 +240,13 @@ namespace Jad_Bot
 
             #endregion
         }
+        protected override void OnUsersAdded(IrcChannel chan, IrcUser[] users)
+        {
+            base.OnUsersAdded(chan, users);
+        }
         protected override void OnJoin(IrcUser user, IrcChannel chan)
         {
-            if (user != null || chan != null)
+           /* if (user != null || chan != null)
             {
                 return;
             }
@@ -257,7 +261,7 @@ namespace Jad_Bot
                         db.SaveChanges();
                     }
                 }
-            }
+            }*/
         }
         static void SpamTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
