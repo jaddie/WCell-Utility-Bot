@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading;
 using Squishy.Network;
-
+using System.Collections.Generic;
 namespace Jad_Bot.Utilities
 {
     public class UtilityMethods
@@ -67,6 +67,7 @@ namespace Jad_Bot.Utilities
             try
             {
                 Console.WriteLine(DateTime.Now + text);
+                WriteErrorSystem.WriteError(new List<string>() { text });
                 if (irclog)
                     JadBot.IrcLog.WriteLine(DateTime.Now + text);
                 if (chan != null)
