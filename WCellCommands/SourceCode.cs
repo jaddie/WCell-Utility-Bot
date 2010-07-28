@@ -27,7 +27,7 @@ namespace Jad_Bot.WCellCommands
                 try
                 {
                     trigger.Reply("Scanning source for matches, please allow some time...");
-                    var sourceDir = new DirectoryInfo(@"c:\wcellsource");
+                    var sourceDir = new DirectoryInfo(@"c:\wcellmastermsbuild");
                     int linenumber = 0;
                     int upperlinenumber = 0;
                     int fileid = 0;
@@ -116,7 +116,7 @@ namespace Jad_Bot.WCellCommands
                         if (JadBot.Matches.Count == 1)
                         {
                             string path = JadBot.Matches[fileid];
-                            path = path.Replace("c:\\wcellsource", "Master");
+                            path = path.Replace("c:\\wcellmastermsbuild", "Master");
                             path = path.Replace('\\', '-');
                             var selectionWriter = new StreamWriter(JadBot.GeneralFolder + string.Format("\\{0}.html", path)) { AutoFlush = false };
                             string lines = ReadFileLines(JadBot.Matches[0], linenumber, upperlinenumber, fileid);
