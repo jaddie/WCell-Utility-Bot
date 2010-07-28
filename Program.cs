@@ -246,7 +246,7 @@ namespace Jad_Bot
         }
         protected override void OnUserEncountered(IrcUser user)
         {
-            if (user == null)
+            if (user == null || user.Nick == null || user.Args == null)
             {
                 return;
             }
