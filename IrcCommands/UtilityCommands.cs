@@ -30,7 +30,7 @@ namespace Jad_Bot.IrcCommands
                              var msg = new Message();
                              msg.DateLeft = DateTime.Now.ToString();
                              msg.IrcNick = nick;
-                             msg.MessageText = "Message From: " + trigger.User.Nick + "Message Sent: " + messagetosend;
+                             msg.MessageText = "Message From: " + trigger.User.Nick + " Message Sent: " + messagetosend;
                              db.Messages.AddObject(msg);
                              db.SaveChanges();
                              trigger.Reply("Message saved");
