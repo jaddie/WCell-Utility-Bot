@@ -327,5 +327,25 @@ namespace Jad_Bot.IrcCommands
                 }
             }
         }
+        public class WCellBuildServerCommand : Command
+        {
+            public WCellBuildServerCommand() : base("buildserver","bs","buildsystem","buildsite")
+            {
+                Usage = "buildserver";
+                Description = "Shows the link to the WCell Build Server";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    trigger.Reply("http://server.wcell.org");
+				        }
+                catch (Exception e)
+                {
+                    WriteErrorSystem.WriteError(null, "Failed to send build server link!");
+                }
+            }
+        }
 	}
 }
