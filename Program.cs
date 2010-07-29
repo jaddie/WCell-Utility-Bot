@@ -250,7 +250,7 @@ namespace Jad_Bot
             {
                 foreach (var message in db.Messages)
                 {
-                    if (message.IrcNick == user.Nick)
+                    if (message.IrcNick == user.Nick || message.IrcNick.StartsWith("Domi") && user.Nick.StartsWith("Domi"))
                     {
                         CommandHandler.Msg(user, message.MessageText);
                         db.Messages.DeleteObject(message);
