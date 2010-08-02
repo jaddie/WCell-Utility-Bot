@@ -247,12 +247,14 @@ namespace Jad_Bot
         /// <param name="dateLeft">Initial value of the DateLeft property.</param>
         /// <param name="ircNick">Initial value of the IrcNick property.</param>
         /// <param name="messageText">Initial value of the MessageText property.</param>
-        public static Message CreateMessage(global::System.String dateLeft, global::System.String ircNick, global::System.String messageText)
+        /// <param name="fromIrcNick">Initial value of the FromIrcNick property.</param>
+        public static Message CreateMessage(global::System.String dateLeft, global::System.String ircNick, global::System.String messageText, global::System.String fromIrcNick)
         {
             Message message = new Message();
             message.DateLeft = dateLeft;
             message.IrcNick = ircNick;
             message.MessageText = messageText;
+            message.FromIrcNick = fromIrcNick;
             return message;
         }
 
@@ -333,6 +335,30 @@ namespace Jad_Bot
         private global::System.String _MessageText;
         partial void OnMessageTextChanging(global::System.String value);
         partial void OnMessageTextChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String FromIrcNick
+        {
+            get
+            {
+                return _FromIrcNick;
+            }
+            set
+            {
+                OnFromIrcNickChanging(value);
+                ReportPropertyChanging("FromIrcNick");
+                _FromIrcNick = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("FromIrcNick");
+                OnFromIrcNickChanged();
+            }
+        }
+        private global::System.String _FromIrcNick;
+        partial void OnFromIrcNickChanging(global::System.String value);
+        partial void OnFromIrcNickChanged();
 
         #endregion
     

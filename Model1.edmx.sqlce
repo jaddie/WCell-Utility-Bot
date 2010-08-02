@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 07/28/2010 01:40:18
+-- Date Created: 08/02/2010 19:07:51
 -- Generated from EDMX file: C:\Users\Jaddie\Documents\coding\WCell-Utility-Bot\Model1.edmx
 -- --------------------------------------------------
 
@@ -39,7 +39,8 @@ GO
 CREATE TABLE [Messages] (
     [DateLeft] nvarchar(4000)  NOT NULL,
     [IrcNick] nvarchar(4000)  NOT NULL,
-    [MessageText] nvarchar(4000)  NOT NULL
+    [MessageText] nvarchar(4000)  NOT NULL,
+    [FromIrcNick] nvarchar(4000)  NOT NULL
 );
 GO
 

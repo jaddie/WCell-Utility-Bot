@@ -10,34 +10,37 @@ namespace Jad_Bot.IrcCommands
     {
         public class LeaveAMessage : Command
         {
-             public LeaveAMessage() : base("leavemsg","lm","note")
-             {
-                 Usage = "leavemsg nicktoleavefor message to send.";
-                 Description = "Use to leave a message for someone on IRC for when they come back online";
-             }
-             public override void Process(CmdTrigger trigger)
-             {
-                     var nick = trigger.Args.NextWord();
-                     var messagetosend = trigger.Args.Remainder;
-                     if (string.IsNullOrEmpty(nick) || string.IsNullOrEmpty(messagetosend))
-                     {
-                         trigger.Reply("Failed to parse input, please try again");
-                     }
-                     else
-                     {
-                         using (var db = new UtilityBotDBContainer())
-                         {
-                             var msg = new Message();
-                             msg.DateLeft = DateTime.Now.ToString();
-                             msg.IrcNick = nick;
-                             msg.MessageText = "Message From: " + trigger.User.Nick + " Message Sent: " + messagetosend;
-                             db.Messages.AddObject(msg);
-                             db.SaveChanges();
-                             trigger.Reply("Message saved");
-                             return;
-                         }
-                     }
-             }
+            public LeaveAMessage() : base("leavemsg", "lm", "note")
+            {
+                Usage = "leavemsg nicktoleavefor message to send.";
+                Description = "Use to leave a message for someone on IRC for when they come back online";
+            }
+            public override void Process(CmdTrigger trigger)
+            {
+                var nick = trigger.Args.NextWord();
+                var messagetosend = trigger.Args.Remainder;
+                if (string.IsNullOrEmpty(nick) || string.IsNullOrEmpty(messagetosend))
+                {
+                    trigger.Reply("Failed to parse input, please try again");
+                }
+                else
+                {
+                    using (var db = new UtilityBotDBContainer())
+                    {
+                        var msg = new Message
+                        {
+                            DateLeft = DateTime.Now.ToString(),
+                            FromIrcNick = trigger.User.Nick,
+                            IrcNick = nick.ToLower(),
+                            MessageText = messagetosend.ToLower()
+                        };
+                        db.Messages.AddObject(msg);
+                        db.SaveChanges();
+                        trigger.Reply("Message saved");
+                        return;
+                    }
+                }
+            }
         }
     }
 }

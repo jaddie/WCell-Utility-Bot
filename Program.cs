@@ -248,14 +248,11 @@ namespace Jad_Bot
             }
             using (var db = new UtilityBotDBContainer())
             {
-                foreach (var message in db.Messages)
+                foreach (var message in db.Messages.Where(message => message.IrcNick == user.Nick.ToLower() || message.IrcNick.ToLower().StartsWith("domi") && user.Nick.ToLower().StartsWith("domi")))
                 {
-                    if (message.IrcNick == user.Nick || message.IrcNick.StartsWith("Domi") && user.Nick.StartsWith("Domi"))
-                    {
-                        CommandHandler.Msg(user, message.MessageText);
-                        db.Messages.DeleteObject(message);
-                        db.SaveChanges();
-                    }
+                    CommandHandler.Msg(user, "Date Left: " + message.DateLeft + "\n From Nick: " + message.FromIrcNick + "\n Message Sent: " + message.MessageText);
+                    db.Messages.DeleteObject(message);
+                    db.SaveChanges();
                 }
             }
         }
