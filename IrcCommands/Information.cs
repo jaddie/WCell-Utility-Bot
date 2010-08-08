@@ -117,7 +117,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Data + e.StackTrace, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}
@@ -137,7 +137,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Data + e.StackTrace, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}
@@ -158,7 +158,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Data + e.StackTrace, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}
@@ -179,7 +179,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Data + e.StackTrace, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}
@@ -200,7 +200,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Data + e.StackTrace, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}
@@ -221,7 +221,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Data + e.StackTrace, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}
@@ -241,7 +241,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Data + e.Message + e.StackTrace + e.Source + e.TargetSite, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}
@@ -262,7 +262,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Data + e.StackTrace, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}
@@ -303,7 +303,7 @@ namespace Jad_Bot.IrcCommands
 				}
                 catch (Exception e)
                 {
-                    UtilityMethods.Print(e.Data + e.Message + e.StackTrace + e.Source, true);
+                    WriteErrorSystem.WriteError(e);
                 }
             }
         }
@@ -343,9 +343,102 @@ namespace Jad_Bot.IrcCommands
 				        }
                 catch (Exception e)
                 {
-                    WriteErrorSystem.WriteError(null, "Failed to send build server link!");
+                    WriteErrorSystem.WriteError(new Exception("Failed to send build server link!"));
                 }
             }
         }
+        
+        public class ListExceptionsCommand : Command
+        {
+            public ListExceptionsCommand()
+                : base("listexceptions","le")
+            {
+                Usage = "listexceptions";
+                Description = "Lists all stored (in memory) exceptions";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    if (JadBot.Exceptions.Count > 0)
+                    {
+                        var id = 0;
+                        foreach (var exception in JadBot.Exceptions)
+                        {
+                            trigger.Reply(id + ": " + exception.Message);
+                            id++;
+                        }
+                        trigger.Reply("End of list");
+                    }
+                    else
+                    {
+                        trigger.Reply("No available Exceptions!");
+                    }
+                }
+                catch (Exception e)
+                {
+                    WriteErrorSystem.WriteError(e);
+                }
+            }
+        }
+        
+        public class ShowExceptionCommand : Command
+        {
+            public ShowExceptionCommand()
+                : base("showexception","se")
+            {
+                Usage = "excep s id";
+                Description = "Display exception stored at id";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    if (JadBot.Exceptions.Count > 0)
+                    {
+                        var exception = JadBot.Exceptions[trigger.Args.NextInt(0)];
+                        trigger.Reply(exception.Message + exception.InnerException + exception.Source +
+                                      exception.StackTrace + exception.TargetSite);
+                        trigger.Reply("Finished Output");
+                    }
+                    else
+                    {
+                        trigger.Reply("No available Exceptions!");
+                    }
+                }
+                catch (Exception e)
+                {
+                    WriteErrorSystem.WriteError(e);
+                }
+            }
+        }
+        
+        public class ClearExceptionsCommand : Command
+        {
+            public ClearExceptionsCommand()
+                : base("clearexceptions","ce")
+            {
+                Usage = "clearexceptions";
+                Description = "Wipes the list of exceptions";
+            }
+
+            public override void Process(CmdTrigger trigger)
+            {
+                try
+                {
+                    JadBot.Exceptions.Clear();
+                    JadBot.Exceptions.TrimExcess();
+                    trigger.Reply("Cleared all stored exceptions.");
+                }
+                catch (Exception e)
+                {
+                    WriteErrorSystem.WriteError(e);
+                }
+            }
+        }
+			
+						
 	}
 }

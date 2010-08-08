@@ -21,7 +21,7 @@ namespace Jad_Bot.Utilities
             }
             catch (Exception e)
             {
-                Print(e.Data + e.StackTrace, true);
+                WriteErrorSystem.WriteError(e);
             }
             return null;
         }
@@ -41,7 +41,7 @@ namespace Jad_Bot.Utilities
             }
             catch (Exception e)
             {
-                Print(e.Data + e.StackTrace, true);
+                WriteErrorSystem.WriteError(e);
                 return "";
             }
         }
@@ -55,30 +55,13 @@ namespace Jad_Bot.Utilities
             }
             catch (Exception e)
             {
-                Print(e.Data + e.StackTrace, true);
+                WriteErrorSystem.WriteError(e);
             }
             return 0;
         }
 
         #endregion
 
-        public static void Print(string text, bool irclog = false,string chan = null)
-        {
-            try
-            {
-                Console.WriteLine(DateTime.Now + text);
-                WriteErrorSystem.WriteError(new List<string>() { text });
-                if (irclog)
-                    JadBot.IrcLog.WriteLine(DateTime.Now + text);
-                if (chan != null)
-                    JadBot.Irc.CommandHandler.Msg(chan, text);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Write Failure" + e.Data + e.StackTrace);
-            }
-
-        }
         public static void OnConsoleText(StringStream cText)
         {
             try
@@ -111,7 +94,7 @@ namespace Jad_Bot.Utilities
                     case "quit":
                         {
                             JadBot.Parser.Kill();
-                            Print("Shutting down due to console quit command..", true);
+                            JadBot.IrcLog.WriteLine("Shutting down due to console quit command..");
                             foreach (var chan in JadBot.ChannelList)
                             {
                                 JadBot.Irc.CommandHandler.Msg(chan, "Shutting down in 5 seconds due to console quit command..");
@@ -125,7 +108,7 @@ namespace Jad_Bot.Utilities
             }
             catch(Exception e)
             {
-                Print(e.Data + e.StackTrace, true);
+                WriteErrorSystem.WriteError(e);
             }
         }
     }

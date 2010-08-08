@@ -32,7 +32,7 @@ namespace Jad_Bot
         public static readonly List<string> ChannelList = new List<string> {"#WOC", "#wcell.dev,wcellrulz", "#wcell"};
         public static readonly List<string> Matches = new List<string>();
         public static readonly List<string> FileLines = new List<string>();
-
+        public static List<Exception> Exceptions = new List<Exception>();
         #endregion
 
         public static readonly DumpReader DumpReader = new DumpReader();
@@ -82,16 +82,9 @@ namespace Jad_Bot
 
         public static readonly Process Parser = new Process();
         public static string LogFile;
-        public static string ReplyChan = "#woc";
+        public static string ReplyChan = "#wcell";
         public static readonly Stopwatch Runtimer = new Stopwatch();
         public static Process Utility = Process.GetCurrentProcess();
-        #endregion
-
-        #region ErrorHandling
-
-        public static readonly Timer ErrorTimer = new Timer();
-        public static string Error = "Error: ";
-
         #endregion
 
         #endregion Fields
@@ -102,7 +95,7 @@ namespace Jad_Bot
             {
                 Parser.OutputDataReceived += Parser_OutputDataReceived;
                 IrcLog.AutoFlush = true;
-                SpamTimer.Interval = 5000;
+                SpamTimer.Interval = 2000;
                 SpamTimer.Elapsed += SpamTimer_Elapsed;
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 QuitReason = "I've been told to leave, bai!!";
@@ -210,24 +203,19 @@ namespace Jad_Bot
 
                 Irc.Client.Connecting += OnConnecting;
                 Irc.Client.Connected += Client_Connected;
+                Irc.Client.InternalDisconnected += Client_InternalDisconnected;
                 Irc.BeginConnect(Irc._network[0].ToString(), Port);
 
                 #endregion
 
                 Runtimer.Start();
-                while (true) // Prevent WCell.Tools from crashing - due to console methods inside the program.
-                {
-                    var line = new StringStream(Console.ReadLine());
-                    UtilityMethods.OnConsoleText(line);
-                }
+                System.Windows.Forms.Application.Run();
             }
                 #region Main Exception Handling
 
             catch (Exception e)
             {
-                UtilityMethods.Print(string.Format("Exception {0} \n {1}", e.Message, e.StackTrace), true);
-                WriteErrorSystem.WriteError(new List<string> {"Exception:", e.Message, e.StackTrace});
-                UtilityMethods.Print(WebLinkToGeneralFolder + "ErrorLog.txt", true);
+                WriteErrorSystem.WriteError(e);
                 foreach (var chan in ChannelList)
                 {
                     Irc.CommandHandler.Msg(chan, "The error is at the following address: {0}",
@@ -239,6 +227,11 @@ namespace Jad_Bot
             }
 
             #endregion
+        }
+
+        static void Client_InternalDisconnected(Connection con, bool connectionLost)
+        {
+            Irc_Disconnected(null,false);
         }
         protected override void OnUserEncountered(IrcUser user)
         {
@@ -267,19 +260,22 @@ namespace Jad_Bot
         }
         public static void Client_Connected(Connection con)
         {
-            UtilityMethods.Print("Connected to IRC Server", true);
+            Console.WriteLine("Connected to IRC Server");
+            IrcLog.WriteLine("Connected to IRC Server");
         }
         public static void Irc_Disconnected(IrcClient arg1, bool arg2)
         {
             try
             {
-                UtilityMethods.Print("Disconnected from IRC server, Attempting reconnect in 5 seconds", true);
+                var msg = "Disconnected from IRC server, Attempting reconnect in 5 seconds";
+                Console.WriteLine(msg);
+                IrcLog.WriteLine(msg);
                 Thread.Sleep(5000);
                 Irc.BeginConnect(Irc._network[0].ToString(), Port);
             }
             catch (Exception e)
             {
-                UtilityMethods.Print(e.Data + e.StackTrace,true);
+                WriteErrorSystem.WriteError(e);
             }
 
         }
@@ -287,7 +283,7 @@ namespace Jad_Bot
         #region IrcSystem
         public static void OnConnecting(Connection con)
         {
-            UtilityMethods.Print("Connecting to IRC server", true);
+            Console.WriteLine("Connecting to IRC server");
             IrcLog.WriteLine(DateTime.Now + " : Connecting to server");
         }
         protected override void Perform()
@@ -314,7 +310,7 @@ namespace Jad_Bot
             }
             catch (Exception e)
             {
-                UtilityMethods.Print(e.Data + e.StackTrace, true);
+                WriteErrorSystem.WriteError(e);
             }
         }
         protected override void OnUnknownCommandUsed(CmdTrigger trigger)
@@ -323,13 +319,10 @@ namespace Jad_Bot
         }
         protected override void OnError(Squishy.Irc.Protocol.IrcPacket packet)
         {
-            UtilityMethods.Print(packet.Args,true,"#wcell.dev"); // shouldn't be using a hardcoded value here, but its okay because this bot is specific to wcell anyway.
+            WriteErrorSystem.WriteError(new Exception(packet.Args));// shouldn't be using a hardcoded value here, but its okay because this bot is specific to wcell anyway.
             base.OnError(packet);
         }
-        protected override void OnQueryMsg(IrcUser user, StringStream text)
-        {
-            UtilityMethods.Print(user + text.String, true);
-        }
+
         protected override void OnText(IrcUser user, IrcChannel chan, StringStream text)
         {
             try
@@ -373,14 +366,14 @@ namespace Jad_Bot
 
                 #region MessagesSent
 
-                UtilityMethods.Print(string.Format("User {0} on channel {1} Sent {2}", user, chan, text), true);
-
+                Console.WriteLine(string.Format("User {0} on channel {1} Sent {2}", user, chan, text));
+                IrcLog.WriteLine(string.Format("User {0} on channel {1} Sent {2}", user, chan, text));
                 #endregion
             }
             catch (Exception e)
             {
                 CommandHandler.Msg("#woc", e.Message);
-                UtilityMethods.Print(e.StackTrace + e.Message, true);
+                WriteErrorSystem.WriteError(e);
             }
         }
         public override bool MayTriggerCommand(CmdTrigger trigger, Command cmd)
@@ -438,11 +431,15 @@ namespace Jad_Bot
                     {
                         using (var parsedFile = new StreamReader(ParsedFolder + LogFile))
                         {
-                            if (parsedFile.BaseStream.Length < 1)
+                            if (string.IsNullOrEmpty(parsedFile.ReadToEnd().ToLower()))
+                            {
                                 throw new Exception("Parsed file is empty");
-
-                            Irc.CommandHandler.Msg(ReplyChan, "Completed Parsing your file is at {0}{1}",
-                                                   WebLinkToParsedFolder, LogFile);
+                            }
+                            else
+                            {
+                                Irc.CommandHandler.Msg(ReplyChan, "Completed Parsing your file is at {0}{1}",
+                                                       WebLinkToParsedFolder, LogFile);
+                            }
                         }
                     }
                     catch (Exception excep)
@@ -451,53 +448,33 @@ namespace Jad_Bot
                                                excep.Message);
                     }
                 }
-                var writer = new StreamWriter(GeneralFolder + "toolsoutput.txt", true) {AutoFlush = true};
-                writer.WriteLine(e.Data);
-                UtilityMethods.Print(e.Data,true);
-                writer.Close();
+                using(var writer = new StreamWriter(GeneralFolder + "toolsoutput.txt", true) {AutoFlush = true})
+                {
+                    writer.WriteLine(e.Data);
+                }
 
                 #endregion
 
                 #region Exception
 
-                if (e.Data.Contains("Exception"))
+                if (e.Data.Contains("Exception") && !e.Data.ToLower().Contains("nlog"))
                 {
-                    ErrorTimer.Interval = 5000;
-                    ErrorTimer.Start();
-                    ErrorTimer.Elapsed += ErrorTimerElapsed;
-                    while (ErrorTimer.Enabled)
+                    var newexception = new StringStream(e.Data);
+                    newexception.NextWord();
+                    if (Exceptions.Where(exception => exception.Message == newexception.Remainder).Any())
                     {
-                        Error = Error + e.Data + "\n";
+                        return;
                     }
+                    WriteErrorSystem.WriteError(new Exception(newexception.Remainder));
                 }
 
                 #endregion
             }
             catch(Exception ex)
             {
-                UtilityMethods.Print(ex.Data + ex.StackTrace,true);
+                WriteErrorSystem.WriteError(ex);
             }
         }
-
-        #region Parser Error Handling
-
-        public static void ErrorTimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                ErrorTimer.Stop();
-                WriteErrorSystem.WriteError(new List<string> {"Exception:", Error});
-                Irc.CommandHandler.Msg(ReplyChan, WebLinkToGeneralFolder + "ErrorLog.txt");
-                UtilityMethods.Print(WebLinkToGeneralFolder + "ErrorLog.txt");
-            }
-            catch(Exception ex)
-            {
-                UtilityMethods.Print(ex.Data + ex.StackTrace);
-            }
-        }
-
-        #endregion
-
         #endregion
     }
 }

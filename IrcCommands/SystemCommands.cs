@@ -46,7 +46,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Data + e.StackTrace, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}
@@ -87,7 +87,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Data + e.StackTrace, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}
@@ -229,7 +229,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Message + e.Data + e.StackTrace, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}
@@ -304,7 +304,7 @@ namespace Jad_Bot.IrcCommands
 				}
 				catch (Exception e)
 				{
-					UtilityMethods.Print(e.Message + e.Data + e.StackTrace, true);
+					WriteErrorSystem.WriteError(e);
 				}
 			}
 		}

@@ -59,11 +59,11 @@ namespace Jad_Bot.WCellCommands
                     JadBot.ParserConsoleInput.WriteLine(string.Format("pa so {0}{1}", JadBot.ParsedFolder, logFile));
                     JadBot.ParserConsoleInput.WriteLine("pa af eo _MOVE,_WARDEN");
                     JadBot.ParserConsoleInput.WriteLine("pa parse");
-                    JadBot.ReplyChan = trigger.Channel.ToString();
+                    JadBot.ReplyChan = trigger.Target.ToString();
                 }
                 catch (Exception e)
                 {
-                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                    WriteErrorSystem.WriteError(e);
                 }
             }
         }
@@ -132,10 +132,8 @@ namespace Jad_Bot.WCellCommands
                 }
                 catch (Exception e)
                 {
-                    WriteErrorSystem.WriteError(new List<string> { e.Message + e.StackTrace + e.InnerException + e.Source });
-                    trigger.Reply("Error occured:{0}", JadBot.WebLinkToGeneralFolder + "ErrorLog.txt");
-                    UtilityMethods.Print(string.Format("Error Occured in download file command: {0}", e.Message + e.StackTrace + e.InnerException + e.Source), true);
-                }
+                    WriteErrorSystem.WriteError(e);
+                    trigger.Reply("Error occured:{0}", JadBot.WebLinkToGeneralFolder + "ErrorLog.txt");                }
             }
         }
     }

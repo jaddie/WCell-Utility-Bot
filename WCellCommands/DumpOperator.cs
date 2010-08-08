@@ -99,7 +99,7 @@ namespace Jad_Bot.WCellCommands
                 }
                 catch (Exception e)
                 {
-                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                    WriteErrorSystem.WriteError(e);
                 }
             }
         }
@@ -137,7 +137,7 @@ namespace Jad_Bot.WCellCommands
                 catch (Exception excep)
                 {
                     trigger.Reply("The Following Exception Occured {0}, check input", excep.Message);
-                    UtilityMethods.Print(excep.Data + excep.StackTrace, true);
+                    WriteErrorSystem.WriteError(excep);
                 }
             }
         }
@@ -158,7 +158,7 @@ namespace Jad_Bot.WCellCommands
                 }
                 catch (Exception e)
                 {
-                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                    WriteErrorSystem.WriteError(e);
                 }
             }
         }

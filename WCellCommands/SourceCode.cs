@@ -162,7 +162,7 @@ namespace Jad_Bot.WCellCommands
                 catch (Exception e)
                 {
                     trigger.Reply("Please check your input, error occured: {0}", e.Message);
-                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                    WriteErrorSystem.WriteError(e);
                 }
             }
 
@@ -182,7 +182,7 @@ namespace Jad_Bot.WCellCommands
                 }
                 catch (Exception e)
                 {
-                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                    WriteErrorSystem.WriteError(e);
                 }
             }
 
@@ -248,7 +248,7 @@ namespace Jad_Bot.WCellCommands
                 }
                 catch (Exception e)
                 {
-                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                    WriteErrorSystem.WriteError(e);
                 }
                 return null;
             }
@@ -272,7 +272,7 @@ namespace Jad_Bot.WCellCommands
                 }
                 catch (Exception e)
                 {
-                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                    WriteErrorSystem.WriteError(e);
                 }
             }
         }

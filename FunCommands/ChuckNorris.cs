@@ -29,7 +29,7 @@ namespace Jad_Bot.FunCommands
                 }
                 catch (Exception e)
                 {
-                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                    WriteErrorSystem.WriteError(e);
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace Jad_Bot.FunCommands
                 }
                 catch (Exception e)
                 {
-                    UtilityMethods.Print(e.Data + e.StackTrace, true);
+                    WriteErrorSystem.WriteError(e);
                 }
             }
         }
