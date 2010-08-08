@@ -132,7 +132,7 @@ namespace Jad_Bot.WCellCommands
                 catch (Exception e)
                 {
                     WriteErrorSystem.WriteError(e);
-                    trigger.Reply("Error occured:{0}", JadBot.WebLinkToGeneralFolder + "ErrorLog.txt");                }
+                }
             }
         }
     }
