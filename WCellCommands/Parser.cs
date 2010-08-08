@@ -30,8 +30,8 @@ namespace Jad_Bot.WCellCommands
                     {
                         parserChoice = 1;
                     }
-                    if (parser != null)
-                    {
+                    if (parser == null)
+                    parser = "ksniffer";
                         switch (parser.ToLower())
                         {
                             case "ksniffer":
@@ -50,8 +50,7 @@ namespace Jad_Bot.WCellCommands
                                 }
                                 break;
                         }
-                    }
-                    trigger.Reply("Command recieved attempting to parse file: {0} with parser {1}", logFile, parser);
+                    trigger.Reply("Command recieved attempting to parse file: {0} with parser {1} -- You can use other parsers -- @parsers to see.", logFile, parser);
                     JadBot.LogFile = logFile;
                     JadBot.ParserConsoleInput.WriteLine("pa uf -a");
                     JadBot.ParserConsoleInput.WriteLine("pa sp {0}", parserChoice);

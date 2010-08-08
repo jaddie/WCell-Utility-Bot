@@ -87,6 +87,8 @@ namespace Jad_Bot.WCellCommands
                             foreach (var line in readOutput)
                             {
                                 id++;
+                                if(id < 5)
+                                    trigger.Reply(id + ": " + line);
                                 readWriter.WriteLine(id + ": " + line);
                             }
                         }
