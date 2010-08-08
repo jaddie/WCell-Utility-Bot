@@ -30,6 +30,7 @@ namespace Jad_Bot.WCellCommands
                             default:
                                 {
                                     parserChoice = 0;
+                                    parser = "ksniffer";
                                 }
                                 break;
                             case "ksniffersingleline":
