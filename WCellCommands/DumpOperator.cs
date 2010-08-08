@@ -107,7 +107,7 @@ namespace Jad_Bot.WCellCommands
         }
         public class SelectDumpCommand : Command
         {
-            public SelectDumpCommand() : base("Select")
+            public SelectDumpCommand() : base("Select","sel")
             {
                 Usage = "Select id";
                 Description =

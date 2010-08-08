@@ -25,16 +25,9 @@ namespace Jad_Bot.WCellCommands
                     string logFile = trigger.Args.NextWord();
                     string parser = trigger.Args.Remainder;
                     int parserChoice;
-                    bool temp = int.TryParse(parser, out parserChoice);
-                    if (!temp)
-                    {
-                        parserChoice = 1;
-                    }
-                    if (parser == null)
-                    parser = "ksniffer";
                         switch (parser.ToLower())
                         {
-                            case "ksniffer":
+                            default:
                                 {
                                     parserChoice = 0;
                                 }
@@ -111,6 +104,11 @@ namespace Jad_Bot.WCellCommands
                 {
                     string filename = trigger.Args.NextWord();
                     string httpLink = trigger.Args.Remainder;
+                    if(string.IsNullOrEmpty(filename) || string.IsNullOrEmpty(httpLink))
+                    {
+                        trigger.Reply("Error, invalid arguements try @help downloadlog");
+                        return;
+                    }
                     trigger.Reply("Attempting to download log from {0} and save in unparsed folder as {1}", httpLink,
                                   filename);
                     var client = new WebClient();
