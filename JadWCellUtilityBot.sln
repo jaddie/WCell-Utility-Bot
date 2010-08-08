@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squishy.Network", "Dependen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squishy.Irc", "Dependencies\Squishy.Irc\Squishy.Irc.csproj", "{7E1B9148-4616-419E-BA43-0413500D56FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenPOP", "Dependencies\OpenPOP\OpenPOP.csproj", "{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,18 +67,6 @@ Global
 		{7E1B9148-4616-419E-BA43-0413500D56FB}.Release|x64.Build.0 = Release|x64
 		{7E1B9148-4616-419E-BA43-0413500D56FB}.Release|x86.ActiveCfg = Release|Any CPU
 		{7E1B9148-4616-419E-BA43-0413500D56FB}.Release|x86.Build.0 = Release|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Debug|Itanium.ActiveCfg = Debug|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Debug|x86.Build.0 = Debug|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Release|Itanium.ActiveCfg = Release|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Release|x64.ActiveCfg = Release|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Release|x86.ActiveCfg = Release|Any CPU
-		{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

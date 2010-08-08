@@ -252,14 +252,9 @@
     <Content Include="ChuckNorrisFacts.txt" />
     <Content Include="config.txt" />
     <Content Include="LinusFacts.txt" />
-    <Content Include="TODO.txt" />
     <Content Include="UtilityBotIrcDB.sdf" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Dependencies\OpenPOP\OpenPOP.csproj">
-      <Project>{75B3E0DF-61C3-4643-AB47-DBE1CFE3D303}</Project>
-      <Name>OpenPOP</Name>
-    </ProjectReference>
     <ProjectReference Include="Dependencies\Squishy.Irc\Squishy.Irc.csproj">
       <Project>{7E1B9148-4616-419E-BA43-0413500D56FB}</Project>
       <Name>Squishy.Irc</Name>
