@@ -1,5 +1,4 @@
 using System;
-using Squishy.Irc.Account;
 
 namespace Squishy.Irc.Commands
 {
@@ -23,7 +22,6 @@ namespace Squishy.Irc.Commands
 		private string m_description;
 		private bool m_enabled;
 		private string m_usage;
-        private AccountMgr.AccountLevel m_requiredAccountLevel;
 
 		/*private static Command CreateInstance() {
 			System.Reflection.ConstructorInfo ctor = typeof(Command).GetConstructor(Type.EmptyTypes);
@@ -37,7 +35,6 @@ namespace Squishy.Irc.Commands
 		protected Command(params string[] aliases)
 		{
 			m_enabled = true;
-            m_requiredAccountLevel = AccountMgr.AccountLevel.Guest;
 			Aliases = aliases;
 			Usage = "";
 			Description = "";
@@ -54,15 +51,6 @@ namespace Squishy.Irc.Commands
 			get { return m_enabled; }
 			set { m_enabled = value; }
 		}
-
-        /// <summary>
-        /// the required account level to use the command.
-        /// </summary>
-        public AccountMgr.AccountLevel RequiredAccountLevel
-        {
-            get { return m_requiredAccountLevel; }
-            set { m_requiredAccountLevel = value; }
-        }
 
 		/// <summary>
 		/// Describes how to use the command.

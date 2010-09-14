@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Squishy.Irc.Account;
 
 namespace Squishy.Irc
 {
@@ -21,8 +20,6 @@ namespace Squishy.Irc
 		private string m_UserName, m_authName;
 		private string m_nick;
 		private string m_pw;
-        private bool m_LoggedIn;
-        private AccountMgr.AccountLevel m_AccountLevel;
 
 		public IrcUser(IrcClient irc, string nick, IrcChannel chan)
 			: this(irc)
@@ -216,19 +213,6 @@ namespace Squishy.Irc
 			return Util.IsWildmatch(Mask, mask);
 		}
 
-        public bool IsLoggedIn
-        {
-            get
-            {
-                return m_LoggedIn;
-            }
-        }
-
-        public AccountMgr.AccountLevel AccountLevel
-        {
-            get { return m_AccountLevel; }
-        }
-
 		#endregion
 
 		/// <summary>
@@ -245,8 +229,6 @@ namespace Squishy.Irc
 		internal IrcUser(IrcClient irc)
 		{
 			m_isParsed = false;
-            m_LoggedIn = false;
-            m_AccountLevel = AccountMgr.AccountLevel.Guest;
 			m_comChans = new Dictionary<string, IrcChannel>(StringComparer.InvariantCultureIgnoreCase);
 			m_irc = irc;
 			m_nick = "*";
@@ -268,11 +250,6 @@ namespace Squishy.Irc
 			m_info = info;
 			ChangeNick(nick);
 		}
-
-        public void SetAccountLevel(AccountMgr.AccountLevel level)
-        {
-            m_AccountLevel = level;
-        }
 
 		internal void AddChannel(IrcChannel chan)
 		{

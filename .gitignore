@@ -9,3 +9,4 @@ TestResults
 TestPastebinSystem
 _ReSharper*
 *.vs10x
+.svn

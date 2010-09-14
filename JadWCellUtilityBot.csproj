@@ -167,6 +167,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IrcCommands\AccountCommands.cs" />
     <Compile Include="IrcCommands\UtilityCommands.cs" />
     <Compile Include="Model1.Designer.cs">
       <AutoGen>True</AutoGen>

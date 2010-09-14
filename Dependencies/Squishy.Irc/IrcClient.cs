@@ -1148,7 +1148,7 @@ namespace Squishy.Irc
 		/// <param name="cmd">A command.</param>
 		public virtual bool MayTriggerCommand(CmdTrigger trigger, Command cmd)
 		{
-			return trigger.User == null || trigger.User == Me || trigger.User.AccountLevel >= cmd.RequiredAccountLevel;
+			return trigger.User == null || trigger.User == Me;
 		}
 
 		#endregion

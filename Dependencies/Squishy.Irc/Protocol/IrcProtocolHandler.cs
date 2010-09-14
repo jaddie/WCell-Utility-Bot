@@ -175,7 +175,7 @@ namespace Squishy.Irc.Protocol
 				// User Modes
 				for (int i = 0; i < flags.Length; i++)
 				{
-					string c = Convert.ToString(flags[i]);
+					var c = Convert.ToString(flags[i]);
 					if (c == "+")
 					{
 						add = true;
@@ -200,7 +200,7 @@ namespace Squishy.Irc.Protocol
 			for (int i = 0; i < flags.Length; i++)
 			{
 				// Chan Modes/Flags
-				string c = Convert.ToString(flags[i]);
+				var c = Convert.ToString(flags[i]);
 				if (c == "+")
 				{
 					add = true;
@@ -212,10 +212,11 @@ namespace Squishy.Irc.Protocol
 					continue;
 				}
 
-				string arg = "";
+				var arg = "";
 
 				if (irc.HasChanMode(c))
 				{
+					// channel modes
 					if (add)
 					{
 						if (c == "b" || c == "k" || c == "l")
@@ -251,7 +252,7 @@ namespace Squishy.Irc.Protocol
 				}
 				else
 				{
-					// user privs
+					// channel user flags
 					var priv = irc.GetPrivForFlag(flags[i]);
 					if (priv != Privilege.Regular)
 					{
