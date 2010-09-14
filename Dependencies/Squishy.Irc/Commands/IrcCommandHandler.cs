@@ -166,129 +166,73 @@ namespace Squishy.Irc.Commands
 		{
 			ircClient.Send("WHOIS " + nick);
 		}
-		
-		#region Part
-		public void Part(string chan, string reason)
-		{
-			ircClient.Send("PART " + chan + " :" + reason);
-		}
 
 		public void Part(string chan, string reason, params object[] args)
 		{
 			ircClient.Send("PART " + chan + " :" + String.Format(reason, args));
 		}
 
-		public void Part(IrcChannel chan, string reason)
-		{
-			ircClient.Send("PART " + chan.Name + " :" + reason);
-		}
-
 		public void Part(IrcChannel chan, string reason, params object[] args)
 		{
 			ircClient.Send("PART " + chan.Name + " :" + String.Format(reason, args));
 		}
-		#endregion
 
-		#region Msg
-		public void Msg(string target, string str)
+		public void Msg(ChatTarget Target, object format, params object[] args)
 		{
-			var lines = str.Replace("\r\n", "\n").Split(new [] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
+			Msg(Target.Identifier, format, args);
+		}
+
+		public void Msg(string Target, object format, params object[] args)
+		{
+			string[] lines = String.Format(format.ToString(), args).Replace("\r\n", "\n").Split('\r', '\n');
 			foreach (string line in lines)
-				ircClient.Send("PRIVMSG {0} :{1}", target, line);
+				ircClient.Send("PRIVMSG {0} :{1}", Target, line);
 		}
 
-		public void Msg(ChatTarget target, object format, params object[] args)
+		public void Notice(ChatTarget Target, string format, params object[] args)
 		{
-			Msg(target.Identifier, format, args);
+			Notice(Target.Identifier, format, args);
 		}
 
-		public void Msg(string target, object format, params object[] args)
+		public void Notice(string Target, string format, params object[] args)
 		{
-			Msg(target, String.Format(format.ToString(), args));
-		}
-		#endregion
-
-		#region Notice
-		public void Notice(ChatTarget target, string format)
-		{
-			Notice(target.Identifier, format);
-		}
-
-		public void Notice(ChatTarget target, string format, params object[] args)
-		{
-			Notice(target.Identifier, format, args);
-		}
-
-		public void Notice(string target, string str)
-		{
-			var lines = str.Replace("\r\n", "\n").Split('\r', '\n');
+			string[] lines = String.Format(format, args).Replace("\r\n", "\n").Split('\r', '\n');
 			foreach (string line in lines)
-				ircClient.Send("NOTICE {0} :{1}", target, line);
+				ircClient.Send("NOTICE {0} :{1}", Target, line);
 		}
 
-		public void Notice(string target, string format, params object[] args)
-		{
-			Notice(target, String.Format(format, args));
-		}
-		#endregion
-
-		#region Describe
 		public void Describe(ChatTarget Target, string format, params object[] args)
 		{
 			Describe(Target.Identifier, format, args);
 		}
-
-		public void Describe(string target, string str)
-		{
-			string[] lines = str.Replace("\r\n", "\n").Split('\r', '\n');
-			foreach (string line in lines)
-				CtcpRequest(target, "ACTION", line);
-		}
-
-		public void Describe(string target, string format, params object[] args)
-		{
-			Describe(target, string.Format(format, args));
-		}
-		#endregion
 
 		public void SetTopic(string chan, string topic)
 		{
 			ircClient.Send("TOPIC " + chan + " :" + topic);
 		}
 
-		#region CTCP
-		public void CtcpRequest(string target, string request, string str)
+		public void Describe(string Target, string format, params object[] args)
 		{
-			Msg(target, "{0} {1}", request.ToUpper(), str);
+			string[] lines = String.Format(format, args).Replace("\r\n", "\n").Split('\r', '\n');
+			foreach (string line in lines)
+				CtcpRequest(Target, "ACTION", format, line);
 		}
 
-		public void CtcpRequest(string target, string request, string argFormat, params object[] args)
+		public void CtcpRequest(string Target, string Request, string argFormat, params object[] args)
 		{
-			Msg(target, "{0} {1}", request.ToUpper(), string.Format(argFormat, args));
+			Msg(Target, "{0} {1}", Request.ToUpper(), string.Format(argFormat, args));
 		}
 
-		public void CtcpReply(string target, string request, string str)
+		public void CtcpReply(string Target, string Request, string argFormat, params object[] args)
 		{
-			Notice(target, "{0} {1}", request.ToUpper(), str);
+			Notice(Target, "{0} {1}", Request.ToUpper(), string.Format(argFormat, args));
 		}
 
-		public void CtcpReply(string target, string request, string argFormat, params object[] args)
+		public void DccRequest(string Target, string requestFormat, params object[] args)
 		{
-			Notice(target, "{0} {1}", request.ToUpper(), string.Format(argFormat, args));
+			CtcpRequest(Target, "DCC", requestFormat, args);
 		}
 
-		public void DccRequest(string target, string requestFormat)
-		{
-			CtcpRequest(target, "DCC", requestFormat);
-		}
-
-		public void DccRequest(string target, string requestFormat, params object[] args)
-		{
-			CtcpRequest(target, "DCC", requestFormat, args);
-		}
-		#endregion
-
-		#region Mode
 		public void Mode(string flags)
 		{
 			ircClient.Send("MODE " + flags);
@@ -323,9 +267,7 @@ namespace Squishy.Irc.Commands
 		{
 			ircClient.Send("MODE " + Channel.Name + " " + flags + " " + Util.GetWords(Targets, 0));
 		}
-		#endregion
 
-		#region Kick
 		public void Kick(IrcChannel channel, IrcUser user)
 		{
 			Kick(channel.Name, user.Nick);
@@ -336,28 +278,16 @@ namespace Squishy.Irc.Commands
 			ircClient.Send("KICK " + channel + " " + user);
 		}
 
-		public void Kick(IrcChannel Channel, IrcUser User, string reason)
-		{
-			Kick(Channel.Name, User.Nick, reason);
-		}
-
 		public void Kick(IrcChannel Channel, IrcUser User, string reasonFormat, params object[] args)
 		{
 			Kick(Channel.Name, User.Nick, reasonFormat, args);
-		}
-
-		public void Kick(string Channel, string User, string reason)
-		{
-			ircClient.Send("KICK " + Channel + " " + User + " :" + reason);
 		}
 
 		public void Kick(string Channel, string User, string reasonFormat, params object[] args)
 		{
 			ircClient.Send("KICK " + Channel + " " + User + " :" + string.Format(reasonFormat, args));
 		}
-		#endregion
 
-		#region Ban
 		public void Ban(IrcChannel Channel, params object[] Masks)
 		{
 			Ban(Channel.Name, Masks);
@@ -390,9 +320,7 @@ namespace Squishy.Irc.Commands
 			}
 			ircClient.Send("MODE {0} {1} {2}", Channel, flag, Util.GetWords(Masks, 0));
 		}
-		#endregion
 
-		#region KickBan
 		public void KickBan(string channel, string reason, params object[] masks)
 		{
 			KickBan(ircClient.GetChannel(channel), reason, masks);
@@ -456,9 +384,7 @@ namespace Squishy.Irc.Commands
 						Kick(channel, u);
 			}
 		}
-		#endregion
 
-		#region Unban
 		public void Unban(IrcChannel Channel, string Masks)
 		{
 			Unban(Channel, Masks.Split(' '));
@@ -483,7 +409,6 @@ namespace Squishy.Irc.Commands
 				flag += "b";
 			ircClient.Send("MODE {0} {1} {2}", Channel, flag, Util.GetWords(Masks, 0));
 		}
-		#endregion
 
 		public void RetrieveBanList(string Channel)
 		{

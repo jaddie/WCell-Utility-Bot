@@ -340,10 +340,10 @@ namespace Jad_Bot.IrcCommands
                 try
                 {
                     trigger.Reply("http://server.wcell.org");
-				        }
+				}
                 catch (Exception e)
                 {
-                    WriteErrorSystem.WriteError(new Exception("Failed to send build server link!"));
+                    WriteErrorSystem.WriteError(new Exception("Failed to send build server link!" + e.Data + e.Message));
                 }
             }
         }

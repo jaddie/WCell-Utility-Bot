@@ -187,7 +187,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WCellCommands\DumpReader.cs" />
     <Compile Include="WCellCommands\SourceCode.cs" />
-    <Compile Include="Utilities\SyntaxHightlighter.cs" />
+    <Compile Include="Utilities\SyntaxHighlighter.cs" />
     <Compile Include="IrcCommands\SystemCommands.cs" />
     <Compile Include="Utilities\UtilityMethods.cs" />
     <Compile Include="Utilities\WriteError.cs" />
