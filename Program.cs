@@ -380,6 +380,8 @@ namespace Jad_Bot
         {
             try
             {
+                return true;
+                /*
                 if (trigger.Args.String.ToLower().StartsWith(CommandHandler.RemoteCommandPrefix + "help"))
                 {
                     return true;
@@ -400,7 +402,7 @@ namespace Jad_Bot
                         }
                     }
                 }
-                return false;
+                return false;*/
             }
             catch (Exception e)
             {
