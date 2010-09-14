@@ -380,7 +380,7 @@ namespace Jad_Bot
         {
             try
             {
-                if (trigger.Args.String.ToLower().StartsWith("help"))
+                if (trigger.Args.String.ToLower().StartsWith(CommandHandler.RemoteCommandPrefix + "help"))
                 {
                     return true;
                 }
