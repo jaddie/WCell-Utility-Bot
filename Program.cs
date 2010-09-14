@@ -243,7 +243,7 @@ namespace Jad_Bot
             {
                 foreach (var message in db.Messages.Where(message => message.IrcNick.ToLower() == user.Nick.ToLower() || message.IrcNick.ToLower().StartsWith("domi") && user.Nick.ToLower().StartsWith("domi")))
                 {
-                    CommandHandler.Msg(user, "Date Left: " + message.DateLeft + "\n From Nick: " + message.FromIrcNick + "\n Message Sent: " + message.MessageText);
+                    CommandHandler.Msg(user.ToString(), "Date Left: " + message.DateLeft + "\n From Nick: " + message.FromIrcNick + "\n Message Sent: " + message.MessageText);
                     db.Messages.DeleteObject(message);
                     db.SaveChanges();
                 }

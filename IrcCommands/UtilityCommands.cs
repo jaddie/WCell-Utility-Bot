@@ -32,7 +32,7 @@ namespace Jad_Bot.IrcCommands
                             DateLeft = DateTime.Now.ToString(),
                             FromIrcNick = trigger.User.Nick,
                             IrcNick = nick.ToLower(),
-                            MessageText = messagetosend.ToLower()
+                            MessageText = messagetosend
                         };
                         db.Messages.AddObject(msg);
                         db.SaveChanges();
