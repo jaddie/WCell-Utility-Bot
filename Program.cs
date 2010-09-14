@@ -380,10 +380,13 @@ namespace Jad_Bot
         {
             try
             {
+                if (trigger.Args.String.ToLower().StartsWith("help"))
+                {
+                    return true;
+                }
                 if (base.MayTriggerCommand(trigger, cmd))
                 {
-                    if (trigger.Channel != null && trigger.Target == trigger.Channel &&
-                        !trigger.Args.String.ToLower().StartsWith(CommandHandler.RemoteCommandPrefix + "help"))
+                    if (trigger.Target != null)
                     {
                         if (!SpamTimer.Enabled)
                         {
@@ -395,10 +398,6 @@ namespace Jad_Bot
                             trigger.User.Msg("Don't try to make me spam!");
                             return false;
                         }
-                    }
-                    else
-                    {
-                        return true;
                     }
                 }
                 return false;
