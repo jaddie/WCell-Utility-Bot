@@ -283,7 +283,7 @@ namespace Jad_Bot
         #region IrcSystem
         public static void OnConnecting(Connection con)
         {
-            Console.WriteLine("Connecting to IRC server");
+            Console.WriteLine("\nConnecting to IRC server");
             IrcLog.WriteLine(DateTime.Now + " : Connecting to server");
         }
         protected override void Perform()
